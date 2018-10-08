@@ -142,6 +142,11 @@
 		public function getQuyen(){
 			return $this->quyen;
 		}
+		
+		
+		#
+		# Quản lý người dùng
+		#
 		public function themNguoiDung($userinfo){
 			#data checked outside
 			if($this->quyen->contain(PRIVILEGES['THEM_NGUOI_DUNG'])){
@@ -303,6 +308,12 @@
 				throw new MissingPrivilegeException('Bạn không đủ quyền để thực hiện thao tác xóa người dùng!');
 			}
 		}
+		public function capQuyenNguoiDung($id, $quyen){
+			if(!$this->quyen->contain(PRIVILEGES['CAP_QUYEN']))
+		}
+		#
+		# Quản lý nhóm người dùng
+		#
 		public function themNhomNguoiDung($groupinfo){
 			if($this->quyen->contain(PRIVILEGES['THEM_NHOM'])){
 				$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$groupinfo->getMaNhom().'\'');
@@ -361,6 +372,10 @@
 				}
 			}
 		}
+		
+		#
+		# Quản lý đơn vị
+		#
 		public function themDonVi($departmentinfo){
 			if($this->quyen->contain(PRIVILEGES['THEM_DON_VI'])){
 				$result = $this->dbcon->startTransactionRW();

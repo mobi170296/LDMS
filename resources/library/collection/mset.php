@@ -41,5 +41,11 @@
 		public function getAt($i){
 			return $this->s[$i];
 		}
+		public function getNewValues(){
+			
+		}
+		public function getOldValues(){
+			
+		}
 	}
 ?>
