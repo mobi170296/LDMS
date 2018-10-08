@@ -41,11 +41,23 @@
 		public function getAt($i){
 			return $this->s[$i];
 		}
-		public function getNewValues(){
-			
+		public function getNewValues($set){
+			$result = [];
+			for($i=0; $i<$set->getLength(); $i++){
+				if(!$this->contain($set->getAt($i))){
+					$result[] = $set->getAt($i);
+				}
+			}
+			return $result;
 		}
-		public function getOldValues(){
-			
+		public function getOldValues($set){
+			$result = [];
+			foreach($this->s as $v){
+				if(!$set->contain($v)){
+					$result[] = $v;
+				}
+			}
+			return $result;
 		}
 	}
 ?>

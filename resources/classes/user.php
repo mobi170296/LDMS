@@ -309,7 +309,70 @@
 			}
 		}
 		public function capQuyenNguoiDung($id, $quyen){
-			if(!$this->quyen->contain(PRIVILEGES['CAP_QUYEN']))
+			if(!$this->quyen->contain(PRIVILEGES['CAP_QUYEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền để thực hiện cấp quyền cho người dùng khác!');
+			}
+			
+			if($this->id==$id){
+				throw new MultipleErrorException('Bạn không thể tự cấp quyền cho mình');
+			}
+			
+			$result = $this->dbcon->startTransactionRW();
+			if(!$result){
+				throw new DatabaseErrorException($this->dbcon->getError());
+			}
+			
+			$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$id);
+			if(!$result){
+				throw new DatabaseErrorException($this->dbcon->getError());
+			}
+			
+			if($result->num_rows){
+				$result = $this->dbcon->lockRow('SELECT * FROM quyennguoidung WHERE idnguoidung='.$id);
+				if(!$result){
+					$error = $this->dbcon->getError();
+					$this->dbcon->rollback();
+					throw new DatabaseErrorException($error);
+				}
+				
+				$currentPriveleges = new MSet();
+				while($row = $result->fetch_assoc()){
+					$currentPriveleges->addElement($row['quyen']);
+				}
+				
+				$newSet = $currentPriveleges->getNewValues($quyen);
+				$oldSet = $currentPriveleges->getOldValues($quyen);
+				
+				foreach($oldSet as $v){
+					$result = $this->dbcon->query('DELETE FROM quyennguoidung WHERE idnguoidung='.$id . ' and quyen='.$v);
+					if(!$result){
+						$error = $this->dbcon->getError();
+						$this->dbcon->rollback();
+						throw new DatabaseErrorException($error);
+					}
+				}
+				
+				
+				foreach($newSet as $v){
+					$result = $this->dbcon->query('INSERT INTO quyennguoidung(idnguoidung, quyen) VALUES('.$id.', '.$v.')');
+					if(!$result){
+						$error = $this->dbcon->getError();
+						$this->dbcon->rollback();
+						throw new DatabaseErrorException($error);
+					}
+				}
+				
+				$result = $this->dbcon->commit();
+				
+				if(!$result){
+					$error = $this->dbcon->getError();
+					$this->dbcon->rollback();
+					throw new DatabaseErrorException($error);
+				}
+			}else{
+				$this->dbcon->rollback();
+				throw new NotExistedUserException('Người dùng không tồn tại không thể được cấp quyền!');
+			}
 		}
 		#
 		# Quản lý nhóm người dùng
