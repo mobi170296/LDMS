@@ -1,8 +1,39 @@
 <?php
+	require_once __DIR__.'/../../../config/defines.php';
+	require_once __DIR__.'/../../classes/exceptions.php';
+	class MDBPasswordData{
+		private $data;
+		public function __construct($data){
+			$this->data = $data;
+		}
+		public function toDBValueString(){
+			return "aes_encrypt('{$this->data}', '".DATABASE['AES_KEY']."')";
+		}
+	}
 	class MDatabase{
 		private $connection;
 		public function __construct($host, $username, $password, $dbname = '', $port = 3306){
 			$this->connection = @new MySQLi($host, $username, $password, $dbname, $port);
+			if($this->connection->connect_errno){
+				throw new DBException($this->connection->connect_error);
+			}
+		}
+		public static function toDBValueString($value){
+			switch(gettype($value)){
+				case 'integer':
+				case 'double':
+					return $value;
+				case 'boolean':
+					return $value ? 1 : 0;
+				case 'string':
+					return "'$value'";
+				case 'object':
+					if(get_class($value)=='MDBPasswordData') return $value->toDBValueString();
+					break;
+				case 'NULL':
+					return 'NULL';
+			}
+			return '';
 		}
 		public function getConnectError(){
 			return $this->connection->connect_error;
@@ -17,7 +48,14 @@
 			return $this->connection->errno;
 		}
 		public function query($sqlstring){
-			return $this->connection->query($sqlstring);
+			$result = $this->connection->query($sqlstring);
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
+		}
+		public function getLastInsertId(){
+			return $this->connection->insert_id;
 		}
 		public function getConnection(){
 			return $this->connection;
@@ -27,43 +65,77 @@
 		}
 		public function insert($tablename, $ps, $vs){
 			$count = count($ps);
-			$sqlstring = 'insert ' .$tablename. '(';
+			$sqlstring = 'INSERT INTO ' .$tablename. '(';
 			for($i=0; $i<$count-1; $i++){
 				$sqlstring .= $ps[$i].',';
 			}
-			$sqlstring .= $ps[$i] . ') values(';
+			$sqlstring .= $ps[$i] . ') VALUES(';
 			for($i=0; $i<$count-1; $i++){
-				$vs[$i] = $this->connection->real_escape_string($vs[$i]);
-				$sqlstring .= "'" . $vs[$i] . "'" . ',';
+				$sqlstring .= self::toDBValueString($vs[$i]) .',';
 			}
-			$sqlstring .= "'" . $vs[$i] . "'" . ')';
-			echo $sqlstring;
-			return $this->connection->query($sqlstring);
+			$sqlstring .= self::toDBValueString($vs[$i]). ')';
+			$result = $this->connection->query($sqlstring);
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function startTransactionRW(){
-			return $this->connection->query('start transaction read write');
+			$result = $this->connection->query('start transaction read write');
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function startTransactionRO(){
-			return $this->connection->query('start transaction read only');
+			$result = $this->connection->query('start transaction read only');
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function lockRow($sqlstring){
 			$sqlstring .= ' for update';
-			return $this->query($sqlstring);
+			$result = $this->query($sqlstring);
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function commit(){
-			return $this->connection->query('commit');
+			$result = $this->connection->query('commit');
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function rollback(){
-			return $this->connection->query('rollback');
+			$result = $this->connection->query('rollback');
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function lockTableW($tablename){
-			return $this->query('lock table ' . $tablename . ' write');
+			$result = $this->query('lock table ' . $tablename . ' write');
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function lockTableR($tablename){
-			return $this->query('lock table ' . $tablename . ' read');
+			$result = $this->query('lock table ' . $tablename . ' read');
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 		public function close(){
-			return $this->connection->close();
+			$result = $this->connection->close();
+			if(!$result){
+				throw new DBException($this->connection->error);
+			}
+			return $result;
 		}
 	}
 ?>

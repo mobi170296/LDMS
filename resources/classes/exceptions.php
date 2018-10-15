@@ -1,4 +1,9 @@
 <?php
+	class DBException extends Exception{
+		public function __construct($msg){
+			parent::__construct($msg);
+		}
+	}
 	class MissingPrivilegeException extends Exception{
 		public function __construct($msg){
 			parent::__construct($msg);
@@ -60,6 +65,11 @@
 		}
 	}
 	class MultipleErrorException extends Exception{
+		public function __construct($msg){
+			parent::__construct($msg);
+		}
+	}
+	class LoginFailedException extends Exception{
 		public function __construct($msg){
 			parent::__construct($msg);
 		}

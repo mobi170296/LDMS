@@ -18,6 +18,63 @@
 		public function getDBConnection(){
 			return $this->dbcon;
 		}
+		public function dangNhap($maso=null, $matkhau=null){
+			if($maso){
+				#đăng nhập theo thông tin người dùng đã đưa
+				try{
+					
+					$result = $this->dbcon->query("SELECT * FROM nguoidung WHERE maso='{$this->dbcon->realEscapeString($maso)}' AND matkhau=".((new MDBPasswordData($this->dbcon->realEscapeString($matkhau)))->toDBValueString()));
+					if($result->num_rows){
+						$info = $result->fetch_assoc();
+						foreach($info as $k => $v){
+							$this->$k = $v;
+						}
+						$sql = "SELECT quyennguoidung.quyen FROM quyennguoidung INNER JOIN nguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$this->id} UNION SELECT quyennhomnguoidung.quyen FROM quyennhomnguoidung JOIN nguoidung ON nguoidung.manhom=quyennhomnguoidung.manhom WHERE nguoidung.id={$this->id}";
+						$result = $this->dbcon->query($sql);
+						while($row = $result->fetch_assoc()){
+							$this->quyen->addElement($row['quyen']);
+						}
+						$_SESSION['maso'] = $maso;
+						$_SESSION['matkhau'] = $matkhau;
+					}else{
+						throw new LoginFailedException('Tên đăng nhập hoặc mật khẩu không đúng');
+					}
+				}catch(DBException $e){
+					throw $e;
+				}catch(LoginFailedException $e){
+					throw $e;
+				}
+			}else{
+				#đăng nhập theo dữ liệu có trong session
+				try{
+					if(isset($_SESSION['maso']) && isset($_SESSION['matkhau'])){
+						$maso = $_SESSION['maso'];
+						$matkhau = $_SESSION['matkhau'];
+					}
+					$result = $this->dbcon->query("SELECT * FROM nguoidung WHERE maso='{$this->dbcon->realEscapeString($maso)}' AND matkhau=".((new MDBPasswordData($this->dbcon->realEscapeString($matkhau)))->toDBValueString()));
+					if($result->num_rows){
+						$info = $result->fetch_assoc();
+						foreach($info as $k => $v){
+							$this->$k = $v;
+						}
+						$sql = "SELECT quyennguoidung.quyen FROM quyennguoidung INNER JOIN nguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$this->id} UNION SELECT quyennhomnguoidung.quyen FROM quyennhomnguoidung JOIN nguoidung ON nguoidung.manhom=quyennhomnguoidung.manhom WHERE nguoidung.id={$this->id}";
+						$result = $this->dbcon->query($sql);
+						while($row = $result->fetch_assoc()){
+							$this->quyen->addElement($row['quyen']);
+						}
+					}else{
+						throw new LoginFailedException('Tên đăng nhập hoặc mật khẩu không đúng');
+					}
+				}catch(DBException $e){
+					throw $e;
+				}catch(LoginFailedException $e){
+					unset($_SESSION['maso']);
+					unset($_SESSION['matkhau']);
+					throw $e;
+				}
+			}
+		}
+		#Deprecated
 		public function login($maso='', $matkhau=''){
 			if($maso==''){
 				#đăng nhập theo dữ liệu trong session
@@ -150,59 +207,36 @@
 		public function themNguoiDung($userinfo){
 			#data checked outside
 			if($this->quyen->contain(PRIVILEGES['THEM_NGUOI_DUNG'])){
-				$result = $this->dbcon->startTransactionRW();
-				if(!$result){
-					$error = $this->dbcon->getError();
-					throw new DatabaseErrorException($error);
-				}
-				
-				$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($userinfo->getMaNhom()).'\'');
-				if(!$result){
-					$error = $this->dbcon->getError();
-					$this->dbcon->rollback();
-					throw new DatabaseErrorException($error);
-				}
-				if($result->num_rows==0){
-					$this->dbcon->rollback();
-					throw new NotExistedGroupException('Nhóm '.$userinfo->getMaNhom().' không tồn tại không thể thêm người dùng');
-				}
-				
-				$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($userinfo->getMaDonVi()).'\'');
-				if(!$result){
-					$error = $this->dbcon->getError();
-					$this->dbcon->rollback();
-					throw new DatabaseErrorException($error);
-				}
-				if($result->num_rows==0){
-					$this->dbcon->rollback();
-					throw new NotExistedGroupException('Đơn vị '.$userinfo->getMaDonVi().' không tồn tại không thể thêm người dùng');
-				}
-				
-				$result = $this->dbcon->lockRow('SELECT * FROM nguoidung WHERE maso=\''.$this->dbcon->realEscapeString($userinfo->maso).'\'');
-				if(!$result){
-					$error = $this->dbcon->getError();
-					$this->dbcon->rollback();
-					throw new DatabaseErrorException($error);
-				}
-				if($result->num_rows>0){
-					$row = $result->fetch_assoc();
-					$fullname = $row['ho'] . ' ' . $row['ten'];
-					$this->dbcon->rollback();
-					throw new ExistedUserException('Mã số người dùng này đã tồn tại với tên '. $fullname. '. Xin vui lòng kiểm tra lại!');
-				}else{
-					$result = $this->dbcon->query('INSERT INTO nguoidung(maso, matkhau, ho, ten, ngaysinh, email, sodienthoai, diachi, madonvi, manhom) VALUES(\''.$this->dbcon->realEscapeString($userinfo->getMaSo()).'\', aes_encrypt(\''.$this->dbcon->realEscapeString($userinfo->getMatKhau()).'\', \''.DATABASE['AES_KEY'].'\'), \''.$this->dbcon->realEscapeString($userinfo->getHo()).'\', \''.$this->dbcon->realEscapeString($userinfo->getTen()).'\', \''.$this->dbcon->realEscapeString(MDateTime::parseDate($userinfo->getNgaySinh())->getDate('-')).'\', \''.$this->dbcon->realEscapeString($userinfo->getEmail()).'\', \''.$this->dbcon->realEscapeString($userinfo->getSoDienThoai()).'\', \''.$this->dbcon->realEscapeString(htmlentities($userinfo->getDiaChi())).'\', \''.$this->dbcon->realEscapeString($userinfo->getMaDonVi()).'\', \''.$this->dbcon->realEscapeString($userinfo->getMaNhom()).'\')');
-					if(!$result){
-						$error = $this->dbcon->getError();
-						$this->dbcon->rollback();
-						throw new DatabaseErrorException($error);
-					}else{
-						$result = $this->dbcon->commit();
-						if(!$result){
-							$error = $this->dbcon->getError();
-							$this->dbcon->rollback();
-							throw new DatabaseErrorException($error);
-						}
+				try{
+					$this->dbcon->startTransactionRW();
+
+					$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($userinfo->getMaNhom()).'\'');
+					
+					if($result->num_rows==0){
+						throw new NotExistedGroupException('Nhóm '.$userinfo->getMaNhom().' không tồn tại không thể thêm người dùng');
 					}
+
+					$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($userinfo->getMaDonVi()).'\'');
+					
+					if($result->num_rows==0){
+						throw new NotExistedDepartmentException('Đơn vị '.$userinfo->getMaDonVi().' không tồn tại không thể thêm người dùng');
+					}
+
+					$result = $this->dbcon->lockRow("SELECT * FROM nguoidung WHERE maso={$userinfo->getMaSo()}");
+					
+					if($result->num_rows>0){
+						$row = $result->fetch_assoc();
+						$fullname = $row['ho'] . ' ' . $row['ten'];
+						$this->dbcon->rollback();
+						throw new ExistedUserException('Mã số người dùng này đã tồn tại với tên '. $fullname. '. Xin vui lòng kiểm tra lại!');
+					}else{
+						$this->dbcon->insert('nguoidung', ['maso', 'matkhau', 'ho', 'ten', 'ngaysinh', 'email', 'sodienthoai', 'diachi', 'madonvi', 'manhom'], [$this->dbcon->realEscapeString($userinfo->getMaSo()), (new MDBPasswordData($this->dbcon->realEscapeString($userinfo->getMatKhau()))), $this->dbcon->realEscapeString($userinfo->getHo()), $this->dbcon->realEscapeString($userinfo->getTen()), $this->dbcon->realEscapeString($userinfo->getNgaySinh()), $this->dbcon->realEscapeString($userinfo->getEmail()), $this->dbcon->realEscapeString($userinfo->getSoDienThoai()), $this->dbcon->realEscapeString($userinfo->getDiaChi()), $this->dbcon->realEscapeString($userinfo->getMaDonVi()), $this->dbcon->realEscapeString($userinfo->getMaNhom())]);
+						
+						$this->dbcon->commit();
+					}
+				}catch(Exception $e){
+					$this->dbcon->rollback();
+					throw $e;
 				}
 			}else{
 				throw new MissingPrivilegeException('Bạn không đủ quyền để thực hiện thao tác thêm người dùng!');
