@@ -7,8 +7,10 @@
 	require_once $CNF['PATHS']['LIBRARY'] . '/datetime/mdatetime.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/collection/mset.php';
 	
+	require_once __DIR__ . '/legaldocument.php';
 	require_once __DIR__ . '/userinfo.php';
 	require_once __DIR__ . '/exceptions.php';
+	require_once __DIR__ . '/uploadedfile.php';
 	class User{
 		private $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $thoigianthem, $quyen, $dbcon;
 		public function __construct($connection){
@@ -419,7 +421,45 @@
 				throw $e;
 			}
 		}
-		
+		public function capQuyenNhomNguoiDung($manhom, $quyen){
+			if(!$this->quyen->contain(PRIVILEGES['CAP_QUYEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền để thực hiện cấp quyền cho nhóm người dùng');
+			}
+			
+			try{
+				$result = $this->dbcon->startTransactionRW();
+
+				$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
+
+				if($result->num_rows){
+					$result = $this->dbcon->lockRow('SELECT * FROM quyennhomnguoidung WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
+
+					$currentPriveleges = new MSet();
+					while($row = $result->fetch_assoc()){
+						$currentPriveleges->addElement($row['quyen']);
+					}
+
+					$newSet = $currentPriveleges->getNewValues($quyen);
+					$oldSet = $currentPriveleges->getOldValues($quyen);
+
+					foreach($oldSet as $v){
+						$result = $this->dbcon->query('DELETE FROM quyennhomnguoidung WHERE manhom=\''.$this->dbcon->realEscapeString($manhom). '\' and quyen='.$v);
+					}
+
+
+					foreach($newSet as $v){
+						$result = $this->dbcon->query('INSERT INTO quyennhomnguoidung(manhom, quyen) VALUES(\''.$this->dbcon->realEscapeString($manhom).'\', '.$v.')');
+					}
+
+					$result = $this->dbcon->commit();
+				}else{
+					throw new NotExistedGroupException('Nhóm không tồn tại không thể cấp quyền');
+				}
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
+			}
+		}
 		#
 		# Quản lý đơn vị
 		#
@@ -666,51 +706,89 @@
 				throw $e;
 			}
 		}
-		public function suaCongVanDen($id, $newdocinfo, $srcfile, $descfile){
+		public function suaCongVanDen($id, $newdocinfo, $srcfile, $destfile){
 			if(!$this->quyen->contain(PRIVILEGES['SUA_CONG_VAN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền sửa công văn đến');
 			}
 			try{
 				$this->dbcon->startTransactionRW();
-				$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\'');
+				
+				$legaldocument = new LegalDocument($this->dbcon);
+				$docinfo = $legaldocument->getLegalDocumentByID($id);
+				# Không có ngoại lệ tức là công văn đã tồn tại có thể sửa thông tin
+				$result = $this->dbcon->lockRow('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\'');
 				if($result->num_rows==0){
 					throw new NotExistedIssuedUnitException('Đơn vị ban hành không tồn tại không thể thay đổi thông tin công văn');
 				}
-				$result = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\'');
+				
+				$result = $this->dbcon->lockRow('SELECT * FROM loaivanban WHERE maloai=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\'');
 				if($result->num_rows==0){
 					throw new NotExistedDocTypeException('Loại văn bản không tồn tại không thể thay đổi thông tin công văn');
 				}
+				
 				#Kiểm tra thử
 				#Nếu người dùng này đang nhập công văn thì chắc chắn rằng đơn vị nhập công văn sẽ tồn tại
-				$result = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonVi()).'\'');
+				$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonVi()).'\'');
 				if($result->num_rows==0){
 					throw new NotExistedDepartmentException('Đơn vị nhận văn bản không tồn tại không thể thay đổi thông tin');
 				}
-				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE soden='.$newdocinfo->getSoDen() .' AND madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonVi()).'\' AND year(thoigianden)=year(\''.$this->dbcon->realEscapeString($newdocinfo->getThoiGianDen()).'\')');
+				
+				$result = $this->dbcon->lockRow('SELECT * FROM congvanden WHERE id!='.$id.' AND soden='.$newdocinfo->getSoDen().' AND madonvi= \''.$this->realEscapeString($newdocinfo->getMaDonVi()).'\' AND year(thoigianden)=year(\''.$newdocinfo->getThoiGianDen().'\')');
 				
 				if($result->num_rows){
-					throw new ExistedLegalDocumentException('Công văn đến có số đến đã tồn tại');
+					throw new ExistedLegalDocumentException('Đã có công văn có số đến này trong danh mục công văn của năm không thể sửa thông tin công văn');
 				}else{
-					$basename = pathinfo($destfile)['basename'];
-					
-					$this->dbcon->insert('congvanden', ['soden', 'kyhieu', 'thoigianden', 'ngayvanban', 'madonvibanhanh', 'trichyeu', 'nguoiky', 'maloaivanban', 'thoihangianquyet', 'tentaptin', 'trangthai', 'idnguoinhap', 'madonvi'], [$newdocinfo->getSoDen(), $newdocinfo->getKyHieu(), $newdocinfo->getThoiGianDen(), $newdocinfo->getNgayVanBan(), $newdocinfo->getMaDonViBanHanh(), $newdocinfo->getTrichYeu(), $newdocinfo->getNguoiKy(), $newdocinfo->getMaLoaiVanBan(), $newdocinfo->getThoiHanGiaiQuyet(), $filename, $newdocinfo->getTrangThai(), $this->getID(), $newdocinfo->getMaDonVi()]);
-					
-					$id = $this->dbcon->getInsertID();
-					$filename = $id . '_' . $newdocinfo->getSoDen() . '_' . $basename;
-					
-					if(move_uploaded_file($srcfile, dirname($destfile).'/'. $filename)){
-						$this->dbcon->query('UPDATE congvanden SET tentaptin=\''.$this->dbcon->realEscapeString($filename).'\' WHERE id='.$id);
-					}else{
-						throw new Exception('Xử lý tập tin lỗi!');
+					if($srcfile!=null){
+						#Xóa file cũ
+						unlink(dirname($destfile).'/'.$docinfo->getTenTapTin());
+						#Thêm file mới
+						$basename = pathinfo($destfile)['basename'];
+						$filename = $id . '_' . $newdocinfo->getSoDen() . '_' . $basename;
+						if(move_uploaded_file($srcfile, dirname($destfile).'/'. $filename)){
+							$this->dbcon->query('UPDATE congvanden SET soden='.$newdocinfo->getSoDen().
+											   ', kyhieu=\''.$this->dbcon->realEscapeString($newdocinfo->getKyHieu()).'\''.
+											   ', thoigianden=\''.$this->dbcon->realEscapeString($newdocinfo->getThoiGianDen()).'\''.
+											   ', ngayvanban=\''.$this->dbcon->realEscapeString($newdocinfo->getNgayVanBan()).'\''.
+											   ', madonvibanhanh=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\''.
+											   ', trichyeu=\''.$this->dbcon->realEscapeString($newdocinfo->getTrichYeu()).'\''.
+											   ', nguoiky=\''.$this->dbcon->realEscapeString($newdocinfo->getNguoiKy()).'\''.
+											   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.
+											   ', thoihangiaiquyet=\''.$this->dbcon->realEscapeString($newdocinfo->getThoiHanGiaiQuyet()).'\''.
+											   ', tentaptin=\''.$this->dbcon->realEscapeString($filename).'\''.
+											   ', trangthai='.$newdocinfo->getTrangThai().
+											   ', idnguoinhap='.$newdocinfo->getIDNguoiNhap().
+											   ', madonvi=\''.$newdocinfo->getMaDonVi().
+											   ' WHERE id='.$id);
+						}else{
+							throw new Exception('Xử lý tập tin lỗi!');
+						}
+						$this->dbcon->commit();
 					}
-					$this->dbcon->commit();
 				}
 			}catch(Exception $e){
 				throw $e;
 			}
 		}
-		public function xoaCongVanDen(){
-			
+		public function xoaCongVanDen($id, $destfile){
+			if(!$this->dbcon->contain($PRIVILEGES['XOA_CONG_VAN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền xóa công văn');
+			}
+			try{
+				$this->dbcon->startTransactionRW();
+				
+				$legaldocument = new LegalDocument($this->dbcon);
+				$docinfo = $legaldocument->getLegalDocumentByID($id);
+				
+				if(unlink(dirname($destfile).'/'.$docinfo->getTenTapTin())){
+					$this->dbcon->query('DELETE FROM congvanden WHERE id='.$id);
+					$this->dbcon->commit();
+				}else{
+					throw Exception('Xử lý tập tin lỗi!');
+				}
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
+			}
 		}
 		
 		#
@@ -718,8 +796,19 @@
 		#
 		#
 		public function getNguoiDung($id){
-			$thongtinnguoidung = null;
-			return $thongtinnguoidung;
+			$userinfo = new UserInfo(null, null, null, null, null, null, null, null, null, null, null, null);
+			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$id);
+			if($result->num_rows){
+				$row = $result->fetch_assoc();
+				foreach($row as $k => $v){
+					$userinfo->$k = $v;
+				}
+				return $userinfo;
+			}else{
+				throw new NotExistedUserException('Người dùng không tồn tại');
+			}
 		}
+		
+		
 	}
 ?>

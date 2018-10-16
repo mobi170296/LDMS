@@ -1,6 +1,5 @@
 <?php
 	require_once __DIR__.'/legaldocumentinfo.php';
-
 	class LegalDocument{
 		private $dbcon;
 		public function __construct($dbcon){
@@ -10,7 +9,7 @@
 			return $this->dbcon;
 		}
 		public function getLegalDocumentByID($id){
-			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$id);
+			$result = $this->dbcon->lockRow('SELECT * FROM congvanden WHERE id='.$id);
 			if($result->num_rows){
 				$doc = $result->fetch_assoc();
 				$docinfo = new LegalDocumentInfo(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
