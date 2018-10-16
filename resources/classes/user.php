@@ -324,7 +324,7 @@
 			}
 			
 			if($this->id==$id){
-				throw new MultipleErrorException('Bạn không thể tự cấp quyền cho mình');
+				throw new Exception('Bạn không thể tự cấp quyền cho mình');
 			}
 			
 			try{
@@ -562,7 +562,7 @@
 			try{
 				$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($issuedunit->getMaDonVi()).'\'');
 				if($result->num_rows){
-					throw new ExistedIssuedUnit('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' không thể thêm');
+					throw new ExistedIssuedUnitException('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' không thể thêm');
 				}else{
 					$this->dbcon->insert('donvibanhanh', ['madonvi', 'tendonvi', 'benngoai', 'diachi'], [$this->dbcon->realEscapeString($issuedunit->getMaDonVi()), $this->dbcon->realEscapeString($issuedunit->getTenDonVi()), $issuedunit->getBenNgoai(), $this->dbcon->realEscapeString($issuedunit->getDiaChi())]);
 				}
@@ -580,12 +580,12 @@
 					$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($issuedunit->getMaDonVi()).'\'');
 					
 					if($result->num_rows){
-						throw new ExistedIssuedUnit('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' đã tồn tại không thể sửa thông tin đơn vị');
+						throw new ExistedIssuedUnitException('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' đã tồn tại không thể sửa thông tin đơn vị');
 					}
 					
 					$this->dbcon->query('UPDATE donvibanhanh SET madonvi=\''.$this->dbcon->realEscapeString($issuedunit->getMaDonVi()).'\', tendonvi=\''.$this->dbcon->realEscapeString($issuedunit->getTenDonVi()).'\', benngoai='.$issuedunit->getBenNgoai().', diachi=\'\' WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
 				}else{
-					throw new NotExistedIssuedUnit('Đơn vị ban hành không tồn tại không thể sửa thông tin');
+					throw new NotExistedIssuedUnitException('Đơn vị ban hành không tồn tại không thể sửa thông tin');
 				}
 			}catch(Exception $e){
 				throw $e;
@@ -607,7 +607,7 @@
 						$result = $this->dbcon->query('DELETE FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
 					}
 				}else{
-					throw new NotExistedIssuedUnit('Đơn vị bàn hành \''.$madonvi.'\' không tồn tại không thể xóa!');
+					throw new NotExistedIssuedUnitException('Đơn vị bàn hành \''.$madonvi.'\' không tồn tại không thể xóa!');
 				}
 			}catch(Exception $e){
 				throw $e;
@@ -619,44 +619,27 @@
 		# ~ danh mục người dùng
 		# ~ danh mục đơn vị ban hành
 		# ~ danh mục loại văn bản
+		# ~ đơn vị nhận công văn
 		#
 		
-		public function themCongVanDen($docinfo){
+		public function themCongVanDen($docinfo, $srcfile, $destfile){
 			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền thêm công văn đến!');
 			}
-			$error = '';
-			$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$docinfo->getMaDonViBanHanh().'\'');
-			if(!$result){
-				throw new DatabaseErrorException($this->dbcon->getError);
-			}
-			if($result->num_rows==0){
-				$error .= 'Đơn vị ban hành văn bản không tồn tại!';
-			}
-			
-			$result = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$docinfo->getMaLoaiVanBan().'\'');
-			if(!$result){
-				throw new DatabaseErrorException($this->dbcon->getError);
-			}
-			if($result->num_rows==0){
-				$error .= 'Loại văn bản không tồn tại!';
-			}
-			
-			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE soden='.$docinfo->getSoDen(). ' and year(thoigianden)=year(cast(\''.$docinfo->getThoiGianDen().'\' as datetime))');
-			if(!$result){
-				throw new DatabaseErrorException($this->dbcon->getError);
-			}
-			if($result->num_rows){
-				$error .= 'Số đến công văn này đã có trong năm nay!';
-			}
-			
-			if($error == ''){
-				$sql = <<<SQL
-				INSERT INTO congvanden(soden, kyhieu, thoigianden, ngayvanban, madonvibanhanh, trichyeu, nguoiky, maloaivanban, thoihangiaiquyet, tentaptin, trangthai, idnguoinhap) VALUES
-				({$docinfo->getSoDen()}, {$docinfo->getKyHieu()}, {$docinfo->getThoiGianDen()}, {$docinfo->getNgayVanBan()}, {$docinfo->getMaDonViBanHanh()}, {$docinfo->getTrichYeu()}, {$docinfo->getNguoiKy()}, {$docinfo->getMaLoaiVanBan()}, {$docinfo->getThoiHanGiaiQuyet()}, {$docinfo->getTenTapTin()}, {$docinfo->getTrangThai()}, {$docinfo->getIDNguoiNhap()}
-SQL;
-			}else{
-				throw new MultipleErrorException($error);
+			try{
+				$this->dbcon->startTransactionRW();
+				$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($docinfo->getMaDonViBanHanh()).'\'');
+				if($result->num_rows==0){
+					throw new NotExistedIssuedUnitException('Đơn vị ban hành không tồn tại không thể thêm văn bản này');
+				}
+				$result = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$this->dbcon->realEscapeString($docinfo->getMaLoaiVanBan()).'\'');
+				if($result->num_rows==0){
+					throw new NotExistedDocTypeException('Đơn vị ban hành không tồn tại không thể thêm văn bản này');
+				}
+				
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
 			}
 		}
 		public function suaCongVanDen(){

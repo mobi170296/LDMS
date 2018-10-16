@@ -59,14 +59,32 @@
 			parent::__construct($msg);
 		}
 	}
-	class ExistedIssuedUnit extends Exception{
+	class ExistedIssuedUnitException extends Exception{
+		public function __construct($msg){
+			parent::__construct($msg);
+		}
+	}
+	class NotExistedIssuedUnitException extends Exception{
 		public function __construct($msg){
 			parent::__construct($msg);
 		}
 	}
 	class MultipleErrorException extends Exception{
-		public function __construct($msg){
-			parent::__construct($msg);
+		private $errors;
+		public function __construct($errors){
+			$this->errors = $errors;
+		}
+		public function getErrors(){
+			return $this->errors;
+		}
+	}
+	class NotValidFormDataException extends Exception{
+		private $errors;
+		public function __construct($errors){
+			$this->errors = $errors;
+		}
+		public function getErrors(){
+			return $this->errors;
 		}
 	}
 	class LoginFailedException extends Exception{

@@ -1,7 +1,7 @@
 <?php
 	class LagalDocumentInfo{
-		private $id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $thoigianthem;
-		public function __construct($id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $thoigianthem=null){
+		private $id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem;
+		public function __construct($id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem=null){
 			$this->id = $id;
 			$this->soden = $soden;
 			$this->thoigianden = $thoigianden;
@@ -14,6 +14,7 @@
 			$this->tentaptin = $tentaptin;
 			$this->trangthai = $trangthai;
 			$this->idnguoinhap = $idnguoinhap;
+			$this->madonvi = $madonvi;
 			$this->thoigianthem = $thoigianthem;
 		}
 		public function getID(){
@@ -60,6 +61,9 @@
 		}
 		public function getIDNguoiNhap(){
 			return $this->idnguoinhap;
+		}
+		public function getMaDonVi(){
+			return $this->madonvi;
 		}
 		public function getThoiGianThem(){
 			
