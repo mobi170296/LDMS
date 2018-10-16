@@ -1,6 +1,6 @@
 <?php
-	class LagalDocumentInfo{
-		private $id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem;
+	class LegalDocumentInfo{
+		public $id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem;
 		public function __construct($id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem=null){
 			$this->id = $id;
 			$this->soden = $soden;

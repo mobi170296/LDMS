@@ -54,7 +54,7 @@
 			}
 			return $result;
 		}
-		public function getLastInsertId(){
+		public function getInsertID(){
 			return $this->connection->insert_id;
 		}
 		public function getConnection(){
