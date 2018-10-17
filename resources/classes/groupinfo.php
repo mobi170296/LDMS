@@ -12,5 +12,8 @@
 		public function getTenNhom(){
 			return $this->tennhom;
 		}
+		public function getThoiGianThem(){
+			return $this->thoigianthem;
+		}
 	}
 ?>

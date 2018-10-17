@@ -20,7 +20,7 @@ define('PRIVILEGES',
 		'XOA_NHOM' => 6, 
 		
 		'CAP_QUYEN_NGUOI_DUNG'=>7,
-		'CAP_QUYEN_NHOM_NGUOI_DUNG'=>8,
+		'CAP_QUYEN_NHOM'=>8,
 		
 		'THEM_DON_VI' => 9, 
 		'SUA_DON_VI' => 10, 
@@ -36,9 +36,20 @@ define('PRIVILEGES',
 		
 		'THEM_CONG_VAN'=>18,
 		'SUA_CONG_VAN'=>19, 
-		'XOA_CONG_VAN'=>20, 
+		'XOA_CONG_VAN'=>20,
+		
 		'KIEM_DUYET_CONG_VAN'=>21, 
 		'PHE_DUYET_CONG_VAN'=>22
 	   ]
 );
+
+define('LEGALDOCUMENT_STATUS',
+	  [
+		  'DA_NHAP' => 1,
+		  'DOI_KIEM_DUYET' => 2,
+		  'DA_KIEM_DUYET' => 3,
+		  'DOI_PHE_DUYET' => 4,
+		  'DA_PHE_DUYET' => 5
+	  ]
+	  );
 ?>

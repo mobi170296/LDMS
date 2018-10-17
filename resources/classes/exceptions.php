@@ -92,4 +92,9 @@
 			parent::__construct($msg);
 		}
 	}
+	class BlockedUserException extends Exception{
+		public function __construct($msg){
+			parent::__construct($msg);
+		}
+	}
 ?>

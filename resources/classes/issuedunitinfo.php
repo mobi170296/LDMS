@@ -1,5 +1,5 @@
 <?php
-	class IssuedUnit{
+	class IssuedUnitInfo{
 		private $madonvi, $tendonvi, $benngoai, $diachi, $thoigianthem;
 		public function __construct($madonvi, $tendonvi, $benngoai, $diachi, $thoigianthem=null){
 			$this->madonvi = $madonvi;

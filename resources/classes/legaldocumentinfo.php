@@ -4,6 +4,7 @@
 		public function __construct($id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem=null){
 			$this->id = $id;
 			$this->soden = $soden;
+			$this->kyhieu = $kyhieu;
 			$this->thoigianden = $thoigianden;
 			$this->ngayvanban = $ngayvanban;
 			$this->madonvibanhanh = $madonvibanhanh;
