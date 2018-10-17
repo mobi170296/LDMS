@@ -5,10 +5,9 @@ define('DATABASE',
 		'PASSWORD'=>'nguyenthithuyhang',
 		'NAME'=>'ldmsdb',
 		'AES_KEY'=>'ottc',
-		'PORT'=>'3306'
+		'PORT'=>3306
 	   ]
 );
-
 
 define('PRIVILEGES',
 	   ['THEM_NGUOI_DUNG' => 1,

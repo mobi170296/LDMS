@@ -6,5 +6,6 @@
 	
 	$CNF['BODY']['CURRENT_SCRIPT'] = '/index.php';
 	
+	# Bắt đầu output ở đây
 	require_once($CNF['BODY']['MAIN_TEMPLATE']);
 ?>

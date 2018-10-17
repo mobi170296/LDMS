@@ -245,7 +245,7 @@
 						$fullname = $row['ho'] . ' ' . $row['ten'];
 						throw new ExistedUserException('Mã số người dùng này đã tồn tại với tên '. $fullname. '. Xin vui lòng kiểm tra lại!');
 					}else{
-						$this->dbcon->insert('nguoidung', ['maso', 'matkhau', 'ho', 'ten', 'ngaysinh', 'email', 'sodienthoai', 'diachi', 'madonvi', 'manhom', 'tinhtrang'], [$this->dbcon->realEscapeString($userinfo->getMaSo()), (new MDBPasswordData($this->dbcon->realEscapeString($userinfo->getMatKhau()))), $this->dbcon->realEscapeString($userinfo->getHo()), $this->dbcon->realEscapeString($userinfo->getTen()), $this->dbcon->realEscapeString($userinfo->getNgaySinh()), $this->dbcon->realEscapeString($userinfo->getEmail()), $this->dbcon->realEscapeString($userinfo->getSoDienThoai()), $this->dbcon->realEscapeString($userinfo->getDiaChi()), $this->dbcon->realEscapeString($userinfo->getMaDonVi()), $this->dbcon->realEscapeString($userinfo->getMaNhom()), $userinfo->getTinhTrang()]);
+						$this->dbcon->insert('nguoidung', ['maso', 'matkhau', 'ho', 'ten', 'ngaysinh', 'email', 'sodienthoai', 'diachi', 'madonvi', 'manhom', 'tinhtrang'], [$this->dbcon->realEscapeString($userinfo->getMaSo()), (new MDBPasswordData($this->dbcon->realEscapeString($userinfo->getMatKhau()))), $this->dbcon->realEscapeString($userinfo->getHo()), $this->dbcon->realEscapeString($userinfo->getTen()), $this->dbcon->realEscapeString($userinfo->getNgaySinh()), $this->dbcon->realEscapeString($userinfo->getEmail()), $this->dbcon->realEscapeString($userinfo->getSoDienThoai()), htmlspecialchars($this->dbcon->realEscapeString($userinfo->getDiaChi())), $this->dbcon->realEscapeString($userinfo->getMaDonVi()), $this->dbcon->realEscapeString($userinfo->getMaNhom()), $userinfo->getTinhTrang()]);
 						
 						$this->dbcon->commit();
 					}
@@ -257,7 +257,7 @@
 				throw new MissingPrivilegeException('Bạn không đủ quyền để thực hiện thao tác thêm người dùng!');
 			}
 		}
-		public function suaNguoiDung($id, $userinfo){
+		public function suaNguoiDung($id, $newuserinfo){
 			#data checked outside
 			if($this->quyen->contain(PRIVILEGES['SUA_NGUOI_DUNG'])){
 				try{
@@ -266,37 +266,42 @@
 					if($result->num_rows==0){
 						throw new NotExistedUserException('ID người dùng không tồn tại!');
 					}
-					$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($userinfo->getMaNhom()).'\'');
+					$row = $result->fetch_assoc();
+					$userinfo = new UserInfo(null, null, null, null, null, null, null, null, null, null, null, null);
+					foreach($row as $k => $v){
+						$userinfo->$k = $v;
+					}
+					$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($newuserinfo->getMaNhom()).'\'');
 					
 					if($result->num_rows==0){
-						throw new NotExistedGroupException('Nhóm '.$userinfo->getMaNhom().' không tồn tại không thể chuyển người dùng đến nhóm này');
+						throw new NotExistedGroupException('Nhóm '.$newuserinfo->getMaNhom().' không tồn tại không thể chuyển người dùng đến nhóm này');
 					}
 
-					$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($userinfo->getMaDonVi()).'\'');
+					$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($newuserinfo->getMaDonVi()).'\'');
 					
 					if($result->num_rows==0){
-						throw new NotExistedGroupException('Đơn vị '.$userinfo->getMaDonVi().' không tồn tại không thể chuyển người dùng đến đơn vị này');
+						throw new NotExistedGroupException('Đơn vị '.$newuserinfo->getMaDonVi().' không tồn tại không thể chuyển người dùng đến đơn vị này');
 					}
+					if($userinfo->getMaSo() != $newuserinfo->getMaSo()){
+						$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE maso=\''.$this->dbcon->realEscapeString($newuserinfo->getMaSo()).'\'');
 					
-					$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE maso=\''.$this->dbcon->realEscapeString($userinfo->getMaSo()).'\'');
-					
-					if($result->num_rows){
-						$info = $result->fetch_assoc();
-						throw new ExistedUserException('Người dùng có mã số '.$userinfo->getMaSo().' đã tồn tại với tên ' . $info['ho']. ' ' . $info['ten']);
+						if($result->num_rows){
+							$info = $result->fetch_assoc();
+							throw new ExistedUserException('Người dùng có mã số '.$newuserinfo->getMaSo().' đã tồn tại với tên ' . $info['ho']. ' ' . $info['ten']);
+						}
 					}
-
 					$sql = 'UPDATE nguoidung SET ';
-					$sql .= 'maso=\''.$userinfo->getMaSo().'\',';
-					$sql .= 'matkhau='. (new MDBPasswordData($this->dbcon->realEscapeString($userinfo->getMatKhau())))->toDBValueString().',';
-					$sql .= 'ho=\''.$userinfo->getHo().'\',';
-					$sql .= 'ten=\''.$userinfo->getTen().'\',';
-					$sql .= 'ngaysinh=\''.$userinfo->getNgaySinh().'\',';
-					$sql .= 'email=\''.$userinfo->getEmail().'\',';
-					$sql .= 'sodienthoai=\''.$userinfo->getSoDienThoai().'\',';
-					$sql .= 'diachi=\''.$this->dbcon->realEscapeString(htmlentities($userinfo->getDiaChi())).'\',';
-					$sql .= 'madonvi=\''.$userinfo->getMaDonVi().'\',';
-					$sql .= 'manhom=\''.$userinfo->getMaNhom().'\',';
-					$sql .= 'tinhtrang='.$userinfo->getTinhTrang(). ' WHERE id='.$id;
+					$sql .= 'maso=\''.$newuserinfo->getMaSo().'\',';
+					$sql .= 'matkhau='. (new MDBPasswordData($this->dbcon->realEscapeString($newuserinfo->getMatKhau())))->toDBValueString().',';
+					$sql .= 'ho=\''.$newuserinfo->getHo().'\',';
+					$sql .= 'ten=\''.$newuserinfo->getTen().'\',';
+					$sql .= 'ngaysinh=\''.$newuserinfo->getNgaySinh().'\',';
+					$sql .= 'email=\''.$newuserinfo->getEmail().'\',';
+					$sql .= 'sodienthoai=\''.$newuserinfo->getSoDienThoai().'\',';
+					$sql .= 'diachi=\''.$this->dbcon->realEscapeString(htmlspecialchars($newuserinfo->getDiaChi())).'\',';
+					$sql .= 'madonvi=\''.$newuserinfo->getMaDonVi().'\',';
+					$sql .= 'manhom=\''.$newuserinfo->getMaNhom().'\',';
+					$sql .= 'tinhtrang='.$newuserinfo->getTinhTrang(). ' WHERE id='.$id;
 					
 					$this->dbcon->query($sql);
 					
