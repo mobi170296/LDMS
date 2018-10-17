@@ -1,7 +1,7 @@
 <?php
 	require_once(__DIR__ . '/../library/datetime/mdatetime.php');
 	class UserInfo{
-		private $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang;
+		public $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $quyen;
 		public function __construct($id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang){
 			$this->id = $id;
 			$this->maso = $maso;
@@ -58,6 +58,12 @@
 		}
 		public function getTinhTrang(){
 			return $this->tinhtrang;
+		}
+		public function getQuyen(){
+			return $this->quyen;
+		}
+		public function setQuyen($quyen){
+			$this->quyen = $quyen;
 		}
 	}
 ?>

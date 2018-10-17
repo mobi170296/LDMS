@@ -723,7 +723,7 @@
 						echo $srcfile;
 						echo ';';
 						echo dirname($destfile).'/'. $filename;
-					if(rename($srcfile, dirname($destfile).'/'. $filename)){
+					if(move_uploaded_file($srcfile, dirname($destfile).'/'. $filename)){
 						$this->dbcon->query('UPDATE congvanden SET tentaptin=\''.$this->dbcon->realEscapeString($filename).'\' WHERE id='.$id);
 					}else{
 						throw new Exception('Xử lý tập tin lỗi!');
@@ -746,7 +746,7 @@
 				
 				$docinfo = $legaldocument->getLegalDocumentByID($id);
 				# Không có ngoại lệ tức là công văn đã tồn tại có thể sửa thông tin
-				if($docinfo->getDonVi()!=$this->getMaDonVi()){
+				if($docinfo->getMaDonVi()!=$this->getMaDonVi()){
 					throw new Exception('Bạn không thể cập nhật công văn của đơn vị khác');
 				}
 				$result = $this->dbcon->lockRow('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\'');
@@ -842,12 +842,19 @@
 		#
 		public function getNguoiDung($id){
 			$userinfo = new UserInfo(null, null, null, null, null, null, null, null, null, null, null, null);
-			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$id);
+			$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$id);
 			if($result->num_rows){
 				$row = $result->fetch_assoc();
 				foreach($row as $k => $v){
 					$userinfo->$k = $v;
 				}
+				$sql = "SELECT quyennguoidung.quyen FROM quyennguoidung INNER JOIN nguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$id} UNION SELECT quyennhomnguoidung.quyen FROM quyennhomnguoidung JOIN nguoidung ON nguoidung.manhom=quyennhomnguoidung.manhom WHERE nguoidung.id={$id}";
+				$quyen = new MSet();
+				$result = $this->dbcon->query($sql);
+				while($row = $result->fetch_assoc()){
+					$quyen->addElement($row['quyen']);
+				}
+				$userinfo->setQuyen($quyen);
 				return $userinfo;
 			}else{
 				throw new NotExistedUserException('Người dùng không tồn tại');
