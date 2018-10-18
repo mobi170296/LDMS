@@ -59,5 +59,19 @@
 			}
 			return $result;
 		}
+		public function __toString(){
+			$string = '';
+			if(count($this->s)>0){
+				$string .= '[';
+				for($i=0; $i<count($this->s)-1; $i++){
+					$string .= $this->s[$i].', ';
+				}
+				$string .= $this->s[$i];
+				$string .= ']';
+			}else{
+				$string .= '[]';
+			}
+			return $string;
+		}
 	}
 ?>

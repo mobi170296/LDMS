@@ -1,9 +1,9 @@
 <?php
 	require_once($CNF['PATHS']['TEMPLATES'] . '/header.php');
 	
-	require_once($CNF['PATHS']['TEMPLATES'] . '/leftmenu.php');
+	require_once($CNF['PATHS']['TEMPLATES'] . '/leftpanel.php');
 	
-	echo '<div id="container">';
+	echo '<div id="content">';
 	require_once($CNF['PATHS']['VIEWS'] . $CNF['BODY']['CURRENT_SCRIPT']);
 	echo '</div>';
 	

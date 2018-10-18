@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<noscript><meta http-equiv="refresh" content="0;url='/error/noscript.html'"/></noscript>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 		<link rel="shortcut icon" href="<?php if(isset($CNF['HEADER']['PAGE_ICON'])) echo $CNF['HEADER']['PAGE_ICON']; ?>"/>
-		<title><?php if(isset($CNF['HEADER']['TITLE'])) echo $CNF['HEADER']['TITLE']; ?></title>
+		<title>Lỗi - </title>
 		<?php
 			if(isset($CNF['HEADER']['STYLES'])){
 				foreach($CNF['HEADER']['STYLES'] as $styleurl){
@@ -21,3 +20,7 @@
 	</head>
 	<body>
 		<div id="container">
+			<div class=""><?php if(isset($error) && $error != '') echo '<div class="error-message-box">'.$error.'</div>'; ?></div>
+		</div>
+	</body>
+</html>

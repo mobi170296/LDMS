@@ -3,7 +3,7 @@ define('DATABASE',
 	   ['HOST'=>'localhost',
 		'USERNAME'=>'root',
 		'PASSWORD'=>'nguyenthithuyhang',
-		'NAME'=>'ldmsdb',
+		'DB_NAME'=>'ldmsdb',
 		'AES_KEY'=>'ottc',
 		'PORT'=>3306
 	   ]

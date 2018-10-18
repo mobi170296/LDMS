@@ -19,7 +19,7 @@
 	require_once __DIR__ . '/departmentinfo.php';
 
 	class User{
-		private $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $thoigianthem, $quyen, $dbcon;
+		public $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $thoigianthem, $quyen, $dbcon;
 		public function __construct($connection){
 			$this->dbcon = $connection;
 			$this->quyen = new MSet();
@@ -62,6 +62,8 @@
 					if(isset($_SESSION['maso']) && isset($_SESSION['matkhau'])){
 						$maso = $_SESSION['maso'];
 						$matkhau = $_SESSION['matkhau'];
+					}else{
+						throw new Exception('Bạn chưa đăng nhập');
 					}
 					$result = $this->dbcon->query("SELECT * FROM nguoidung WHERE maso='{$this->dbcon->realEscapeString($maso)}' AND matkhau=".((new MDBPasswordData($this->dbcon->realEscapeString($matkhau)))->toDBValueString()));
 					if($result->num_rows){
@@ -78,13 +80,15 @@
 							$this->quyen->addElement($row['quyen']);
 						}
 					}else{
-						throw new LoginFailedException('Tên đăng nhập hoặc mật khẩu không đúng');
+						throw new LoginFailedException('Tên đăng nhập hoặc mật khẩu không đúng có thể do bị đổi bởi người dùng khác');
 					}
 				}catch(DBException $e){
 					throw $e;
 				}catch(LoginFailedException $e){
 					unset($_SESSION['maso']);
 					unset($_SESSION['matkhau']);
+					throw $e;
+				}catch(Exception $e){
 					throw $e;
 				}
 			}
@@ -865,6 +869,29 @@
 				throw new NotExistedUserException('Người dùng không tồn tại');
 			}
 		}
-		
+		public function getDanhSachNhom(){
+			try{
+				$result = $this->dbcon->query('SELECT * FROM nhom');
+				$groups = [];
+				while($row = $result->fetch_assoc()){
+					$groups[] = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
+				}
+				return $groups;
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
+		public function getDanhSachDonVi(){
+			try{
+				$result = $this->dbcon->query('SELECT * FROM donvi');
+				$departments = [];
+				while($row = $result->fetch_assoc()){
+					$departments[] = new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
+				}
+				return $departments;
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
 	}
 ?>

@@ -1,3 +1,5 @@
 <?php
-	echo 'This is a body content';
+	foreach($user as $k => $v){
+		echo $v.'<br/>';
+	}
 ?>

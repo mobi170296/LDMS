@@ -137,5 +137,8 @@
 			}
 			return $result;
 		}
+		public function __toString(){
+			return $this->connection->client_info;
+		}
 	}
 ?>
