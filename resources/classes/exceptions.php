@@ -24,6 +24,11 @@
 			parent::__construct($msg);
 		}
 	}
+	class ExistedGroupException extends Exception{
+		public function __construct($msg){
+			parent::__construct($msg);
+		}
+	}
 	class NotExistedGroupException extends Exception{
 		public function __construct($msg){
 			parent::__construct($msg);

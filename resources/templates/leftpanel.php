@@ -29,13 +29,13 @@
 		<div class="menu-l1">
 			<div class="menu-l1-title">Quản lý công văn</div>
 			<div class="menu-l1-items">
-				<a class="menu-item">Đăng ký công văn đến</a>
+				<a class="menu-item" href="/ldm/addicld.php">Đăng ký công văn đến</a>
 				<a class="menu-item">Danh sách công văn</a>
 				<a class="menu-item">Danh sách công văn chờ kiểm duyệt</a>
 				<a class="menu-item">Danh sách công văn chờ phê duyệt</a>
-				<a class="menu-item">Thêm danh mục văn bản</a>
+				<a class="menu-item" href="/ldm/adddoctype.php">Thêm danh mục văn bản</a>
 				<a class="menu-item">Danh sách danh mục văn bản</a>
-				<a class="menu-item">Thêm đơn vị ban hành</a>
+				<a class="menu-item" href="/ldm/addissuedunit.php">Thêm đơn vị ban hành</a>
 				<a class="menu-item">Danh sách đơn vị ban hành</a>
 			</div>
 		</div>
@@ -44,9 +44,9 @@
 			<div class="menu-l1-items">
 				<a class="menu-item" href="/admin/adduser.php">Thêm người dùng</a>
 				<a class="menu-item">Danh sách người dùng</a>
-				<a class="menu-item">Thêm Khoa - Đơn vị</a>
+				<a class="menu-item" href="/admin/adddepartment.php">Thêm Khoa - Đơn vị</a>
 				<a class="menu-item">Danh sách Khoa - Đơn vị</a>
-				<a class="menu-item">Thêm nhóm</a>
+				<a class="menu-item" href="/admin/addgroup.php">Thêm nhóm</a>
 				<a class="menu-item">Danh sách nhóm</a>
 			</div>
 		</div>

@@ -38,13 +38,10 @@
 					if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen($_POST['diachi'], 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8') > 100){
 						$data_error[] = 'Địa chỉ không hợp lệ, độ dài địa chỉ từ 1 đến 100 ký tự';
 					}
-					if(!isset($_POST['tinhtrang']) || ($_POST['tinhtrang']!=1 && $_POST['tinhtrang']!=0)){
-						$data_error[] = 'Tình trạng tài khoản không hợp lệ';
-					}
 					if(count($data_error)!=0){
 						throw new NotValidFormDataException($data_error);
 					}
-					$user->themNguoiDung(new UserInfo(null, $_POST['maso'], $_POST['matkhau'][0], $_POST['ho'], $_POST['ten'], $_POST['nam'] .'-'.$_POST['thang']. '-'.$_POST['ngay'], $_POST['email'], $_POST['sodienthoai'], $_POST['diachi'], $_POST['madonvi'], $_POST['manhom'], $_POST['tinhtrang']));
+					$user->themNguoiDung(new UserInfo(null, $_POST['maso'], $_POST['matkhau'][0], $_POST['ho'], $_POST['ten'], $_POST['nam'] .'-'.$_POST['thang']. '-'.$_POST['ngay'], $_POST['email'], $_POST['sodienthoai'], $_POST['diachi'], $_POST['madonvi'], $_POST['manhom'], isset($_POST['tinhtrang']) ? 1 : 0));
 					echo '<div class="success-message-box">Thêm người dùng thành công</div>';
 				}
 			}catch(NotValidFormDataException $e){
@@ -62,54 +59,55 @@
 				$groups = $user->getDanhSachNhom();
 				$departments = $user->getDanhSachDonVi();
 ?>
-	<div id="add-user-form">
+	<div id="add-user-form-wrapper">
+		<div id="add-user-form">
 		<form action="" method="post" enctype="application/x-www-form-urlencoded">
 		<div>Mã số cán bộ</div>
-		<div><input type="text" name="maso"/></div>
+		<div><input type="text" name="maso" value="<?php if(isset($_POST['maso'])) echo $_POST['maso'];?>"/></div>
 		<div>Mật khẩu</div>
 		<div><input type="password" name="matkhau[]"/></div>
 		<div>Nhập lại mật khẩu</div>
 		<div><input type="password" name="matkhau[]"/></div>
 		<div>Họ</div>
-		<div><input type="text" name="ho"/></div>
+		<div><input type="text" name="ho" value="<?php if(isset($_POST['ho'])) echo $_POST['ho'];?>"/></div>
 		<div>Tên</div>
-		<div><input type="text" name="ten"/></div>
+		<div><input type="text" name="ten" value="<?php if(isset($_POST['ten'])) echo $_POST['ten'];?>"/></div>
 		<div>Ngày tháng năm sinh</div>
 		<div>
 			<select name="ngay">
 				<?php
 				for($i=1; $i<=31; $i++){
-					echo '<option value="'.$i.'">'.$i.'</option>';
+					echo '<option value="'.$i.'" '.(isset($_POST['ngay']) && $_POST['ngay']==$i ? 'selected="selected"' : '').'>'.$i.'</option>';
 				}
 				?>
 			</select>/
 			<select name="thang">
 				<?php
 				for($i=1; $i<=12; $i++){
-					echo '<option value="'.$i.'">'.$i.'</option>';
+					echo '<option value="'.$i.'" '.(isset($_POST['thang']) && $_POST['thang']==$i ? 'selected="selected"' : '').'>'.$i.'</option>';
 				}
 				?>
 			</select>/
 			<select name="nam">
 				<?php
 				for($i=2010; $i>=1950; $i--){
-					echo '<option value="'.$i.'">'.$i.'</option>';
+					echo '<option value="'.$i.'" '.(isset($_POST['nam']) && $_POST['nam']==$i ? 'selected="selected"' : '') .'>'.$i.'</option>';
 				}
 				?>
 			</select>
 		</div>
 		<div>Email</div>
-		<div><input type="text" name="email"/></div>
+		<div><input type="text" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>"/></div>
 		<div>Số điện thoại</div>
-		<div><input type="text" name="sodienthoai"/></div>
+		<div><input type="text" name="sodienthoai" value="<?php if(isset($_POST['sodienthoai'])) echo $_POST['sodienthoai']; ?>"/></div>
 		<div>Địa chỉ</div>
-		<div><input type="text" name="diachi"/></div>
+		<div><input type="text" name="diachi" value="<?php if(isset($_POST['diachi'])) echo $_POST['diachi']; ?>"/></div>
 		<div>Mã đơn vị</div>
 		<div>
 			<select name="madonvi">
 				<?php
 				foreach($departments as $department){
-					echo '<option value="' . $department->getMaDonVi() . '">' . $department->getTenDonVi() . '</option>';
+					echo '<option value="' . $department->getMaDonVi() . '" '.(isset($_POST['madonvi']) && $_POST['madonvi']==$department->getMaDonVi() ? 'selected="selected"' : '').'>' . $department->getTenDonVi() . '</option>';
 				}
 				?>
 			</select>
@@ -119,15 +117,16 @@
 			<select name="manhom">
 				<?php
 				foreach($groups as $group){
-					echo '<option value="' . $group->getMaNhom() . '">' . $group->getTenNhom() . '</option>';
+					echo '<option value="' . $group->getMaNhom() . '" '.(isset($_POST['manhom']) && $_POST['manhom']==$group->getMaNhom() ? 'selected="selected"' : '').'>' . $group->getTenNhom() . '</option>';
 				}
 				?>
 			</select>
 		</div>
 		<div>Tình trạng tài khoản</div>
-		<div><input type="checkbox" id="kichhoat" name="tinhtrang" value="1" checked="checked"/><label for="kichhoat">Kích hoạt</label></div>
+		<div><input type="checkbox" id="ckb-add-user-tinhtrang" name="tinhtrang" value="1" <?php echo isset($_POST['tinhtrang']) ? 'checked="checked"' : ''; ?>/><label for="ckb-add-user-tinhtrang">Kích hoạt</label></div>
 		<div><button type="submit" name="adduser" value="adduser">Thêm người dùng</button></div>
 		</form>
+		</div>
 	</div>
 <?php
 			}catch(Exception $e){

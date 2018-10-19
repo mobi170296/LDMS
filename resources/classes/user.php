@@ -242,7 +242,7 @@
 						throw new NotExistedDepartmentException('Đơn vị '.$userinfo->getMaDonVi().' không tồn tại không thể thêm người dùng');
 					}
 
-					$result = $this->dbcon->lockRow("SELECT * FROM nguoidung WHERE maso={$userinfo->getMaSo()}");
+					$result = $this->dbcon->lockRow("SELECT * FROM nguoidung WHERE maso='{$this->dbcon->realEscapeString($userinfo->getMaSo())}'");
 					
 					if($result->num_rows>0){
 						$row = $result->fetch_assoc();
@@ -635,7 +635,7 @@
 			try{
 				$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($issuedunit->getMaDonVi()).'\'');
 				if($result->num_rows){
-					throw new ExistedIssuedUnitException('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' không thể thêm');
+					throw new ExistedIssuedUnitException('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' đã tồn tại không thể thêm');
 				}else{
 					$this->dbcon->insert('donvibanhanh', ['madonvi', 'tendonvi', 'benngoai', 'diachi'], [$this->dbcon->realEscapeString($issuedunit->getMaDonVi()), $this->dbcon->realEscapeString($issuedunit->getTenDonVi()), $issuedunit->getBenNgoai(), $this->dbcon->realEscapeString($issuedunit->getDiaChi())]);
 				}
@@ -698,7 +698,7 @@
 		#
 		
 		public function themCongVanDen($docinfo, $srcfile, $destfile){
-			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN'])){
+			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền thêm công văn đến!');
 			}
 			try{
@@ -745,7 +745,7 @@
 			}
 		}
 		public function suaCongVanDen($id, $newdocinfo, $srcfile, $destfile){
-			if(!$this->quyen->contain(PRIVILEGES['SUA_CONG_VAN'])){
+			if(!$this->quyen->contain(PRIVILEGES['SUA_CONG_VAN_DEN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền sửa công văn đến');
 			}
 			try{
@@ -825,7 +825,7 @@
 			}
 		}
 		public function xoaCongVanDen($id, $destfile){
-			if(!$this->dbcon->contain($PRIVILEGES['XOA_CONG_VAN'])){
+			if(!$this->dbcon->contain($PRIVILEGES['XOA_CONG_VAN_DEN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền xóa công văn');
 			}
 			try{
@@ -869,26 +869,44 @@
 				throw new NotExistedUserException('Người dùng không tồn tại');
 			}
 		}
-		public function getDanhSachNhom(){
+		public function getDanhSachNhom($start=null, $length=null){
 			try{
-				$result = $this->dbcon->query('SELECT * FROM nhom');
-				$groups = [];
-				while($row = $result->fetch_assoc()){
-					$groups[] = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
+				if($start===null){
+					$result = $this->dbcon->query('SELECT * FROM nhom');
+					$groups = [];
+					while($row = $result->fetch_assoc()){
+						$groups[] = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
+					}
+					return $groups;
+				}else{
+					$result = $this->dbcon->query('SELECT * FROM nhom limit ' . $start .', ' . $length);
+					$groups = [];	
+					while($row = $result->fetch_assoc()){
+						$groups[] = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
+					}
+					return $groups;
 				}
-				return $groups;
 			}catch(Exception $e){
 				throw $e;
 			}
 		}
-		public function getDanhSachDonVi(){
+		public function getDanhSachDonVi($start=null, $length=null){
 			try{
-				$result = $this->dbcon->query('SELECT * FROM donvi');
-				$departments = [];
-				while($row = $result->fetch_assoc()){
-					$departments[] = new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
+				if($start===null){
+					$result = $this->dbcon->query('SELECT * FROM donvi');
+					$departments = [];
+					while($row = $result->fetch_assoc()){
+						$departments[] = new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
+					}
+					return $departments;
+				}else{
+					$result = $this->dbcon->query('SELECT * FROM donvi limit ' . $start .', ' . $length);
+					$departments = [];
+					while($row = $result->fetch_assoc()){
+						$departments[] = new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
+					}
+					return $departments;
 				}
-				return $departments;
 			}catch(Exception $e){
 				throw $e;
 			}
