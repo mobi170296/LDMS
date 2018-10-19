@@ -2,7 +2,7 @@
 	</body>
 </html>
 <?php
-	if(isset($mcon) && $mcon->connect_errno==0){
+	if(isset($mcon) && $mcon->getConnectErrno()==0){
 		$mcon->close();
 	}
 ?>

@@ -911,5 +911,44 @@
 				throw $e;
 			}
 		}
+		public function getDanhSachDonViBanHanh($start=null, $length=null){
+			try{
+				if($start===null){
+					$result = $this->dbcon->query('SELECT * FROM donvibanhanh');
+					$issuedunits = [];
+					while($row = $result->fetch_assoc()){
+						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+					}
+				}else{
+					$result = $this->dbcon->query('SELECT * FROM donvibanhanh limit '.$start .', '.$length);
+					$issuedunits = [];
+					while($row = $result->fetch_assoc()){
+						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+					}
+				}
+				return $issuedunits;
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
+		public function getDanhSachLoaiVanBan($start=null, $length=null){
+			try{
+				$doctypes = [];
+				if($start===null){
+					$result = $this->dbcon->query('SELECT * FROM loaivanban');
+					while($row = $result->fetch_assoc()){
+						$doctypes[] = new DocTypeInfo($row['maloai'], $row['tenloai'], $row['thoigianthem']);
+					}
+				}else{
+					$result = $this->dbcon->query('SELECT * FROM loaivanban limit ' . $start .',' .$length);
+					while($row = $result->fetch_assoc()){
+						$doctypes[] = new DocTypeInfo($row['maloai'], $row['tenloai'], $row['thoigianthem']);
+					}
+				}
+				return $doctypes;
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
 	}
 ?>

@@ -29,7 +29,7 @@
 		<div class="menu-l1">
 			<div class="menu-l1-title">Quản lý công văn</div>
 			<div class="menu-l1-items">
-				<a class="menu-item" href="/ldm/addicld.php">Đăng ký công văn đến</a>
+				<a class="menu-item <?php if($_SERVER['SCRIPT_NAME']=='/ldm/addicld.php') echo 'selected-menu-item'; ?>" href="/ldm/addicld.php">Đăng ký công văn đến</a>
 				<a class="menu-item">Danh sách công văn</a>
 				<a class="menu-item">Danh sách công văn chờ kiểm duyệt</a>
 				<a class="menu-item">Danh sách công văn chờ phê duyệt</a>
