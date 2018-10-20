@@ -10,7 +10,6 @@
 	require_once __DIR__ . '/legaldocument.php';
 	require_once __DIR__ . '/userinfo.php';
 	require_once __DIR__ . '/exceptions.php';
-	require_once __DIR__ . '/uploadedfile.php';
 	require_once __DIR__ . '/groupinfo.php';
 	require_once __DIR__ . '/issuedunitinfo.php';
 	require_once __DIR__ . '/legaldocument.php';
@@ -720,18 +719,14 @@
 				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE soden='.$docinfo->getSoDen() .' AND madonvi=\''.$this->dbcon->realEscapeString($docinfo->getMaDonVi()).'\' AND year(thoigianden)=year(\''.$this->dbcon->realEscapeString($docinfo->getThoiGianDen()).'\')');
 				
 				if($result->num_rows){
-					throw new ExistedLegalDocumentException('Công văn đến có số đến đã tồn tại');
+					throw new ExistedLegalDocumentException('Công văn đến có số đến #'. $docinfo->getSoDen() .' đã tồn tại');
 				}else{
 					$basename = pathinfo($destfile)['basename'];
-					
-					$this->dbcon->insert('congvanden', ['soden', 'kyhieu', 'thoigianden', 'ngayvanban', 'madonvibanhanh', 'trichyeu', 'nguoiky', 'maloaivanban', 'thoihangiaiquyet', 'tentaptin', 'trangthai', 'idnguoinhap', 'madonvi'], [$docinfo->getSoDen(), $docinfo->getKyHieu(), $docinfo->getThoiGianDen(), $docinfo->getNgayVanBan(), $docinfo->getMaDonViBanHanh(), $docinfo->getTrichYeu(), $docinfo->getNguoiKy(), $docinfo->getMaLoaiVanBan(), $docinfo->getThoiHanGiaiQuyet(), '', $docinfo->getTrangThai(), $this->getID(), $docinfo->getMaDonVi()]);
+					$this->dbcon->insert('congvanden', ['soden', 'kyhieu', 'thoigianden', 'ngayvanban', 'madonvibanhanh', 'trichyeu', 'nguoiky', 'maloaivanban', 'thoihangiaiquyet', 'tentaptin', 'trangthai', 'idnguoinhap', 'madonvi'], [$docinfo->getSoDen(), $docinfo->getKyHieu(), $docinfo->getThoiGianDen(), $docinfo->getNgayVanBan(), $docinfo->getMaDonViBanHanh(), $docinfo->getTrichYeu(), $docinfo->getNguoiKy(), $docinfo->getMaLoaiVanBan(), $docinfo->getThoiHanGiaiQuyet(), '', $docinfo->getTrangThai(), $docinfo->getIDNguoiNhap(), $docinfo->getMaDonVi()]);
 					
 					$id = $this->dbcon->getInsertID();
 					$filename = $id . '_' . $docinfo->getSoDen() . '_' . $basename;
 					
-						echo $srcfile;
-						echo ';';
-						echo dirname($destfile).'/'. $filename;
 					if(move_uploaded_file($srcfile, dirname($destfile).'/'. $filename)){
 						$this->dbcon->query('UPDATE congvanden SET tentaptin=\''.$this->dbcon->realEscapeString($filename).'\' WHERE id='.$id);
 					}else{

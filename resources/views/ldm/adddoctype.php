@@ -31,7 +31,7 @@
 			}
 			echo '</div>';
 		}catch(Exception $e){
-			echo '<div class="error-message-box">'.$e->getMessage().'</div>';
+			echo '<div class="error-message-box">'.$e->getMessage().'x</div>';
 		}
 ?>
 <div id="add-doctype-form-wrapper">
@@ -47,6 +47,6 @@
 </div>
 <?php
 	}catch(Exception $e){
-		echo '<div class="error-box-message">'.$e->getMessage().'</div>';
+		echo '<div class="error-message-box">'.$e->getMessage().'</div>';
 	}
 ?>

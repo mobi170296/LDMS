@@ -20,7 +20,6 @@ try{
 			if(!isset($_POST['kyhieu']) || !is_string($_POST['kyhieu']) || mb_strlen($_POST['kyhieu'], 'UTF-8')==0 || mb_strlen($_POST['kyhieu'], 'UTF-8')>20){
 				$data_error[] = 'Ký hiệu văn bản không hợp lệ';
 			}
-			require_once $CNF['PATHS']['LIBRARY'].'/word/mword.php';
 			if(!isset($_POST['trichyeu']) || !is_string($_POST['trichyeu']) || mb_strlen($_POST['trichyeu'], 'UTF-8')==0 || mb_strlen($_POST['trichyeu'], 'UTF-8')>200){
 				$data_error[] = 'Trích yếu không hợp lệ, độ dài trích yếu phải từ 1 đến 200 ký tự';
 			}else{
@@ -31,10 +30,53 @@ try{
 			if(!isset($_POST['nguoiky']) || !is_string($_POST['nguoiky']) || mb_strlen($_POST['nguoiky'], 'UTF-8')==0 || mb_strlen($_POST['nguoiky'], 'UTF-8')>50){
 				$data_error[] = 'Tên người không hợp lệ, phải có từ 1 đến 50 ký tự';
 			}
+			if(!isset($_POST['ngayden']) || !isset($_POST['thangden']) || !isset($_POST['namden']) || !is_numeric($_POST['ngayden']) || !is_numeric($_POST['thangden']) || !is_numeric($_POST['namden']) || !checkdate($_POST['thangden'], $_POST['ngayden'], $_POST['namden']) || !isset($_POST['gioden']) || !isset($_POST['phutden']) || !isset($_POST['giayden']) || !is_numeric($_POST['gioden']) || !is_numeric($_POST['phutden']) || !is_numeric($_POST['giayden']) || !DataChecker::checkTime($_POST['gioden'], $_POST['phutden'], $_POST['giayden'])){
+				$data_error[] = 'Thời gian văn bản đến không hợp lệ';
+			}
+			if(!isset($_POST['ngayvanban']) || !isset($_POST['thangvanban']) || !isset($_POST['namvanban']) || !is_numeric($_POST['ngayvanban']) || !is_numeric($_POST['thangvanban']) || !is_numeric($_POST['namvanban'])){
+				$data_error[] = 'Ngày của văn bản không hợp lệ';
+			}
+			
+			$b_thoihangiaiquyet = false;
+			if(isset($_POST['thoihangiaiquyet'])){
+				if(!isset($_POST['ngaygiaiquyet']) || !isset($_POST['thanggiaiquyet']) || !isset($_POST['namgiaiquyet']) || !is_numeric($_POST['ngaygiaiquyet']) || !is_numeric($_POST['thanggiaiquyet']) || !is_numeric($_POST['namgiaiquyet']) || !checkdate($_POST['thanggiaiquyet'], $_POST['ngaygiaiquyet'], $_POST['namgiaiquyet'])){
+					$data_error[] = 'Thời hạn giải quyết không hợp lệ!';
+				}
+				$b_thoihangiaiquyet = true;
+			}
+			
+			if(!isset($_POST['madonvibanhanh']) || $_POST['madonvibanhanh'] == ''){
+				$data_error[] = 'Mã đơn vị ban hành không được để trống';
+			}
+			if(!isset($_POST['maloaivanban']) || $_POST['maloaivanban'] == ''){
+				$data_error[] = 'Mã loại văn bản không được để trống';
+			}
+			if(isset($_FILES['taptindinhkem']['error']) && is_numeric($_FILES['taptindinhkem']['error']) && $_FILES['taptindinhkem']['error']==0){
+				$ext = UploadedFile::getExtension(UploadedFile::getMimeType($_FILES['taptindinhkem']['tmp_name']));
+				if(!DataChecker::valueInArray($ext, ['pdf'])){
+					$data_error[] = 'Hiện tại chỉ hỗ trợ định dạng tập tin \'pdf\'';
+				}
+			}else{
+				$data_error[] = 'Vui lòng chọn file công văn đính kèm, hoặc chọn tập tin có kích thước hợp lý';
+			}
 			if(count($data_error)){
 				throw new NotValidFormDataException($data_error);
 			}
-			$user->themCongVanDen();
+			$user->themCongVanDen(new LegalDocumentInfo(null,
+								  $_POST['soden'],
+								  $_POST['kyhieu'],
+								  (new MDateTime($_POST['ngayden'], $_POST['thangden'], $_POST['namden'], $_POST['gioden'], $_POST['phutden'], $_POST['giayden']))->getDateTimeDBString('-', ':'),
+								  (new MDateTime($_POST['ngayvanban'], $_POST['thangvanban'], $_POST['namvanban']))->getDateDBString('-'),
+								  $_POST['madonvibanhanh'],
+								  $_POST['trichyeu'],
+								  $_POST['nguoiky'],
+								  $_POST['maloaivanban'],
+								  $b_thoihangiaiquyet ? (new MDateTime($_POST['ngaygiaiquyet'], $_POST['thanggiaiquyet'], $_POST['namgiaiquyet']))->getDateDBString('-') : null,
+								  null,
+								  LEGALDOCUMENT_STATUS['DA_NHAP'],
+								  $user->getID(), 
+								  $user->getMaDonVi(),
+								  null), $_FILES['taptindinhkem']['tmp_name'], $CNF['PATHS']['LEGALDOCUMENT_DIR'] . '/' . $_FILES['taptindinhkem']['name']);
 			echo '<div class="success-message-box">Đăng ký thành công, công văn đến có số đến '.$_POST['soden'].'</div>';
 		}
 	}catch(NotValidFormDataException $e){
@@ -56,42 +98,42 @@ try{
 		<div><input type="text" name="kyhieu" value=""/></div>
 		<div>Thời gian đến</div>
 		<div>
-			<select name="ngay">
+			<select name="ngayden">
 				<?php 
 					for($i=1;$i<=31;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['mday']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="thang">
+			<select name="thangden">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="nam">
+			<select name="namden">
 				<?php 
 					for($i=getdate()['year'] - 5;$i<=getdate()['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select><br/>
-			<select name="gio">
+			<select name="gioden">
 				<?php 
 					for($i=0;$i<=23;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['hours']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> :
-			<select name="phut">
+			<select name="phutden">
 				<?php 
 					for($i=0;$i<=59;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['minutes']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> :
-			<select name="giay">
+			<select name="giayden">
 				<?php 
 					for($i=0;$i<=59;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['seconds']==$i?'selected="selected"':'').'>'.$i.'</option>';
@@ -101,21 +143,21 @@ try{
 		</div>
 		<div>Ngày văn bản</div>
 		<div>
-			<select name="ngay">
+			<select name="ngayvanban">
 				<?php 
 					for($i=1;$i<=31;$i++){
 						echo '<option value="'.$i.'">'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="thang">
+			<select name="thangvanban">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="nam">
+			<select name="namvanban">
 				<?php 
 					for($i=getdate()['year'] - 5;$i<=getdate()['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
@@ -152,22 +194,23 @@ try{
 			</select>
 		</div>
 		<div>Thời hạn giải quyết</div>
+		<div><input type="checkbox" name="thoihangiaiquyet" value="" checked="checked"/></div>
 		<div>
-			<select name="ngay">
+			<select name="ngaygiaiquyet">
 				<?php 
 					for($i=1;$i<=31;$i++){
 						echo '<option value="'.$i.'">'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="thang">
+			<select name="thanggiaiquyet">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="nam">
+			<select name="namgiaiquyet">
 				<?php 
 					for($i=getdate()['year'] - 5;$i<=getdate()['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.(getdate()['year']==$i?'selected="selected"':'').'>'.$i.'</option>';

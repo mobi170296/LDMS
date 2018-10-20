@@ -1,8 +1,7 @@
 ::selection{
-	background-color: #aaa;
-	color: white;
+	background-color: #b4d8f7;
+	color: #000;
 }
-
 body{
 	margin: 0px;
 }
@@ -45,11 +44,24 @@ div#menu{
 	-ms-user-select: none;
 }
 div#menu a.menu-item{
-	display: inline-block;
+	box-sizing: border-box;
+	display: block;
 	padding: 5px;
 	width: 100%;
 	text-decoration: none;
 	color: white;
+	position: relative;
+}
+div#menu a.selected-menu-item:after{
+	content: '';
+	margin-top: -10px;
+	position: absolute;
+	display: inline-block;
+	top: 50%;
+	right: 0px;
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent white transparent transparent;
 }
 div#menu a.selected-menu-item{
 	background-color: red;
@@ -77,10 +89,12 @@ div.success-message-box{
 div.error-message-box{
 	background: red;
 	color: white;
+	padding: 10px 20px;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
 }
 input[type="text"], input[type="password"]{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
-	font-size: 12pt;
+	font-size: 10pt;
 	padding: 5px 20px;
 	border: 1px solid #D1D1D1;
 	border-radius: 3px;
@@ -101,4 +115,11 @@ select{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 10pt;
 	padding: 5px 20px;
+	border: 1px solid #D1D1D1;
+}
+div#quick-login{
+	background-color: #909090;
+}
+div#quick-login div{
+	padding: 5px 0px;
 }

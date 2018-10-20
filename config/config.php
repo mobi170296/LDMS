@@ -5,9 +5,9 @@
 					 'LIBRARY' => __DIR__.'/../resources/library',
 					 'TEMPLATES' => __DIR__.'/../resources/templates',
 					 'VIEWS' => __DIR__. '/../resources/views',
-					 'LEGALDOCUMENT_DIR' => '',
+					 'LEGALDOCUMENT_DIR' => __DIR__.'/../legaldocuments',
 					 'CLASSES' => __DIR__.'/../resources/classes',
-					 'ERROR_PAGE' => __DIR__.'/../resources/templates/error.php'
+					 'ERROR_PAGE' => __DIR__.'/../resources/templates/error.php',
 					];
 
 	$CNF['HEADER'] = ['TITLE' => '', 'STYLES' => ['/resources/css/mstyles.css'], 'SCRIPTS' => ['/resources/js/mscripts.js'],

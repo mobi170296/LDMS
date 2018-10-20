@@ -1,6 +1,15 @@
 <?php
 	require_once __DIR__.'/../../../config/defines.php';
 	require_once __DIR__.'/../../classes/exceptions.php';
+	class MDBFunctionData{
+		private $fn;
+		public function __construct($fn){
+			$this->fn = $fn;
+		}
+		public function toDBValueString(){
+			return $fn;
+		}
+	}
 	class MDBPasswordData{
 		private $data;
 		public function __construct($data){
@@ -29,6 +38,7 @@
 					return "'$value'";
 				case 'object':
 					if(get_class($value)=='MDBPasswordData') return $value->toDBValueString();
+					if(get_class($value)=='MDBFunctionData') return $value->toDBValueString();
 					break;
 				case 'NULL':
 					return 'NULL';

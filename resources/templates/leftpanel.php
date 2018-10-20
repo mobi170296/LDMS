@@ -9,7 +9,7 @@
 		<form action="/user/login.php" method="post" enctype="application/x-www-form-urlencoded">
 			<div><input type="text" name="maso" placeholder="Mã số"/></div>
 			<div><input type="password" name="matkhau" placeholder="Mật khẩu"/></div>
-			<button type="submit" name="login" value="login"><span>Đăng nhập</span></button>
+			<div><button type="submit" name="login" value="login"><span>Đăng nhập</span></button></div>
 		</form>
 	</div>
 	<?php
@@ -17,7 +17,7 @@
 	?>
 	<div id="basic-info">
 		<div>Xin chào <?php echo $user->getHo() . ' ' . $user->getTen(); ?></div>
-		<div style="text-align: center;"><a href="/user/logout.php">Thoát account</a></div>
+		<div style="text-align: center;"><a href="/user/logout.php">Thoát tài khoản</a></div>
 	</div>
 	<?php
 	}
@@ -29,25 +29,25 @@
 		<div class="menu-l1">
 			<div class="menu-l1-title">Quản lý công văn</div>
 			<div class="menu-l1-items">
-				<a class="menu-item <?php if($_SERVER['SCRIPT_NAME']=='/ldm/addicld.php') echo 'selected-menu-item'; ?>" href="/ldm/addicld.php">Đăng ký công văn đến</a>
-				<a class="menu-item">Danh sách công văn</a>
-				<a class="menu-item">Danh sách công văn chờ kiểm duyệt</a>
-				<a class="menu-item">Danh sách công văn chờ phê duyệt</a>
-				<a class="menu-item" href="/ldm/adddoctype.php">Thêm danh mục văn bản</a>
-				<a class="menu-item">Danh sách danh mục văn bản</a>
-				<a class="menu-item" href="/ldm/addissuedunit.php">Thêm đơn vị ban hành</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/addicld.php') echo ' selected-menu-item'; ?>" href="/ldm/addicld.php">Đăng ký công văn đến</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn chờ kiểm duyệt</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn chờ phê duyệt</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/adddoctype.php') echo ' selected-menu-item'; ?>" href="/ldm/adddoctype.php">Thêm danh mục văn bản</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách danh mục văn bản</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/addissuedunit.php') echo ' selected-menu-item'; ?>" href="/ldm/addissuedunit.php">Thêm đơn vị ban hành</a>
 				<a class="menu-item">Danh sách đơn vị ban hành</a>
 			</div>
 		</div>
 		<div class="menu-l1">
 			<div class="menu-l1-title">Quản trị hệ thống</div>
 			<div class="menu-l1-items">
-				<a class="menu-item" href="/admin/adduser.php">Thêm người dùng</a>
-				<a class="menu-item">Danh sách người dùng</a>
-				<a class="menu-item" href="/admin/adddepartment.php">Thêm Khoa - Đơn vị</a>
-				<a class="menu-item">Danh sách Khoa - Đơn vị</a>
-				<a class="menu-item" href="/admin/addgroup.php">Thêm nhóm</a>
-				<a class="menu-item">Danh sách nhóm</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/adduser.php') echo ' selected-menu-item'; ?>" href="/admin/adduser.php">Thêm người dùng</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách người dùng</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/adddepartment.php') echo ' selected-menu-item'; ?>" href="/admin/adddepartment.php">Thêm Khoa - Đơn vị</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách Khoa - Đơn vị</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/addgroup.php') echo ' selected-menu-item'; ?>" href="/admin/addgroup.php">Thêm nhóm</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách nhóm</a>
 			</div>
 		</div>
 	</div>

@@ -48,14 +48,25 @@
 		public function getSecond(){
 			return $this->second;
 		}
-		public function getDate($delimiter='/'){
+		public function getDateString($delimiter='/'){
 			return sprintf('%02d' . $delimiter . '%02d' . $delimiter . '%04d', $this->day, $this->month, $this->year);
 		}
-		public function getTime($delimiter=':'){
+		public function getTimeString($delimiter=':'){
 			return sprintf('%02d' . $delimiter . '%02d' . $delimiter . '%02d', $this->hour, $this->minute, $this->second);
 		}
-		public function getDateTime($dd='/', $td=':'){
-			return $this->getDate() . ' ' . $this->getTime();
+		public function getDateTimeString($dd='/', $td=':'){
+			return $this->getDateString($dd) . ' ' . $this->getTimeString($td);
+		}
+		
+		
+		public function getDateDBString($delimiter='/'){
+			return sprintf('%04d' . $delimiter . '%02d' . $delimiter . '%02d', $this->year, $this->month, $this->day);
+		}
+		public function getTimeDBString($delimiter=':'){
+			return sprintf('%02d' . $delimiter . '%02d' . $delimiter . '%02d', $this->hour, $this->minute, $this->second);
+		}
+		public function getDateTimeDBString($dd='/', $td=':'){
+			return $this->getDateDBString($dd) . ' ' . $this->getTimeDBString($td);
 		}
 	}
 ?>
