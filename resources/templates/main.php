@@ -7,7 +7,6 @@
 	echo <<<POPUP
 	<div id="popup">
 	<div id="popup-content">
-	Nội dung của content popup;
 	</div>
 	</div>
 POPUP;

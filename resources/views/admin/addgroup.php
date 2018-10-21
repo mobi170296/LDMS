@@ -19,7 +19,7 @@
 				if(count($data_error)){
 					throw new NotValidFormDataException($data_error);
 				}
-				$user->themNhomNguoiDung(new GroupInfo($_POST['manhom'], $_POST['tennhom'], null));
+				$user->themNhom(new GroupInfo($_POST['manhom'], $_POST['tennhom'], null));
 				echo '<div class="success-message-box">Thêm thành công nhóm người dùng '. $_POST['tennhom'] .'</div>'; 
 			}
 		}catch(NotValidFormDataException $e){

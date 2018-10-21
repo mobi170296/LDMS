@@ -7,24 +7,21 @@
 		$mcon = new MDatabase(DATABASE['HOST'], DATABASE['USERNAME'], DATABASE['PASSWORD'], DATABASE['DB_NAME']);
 		$user = new User($mcon);
 		$user->dangNhap();
-		if(!$user->getQuyen()->contain(PRIVILEGES['SUA_LOAI_VAN_BAN'])){
-			throw new Exception('Bạn không có quyền sửa công văn');
+		if(!$user->getQuyen()->contain(PRIVILEGES['XOA_LOAI_VAN_BAN'])){
+			throw new Exception('Bạn không có quyền xóa công văn');
 		}
 		if(isset($_POST['maloai'])){
 			$doctypeinfo = $user->getLoaiVanBan($_POST['maloai']);
 ?>
 
 			<form>
-			<div>Mã loại</div>
-			<div><input type="text" size="30" name="maloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>
-			<div>Tên loại</div>
-			<div><input type="text" size="30" name="tenloai" value="<?php echo $doctypeinfo->getTenLoai(); ?>"/></div>
-			<div><button type="button">Lưu thông tin</button></div>
+			<div>Bạn có muốn xóa loại văn bản <?php echo $doctypeinfo->getTenLoai(); ?> (<?php echo $doctypeinfo->getMaLoai(); ?>)?</div>
+			<div><button type="button">Xóa loại công văn</button></div>
 			</form>
 
 <?php
 		}else{
-			throw new Exception('Yêu cầu không hợp lệ!');
+			throw new Exception('Yêu cầu không hợp lệ');
 		}
 	}catch(Exception $e){
 		echo '<div class="error-message-box">'.$e->getMessage().'</div>';

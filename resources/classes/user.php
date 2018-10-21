@@ -392,7 +392,7 @@
 		#
 		# Quản lý nhóm người dùng
 		#
-		public function themNhomNguoiDung($groupinfo){
+		public function themNhom($groupinfo){
 			if(!$this->quyen->contain(PRIVILEGES['THEM_NHOM'])){
 				throw new MissingPrivilegeException('Bạn không có quyền thêm nhóm người dùng');
 			}
@@ -411,7 +411,7 @@
 				throw $e;
 			}
 		}
-		public function suaNhomNguoiDung($manhom, $groupinfo){
+		public function suaNhom($manhom, $groupinfo){
 			if(!$this->quyen->contain(PRIVILEGES['SUA_NHOM'])){
 				throw new MissingPrivilegeException('Bạn không có quyền sửa nhóm người dùng');
 			}
@@ -432,7 +432,7 @@
 				throw $e;
 			}
 		}
-		public function xoaNhomNguoiDung($manhom){
+		public function xoaNhom($manhom){
 			if(!$this->quyen->contain(PRIVILEGES['XOA_NHOM'])){
 				throw new MissingPrivilegeException('Bạn không có quyền xóa nhóm người dùng');
 			}
@@ -952,7 +952,46 @@
 					$row = $result->fetch_assoc();
 					return new DocTypeInfo($row['maloai'], $row['tenloai'], $row['thoigianthem']);
 				}else{
-					throw Exception('Không tồn tại mã loại văn bản ' . $maloai);
+					throw new Exception('Không tồn tại mã loại văn bản ' . $maloai);
+				}
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
+		public function getDonViBanHanh($madonvi){
+			try{
+				$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
+				if($result->num_rows){
+					$row = $result->fetch_assoc();
+					return new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+				}else{
+					throw new Exception('Không tồn tại đơn vị ban hành ' . $madonvi);
+				}
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
+		public function getNhom($manhom){
+			try{
+				$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
+				if($result->num_rows){
+					$row = $result->fetch_assoc();
+					return new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
+				}else{
+					throw new Exception('Không tồn tại nhóm ' . $manhom);
+				}
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
+		public function getDonVi($madonvi){
+			try{
+				$result = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
+				if($result->num_rows){
+					$row = $result->fetch_assoc();
+					return new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
+				}else{
+					throw new Exception('Không tồn tại đơn vị ' . $madonvi);
 				}
 			}catch(Exception $e){
 				throw $e;

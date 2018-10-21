@@ -38,9 +38,9 @@
 	<div id="add-doctype-form">
 		<form action="" method="post" enctype="application/x-www-form-urlencoded">
 		<div>Mã loại văn bản</div>
-		<div><input type="text" name="maloai"/></div>
+		<div><input type="text" size="30" name="maloai"/></div>
 		<div>Tên loại văn bản</div>
-		<div><input type="text" name="tenloai"</div>
+		<div><input type="text" size="30" name="tenloai"</div>
 		<div><button type="submit" name="adddoctype" value="adddoctype">Thêm loại văn bản</button></div>
 		</form>
 	</div>

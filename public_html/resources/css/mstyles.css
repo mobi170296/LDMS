@@ -95,7 +95,7 @@ div.error-message-box{
 }
 input[type="text"], input[type="password"]{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
-	font-size: 10pt;
+	font-size: 11pt;
 	padding: 5px 20px;
 	border: 1px solid #D1D1D1;
 	border-radius: 3px;
@@ -106,11 +106,12 @@ input[type="text"]:focus{
 }
 textarea{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
-	font-size: 12pt;
+	font-size: 11pt;
 	padding: 10px 20px;
 	border: 1px solid #D1D1D1;
 	border-radius: 3px;
 	color: #000;
+	resize: vertical;
 }
 select{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
@@ -129,6 +130,9 @@ table.list-table{
 	border-collapse: collapse;
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 }
+table.list-table tr:nth-child(even){
+	background-color: #ddd;
+}
 table.list-table th{
 	border: 1px solid #ddd;
 	text-align: left;
@@ -137,6 +141,7 @@ table.list-table td{
 	border: 1px solid #ddd;
 	padding: 5px 2em 5px 5px;
 }
+
 table.list-table a.action-btn{
 	border: 1px solid #aaa;
 	margin: 0px 5px;
@@ -148,6 +153,9 @@ table.list-table a.action-btn{
 }
 table.list-table a.action-btn:hover{
 	background-color: #ddd;
+}
+table.list-table td:focus{
+	background-color: red;
 }
 div#popup{
 	position: fixed;
@@ -162,7 +170,10 @@ div#popup{
 	opacity: 1;
 }
 div#popup-content{
+	transition: all 500ms;
 	position: relative;
+	top: -100%;
+	left: 0px;
 	display: inline-block;
 	margin: 20px 0px;
 	padding: 20px 50px;
@@ -170,4 +181,29 @@ div#popup-content{
 	background-color: rgba(255,255,255,1);
 	border-radius: 10px;
 	box-shadow: 0px 0px 10px 0px rgba(255,255,255,0.6);
+}
+@keyframes loading-icon{
+	0%{
+		border-color: red transparent transparent transparent;
+	}
+	25%{
+		border-color: transparent green transparent transparent;
+	}
+	50%{
+		border-color: transparent transparent blue transparent;
+	}
+	75%{
+		border-color: transparent transparent transparent yellow;
+	}
+}
+div#loading-icon{
+	margin: 0px auto;
+	box-sizing: border-box;
+	width: 40px;
+	height: 40px;
+	border: 20px solid transparent;
+	animation-name: loading-icon;
+	animation-delay: 0s;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
 }

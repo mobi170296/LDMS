@@ -20,5 +20,8 @@
 		public function getDiaChi(){
 			return $this->diachi;
 		}
+		public function getThoiGianThem(){
+			return $this->thoigianthem;
+		}
 	}
 ?>

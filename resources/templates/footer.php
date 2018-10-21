@@ -1,15 +1,15 @@
 		</div>
 	<script type="text/javascript">
-		var popup = $get('div#popup');
-		if(popup!=null){
-			popup.onclick = function(e){
-				this.$css('opacity', '0');
+		var p = $get('div#popup');
+		if(p!=null){
+			p.onclick = function(e){
+				$get('div#popup-content').$css('top', '-100%');
 				window.setTimeout(function(e){e.$css('display', 'none')}, 500, this);
 			}
 		}
-		var popupcontent = $get('div#popup-content');
-		if(popupcontent!=null){
-			popupcontent.onclick = function(e){
+		var pc = $get('div#popup-content');
+		if(pc!=null){
+			pc.onclick = function(e){
 				e.stopPropagation();
 			}
 		}

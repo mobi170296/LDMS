@@ -36,18 +36,18 @@
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/adddoctype.php') echo ' selected-menu-item'; ?>" href="/ldm/adddoctype.php">Thêm loại văn bản</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/doctypelist.php') echo ' selected-menu-item'; ?>" href="/ldm/doctypelist.php">Danh sách loại văn bản</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/addissuedunit.php') echo ' selected-menu-item'; ?>" href="/ldm/addissuedunit.php">Thêm đơn vị ban hành</a>
-				<a class="menu-item">Danh sách đơn vị ban hành</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/issuedunitlist.php') echo ' selected-menu-item'; ?>" href="/ldm/issuedunitlist.php">Danh sách đơn vị ban hành</a>
 			</div>
 		</div>
 		<div class="menu-l1">
 			<div class="menu-l1-title">Quản trị hệ thống</div>
 			<div class="menu-l1-items">
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/adduser.php') echo ' selected-menu-item'; ?>" href="/admin/adduser.php">Thêm người dùng</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách người dùng</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/userlist.php') echo ' selected-menu-item'; ?>" href="/admin/userlist.php">Danh sách người dùng</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/adddepartment.php') echo ' selected-menu-item'; ?>" href="/admin/adddepartment.php">Thêm Khoa - Đơn vị</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách Khoa - Đơn vị</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/departmentlist.php') echo ' selected-menu-item'; ?>" href="/admin/departmentlist.php">Danh sách Khoa - Đơn vị</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/addgroup.php') echo ' selected-menu-item'; ?>" href="/admin/addgroup.php">Thêm nhóm</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách nhóm</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/admin/grouplist.php') echo ' selected-menu-item'; ?>" href="/admin/grouplist.php">Danh sách nhóm</a>
 			</div>
 		</div>
 	</div>
