@@ -65,7 +65,7 @@ function showFormPopup(desturl, aid){
 			if(this.status==200){
 				pc.innerHTML = this.response;
 			}else{
-				pc.innerHTML = '<div class="error-message-box">Đã xảy ra lỗi</div>';
+				pc.innerHTML = '<div class="error-message-box">Đã xảy ra lỗi ' + this.status + '</div>';
 			}
 		}
 	}
@@ -74,4 +74,44 @@ function showFormPopup(desturl, aid){
 		d.append(aid[i][0], aid[i][1]);
 	}
 	xhr.send(d);
+}
+function ajaxSubmitEdit(form){
+	var p = $get('div#popup');
+	var pc = $get('div#popup-content');
+	pc.innerHTML = '';
+	pc.append(createEID('div', 'loading-icon'));
+	var xhr = $ajax();
+	xhr.open('post', form.action);
+	xhr.onreadystatechange = function(e){
+		if(this.readyState == this.DONE){
+			var pc = $get('div#popup-content');
+			pc.$css('top', '0px');
+			if(this.status==200){
+				var result = JSON.parse(this.response);
+				if(result.success){
+					var s = '<div class="success-message-box">';
+					for(var i=0; i<result.messages.length; i++){
+						s += result.messages[i];
+					}
+					s += '</div>';
+					pc.innerHTML = s;
+					window.setTimeout(function(){document.location.reload();}, 1000);
+				}else{
+					var s = '<div class="error-message-box">';
+					for(var i=0; i<result.messages.length; i++){
+						s += result.messages[i];
+					}
+					s += '</div>';
+					pc.innerHTML = s;
+				}
+			}else{
+				pc.innerHTML = '<div class="error-message-box">Đã xảy ra lỗi ' + this.status + '</div>';
+			}
+		}
+	}
+	var d = new FormData(form);
+	xhr.send(d);
+}
+function ajaxSubmitDelete(form){
+	
 }

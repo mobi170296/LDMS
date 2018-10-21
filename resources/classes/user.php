@@ -419,9 +419,9 @@
 				$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
 				if($result->num_rows){
 					if($manhom!=$groupinfo->getMaNhom()){
-						$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($groupinfo->getMaNhom().'\''));
+						$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($groupinfo->getMaNhom()).'\'');
 						if($result->num_rows){
-							throw new ExistedGroupException('Nhóm người dùng ' . $groupinfo->getMaNhom .' đã tồn tại không thể sửa thông tin nhóm');
+							throw new ExistedGroupException('Nhóm người dùng ' . $groupinfo->getMaNhom() .' đã tồn tại không thể sửa thông tin nhóm');
 						}
 					}
 					$this->dbcon->query('UPDATE nhom SET manhom=\''.$this->dbcon->realEscapeString($groupinfo->getMaNhom()).'\', tennhom=\''.$this->dbcon->realEscapeString($groupinfo->getTenNhom()).'\' WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
