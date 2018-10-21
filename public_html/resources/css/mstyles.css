@@ -23,6 +23,7 @@ div#content{
 	width: 80%;
 	box-sizing: border-box;
 }
+
 div#logo{
 	background-color: blue;
 	height: 50px;
@@ -122,4 +123,51 @@ div#quick-login{
 }
 div#quick-login div{
 	padding: 5px 0px;
+}
+table.list-table{
+	border: 1px solid #ddd;
+	border-collapse: collapse;
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
+}
+table.list-table th{
+	border: 1px solid #ddd;
+	text-align: left;
+}
+table.list-table td{
+	border: 1px solid #ddd;
+	padding: 5px 2em 5px 5px;
+}
+table.list-table a.action-btn{
+	border: 1px solid #aaa;
+	margin: 0px 5px;
+	padding: 0px 7px;
+	border-radius: 10px;
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+}
+table.list-table a.action-btn:hover{
+	background-color: #ddd;
+}
+div#popup{
+	position: fixed;
+	display: none;
+	text-align: center;
+	width: 100vw;
+	height: 100vh;
+	top: 0px;
+	left: 0px;
+	background-color: rgba(0,0,0,0.8);
+	transition: all 500ms;
+	opacity: 1;
+}
+div#popup-content{
+	position: relative;
+	display: inline-block;
+	margin: 20px 0px;
+	padding: 20px 50px;
+	text-align: left;
+	background-color: rgba(255,255,255,1);
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px rgba(255,255,255,0.6);
 }

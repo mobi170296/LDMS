@@ -12,5 +12,8 @@
 		public function getTenLoai(){
 			return $this->tenloai;
 		}
+		public function getThoiGianThem(){
+			return $this->thoigianthem;
+		}
 	}
 ?>

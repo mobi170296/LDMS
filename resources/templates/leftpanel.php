@@ -33,8 +33,8 @@
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn chờ kiểm duyệt</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn chờ phê duyệt</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/adddoctype.php') echo ' selected-menu-item'; ?>" href="/ldm/adddoctype.php">Thêm danh mục văn bản</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách danh mục văn bản</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/adddoctype.php') echo ' selected-menu-item'; ?>" href="/ldm/adddoctype.php">Thêm loại văn bản</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/doctypelist.php') echo ' selected-menu-item'; ?>" href="/ldm/doctypelist.php">Danh sách loại văn bản</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/addissuedunit.php') echo ' selected-menu-item'; ?>" href="/ldm/addissuedunit.php">Thêm đơn vị ban hành</a>
 				<a class="menu-item">Danh sách đơn vị ban hành</a>
 			</div>

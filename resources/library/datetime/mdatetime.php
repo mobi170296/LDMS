@@ -55,7 +55,7 @@
 			return sprintf('%02d' . $delimiter . '%02d' . $delimiter . '%02d', $this->hour, $this->minute, $this->second);
 		}
 		public function getDateTimeString($dd='/', $td=':'){
-			return $this->getDateString($dd) . ' ' . $this->getTimeString($td);
+			return $this->getTimeString($td) .' '. $this->getDateString($dd);
 		}
 		
 		
@@ -67,6 +67,16 @@
 		}
 		public function getDateTimeDBString($dd='/', $td=':'){
 			return $this->getDateDBString($dd) . ' ' . $this->getTimeDBString($td);
+		}
+	}
+	class MCalendar{
+		public static function getMaxDayOfMonth($month, $year){
+			if($month<=0 || $month>12 || $year<=0) return false;
+			$m4 = $year % 4 == 0;
+			$m100 = $year % 100 == 0;
+			$m400 = $year % 400 == 0;
+			$maxday = [31, ($m4 & !($m100 ^ $m400)) ? 29 : 28 , 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			return $maxday[$month-1];
 		}
 	}
 ?>

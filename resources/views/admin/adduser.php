@@ -61,7 +61,7 @@
 ?>
 	<div id="add-user-form-wrapper">
 		<div id="add-user-form">
-		<form action="" method="post" enctype="application/x-www-form-urlencoded">
+		<form action="" method="post" enctype="application/x-www-form-urlencoded" name="add-user">
 		<div>Mã số cán bộ</div>
 		<div><input type="text" name="maso" value="<?php if(isset($_POST['maso'])) echo $_POST['maso'];?>"/></div>
 		<div>Mật khẩu</div>
@@ -76,7 +76,7 @@
 		<div>
 			<select name="ngay">
 				<?php
-				for($i=1; $i<=31; $i++){
+				for($i=1; $i<=MCalendar::getMaxDayOfMonth(1, 2010); $i++){
 					echo '<option value="'.$i.'" '.(isset($_POST['ngay']) && $_POST['ngay']==$i ? 'selected="selected"' : '').'>'.$i.'</option>';
 				}
 				?>
@@ -128,6 +128,34 @@
 		</form>
 		</div>
 	</div>
+	<script type="text/javascript">
+		document.forms['add-user']['thang'].onchange = function(e){
+			var vm = this.value;
+			var vy = this.form['nam'].value;
+			var sd = this.form['ngay'];
+			while(sd.options.length){
+				sd.options.remove(0);
+			}
+			for(d=1; d<=getMaxDayOfMonth(vm, vy); d++){
+				var option = $create('option');
+				option.value = option.innerHTML = d;
+				sd.options.add(option);
+			}
+		}
+		document.forms['add-user']['nam'].onchange = function(e){
+			var vm = this.form['thang'].value;
+			var vy = this.value;
+			var sd = this.form['ngay'];
+			while(sd.options.length){
+				sd.options.remove(0);
+			}
+			for(d=1; d<=getMaxDayOfMonth(vm, vy); d++){
+				var option = $create('option');
+				option.value = option.innerHTML = d;
+				sd.options.add(option);
+			}
+		}
+	</script>
 <?php
 			}catch(Exception $e){
 				echo $e->getMessage();

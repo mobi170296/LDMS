@@ -88,10 +88,13 @@ try{
 	}catch(Exception $e){
 		echo '<div class="error-message-box">'.$e->getMessage().'</div>';
 	}
+	
+	
+	$currentdate = getdate();
 ?>
 <div id="add-icld-form-wrapper">
 	<div id="add-icld-form">
-		<form action="" method="post" enctype="multipart/form-data">
+		<form action="" method="post" enctype="multipart/form-data" name="add-icld">
 		<div>Số đến</div>
 		<div><input type="text" name="soden" value=""/></div>
 		<div>Ký hiệu</div>
@@ -100,43 +103,43 @@ try{
 		<div>
 			<select name="ngayden">
 				<?php 
-					for($i=1;$i<=31;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['mday']==$i?'selected="selected"':'').'>'.$i.'</option>';
+					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
+						echo '<option value="'.$i.'" '.($currentdate['mday']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
 			<select name="thangden">
 				<?php 
 					for($i=1;$i<=12;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
+						echo '<option value="'.$i.'" '.($currentdate['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
 			<select name="namden">
 				<?php 
-					for($i=getdate()['year'] - 5;$i<=getdate()['year'] + 5;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
+					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
+						echo '<option value="'.$i.'" '.($currentdate['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select><br/>
 			<select name="gioden">
 				<?php 
 					for($i=0;$i<=23;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['hours']==$i?'selected="selected"':'').'>'.$i.'</option>';
+						echo '<option value="'.$i.'" '.($currentdate['hours']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> :
 			<select name="phutden">
 				<?php 
 					for($i=0;$i<=59;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['minutes']==$i?'selected="selected"':'').'>'.$i.'</option>';
+						echo '<option value="'.$i.'" '.($currentdate['minutes']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> :
 			<select name="giayden">
 				<?php 
 					for($i=0;$i<=59;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['seconds']==$i?'selected="selected"':'').'>'.$i.'</option>';
+						echo '<option value="'.$i.'" '.($currentdate['seconds']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select>
@@ -145,7 +148,7 @@ try{
 		<div>
 			<select name="ngayvanban">
 				<?php 
-					for($i=1;$i<=31;$i++){
+					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
 						echo '<option value="'.$i.'">'.$i.'</option>';
 					}
 				?>
@@ -153,14 +156,14 @@ try{
 			<select name="thangvanban">
 				<?php 
 					for($i=1;$i<=12;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
+						echo '<option value="'.$i.'" '.($currentdate['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
 			<select name="namvanban">
 				<?php 
-					for($i=getdate()['year'] - 5;$i<=getdate()['year'] + 5;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
+					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
+						echo '<option value="'.$i.'" '.($currentdate['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select>
@@ -198,7 +201,7 @@ try{
 		<div>
 			<select name="ngaygiaiquyet">
 				<?php 
-					for($i=1;$i<=31;$i++){
+					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
 						echo '<option value="'.$i.'">'.$i.'</option>';
 					}
 				?>
@@ -206,14 +209,14 @@ try{
 			<select name="thanggiaiquyet">
 				<?php 
 					for($i=1;$i<=12;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
+						echo '<option value="'.$i.'" '.($currentdate['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
 			<select name="namgiaiquyet">
 				<?php 
-					for($i=getdate()['year'] - 5;$i<=getdate()['year'] + 5;$i++){
-						echo '<option value="'.$i.'" '.(getdate()['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
+					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
+						echo '<option value="'.$i.'" '.($currentdate['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select>
@@ -224,6 +227,102 @@ try{
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+	var addicldform = document.forms['add-icld'];
+	addicldform['thangden'].onchange = function(e){
+		var vm = this.value;
+		var vy = this.form['namden'].value;
+		var sd = this.form['ngayden'];
+		while(sd.options.length){
+			sd.options.remove(0);
+		}
+		var maxday = getMaxDayOfMonth(vm, vy);
+		for(var d=1; d<=maxday; d++){
+			var option = document.createElement('option');
+			option.value = d;
+			option.innerHTML = d;
+			sd.options.add(option);
+		}
+	}
+	addicldform['namden'].onchange = function(e){
+		var vm = this.form['thangden'].value;
+		var vy = this.value;
+		var sd = this.form['ngayden'];
+		while(sd.options.length){
+			sd.options.remove(0);
+		}
+		var maxday = getMaxDayOfMonth(vm, vy);
+		for(var d=1; d<=maxday; d++){
+			var option = document.createElement('option');
+			option.value = d;
+			option.innerHTML = d;
+			sd.options.add(option);
+		}
+	}
+	addicldform['thangvanban'].onchange = function(e){
+		var vm = this.value;
+		var vy = this.form['namvanban'].value;
+		var sd = this.form['ngayvanban'];
+		while(sd.options.length){
+			sd.options.remove(0);
+		}
+		var maxday = getMaxDayOfMonth(vm, vy);
+		for(var d=1; d<=maxday; d++){
+			var option = document.createElement('option');
+			option.value = d;
+			option.innerHTML = d;
+			sd.options.add(option);
+		}
+	}
+	addicldform['namvanban'].onchange = function(e){
+		var vm = this.form['thangvanban'].value;
+		var vy = this.value;
+		var sd = this.form['ngayvanban'];
+		while(sd.options.length){
+			sd.options.remove(0);
+		}
+		var maxday = getMaxDayOfMonth(vm, vy);
+		for(var d=1; d<=maxday; d++){
+			var option = document.createElement('option');
+			option.value = d;
+			option.innerHTML = d;
+			sd.options.add(option);
+		}
+	}
+	addicldform['thanggiaiquyet'].onchange = function(e){
+		var vm = this.value;
+		var vy = this.form['namgiaiquyet'].value;
+		var sd = this.form['ngaygiaiquyet'];
+		while(sd.options.length){
+			sd.options.remove(0);
+		}
+		var maxday = getMaxDayOfMonth(vm, vy);
+		for(var d=1; d<=maxday; d++){
+			var option = document.createElement('option');
+			option.value = d;
+			option.innerHTML = d;
+			sd.options.add(option);
+		}
+	}
+	addicldform['namgiaiquyet'].onchange = function(e){
+		var vm = this.form['thanggiaiquyet'].value;
+		var vy = this.value;
+		var sd = this.form['ngaygiaiquyet'];
+		while(sd.options.length){
+			sd.options.remove(0);
+		}
+		var maxday = getMaxDayOfMonth(vm, vy);
+		for(var d=1; d<=maxday; d++){
+			var option = document.createElement('option');
+			option.value = d;
+			option.innerHTML = d;
+			sd.options.add(option);
+		}
+	}
+	addicldform['thoihangiaiquyet'].onchange = function(e){
+		this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;
+	}
+</script>
 <?php
 }catch(Exception $e){
 	echo '<div class="error-message-box">'.$e->getMessage().'</div>';

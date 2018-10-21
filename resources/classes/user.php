@@ -945,5 +945,18 @@
 				throw $e;
 			}
 		}
+		public function getLoaiVanBan($maloai){
+			try{
+				$result = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$this->dbcon->realEscapeString($maloai).'\'');
+				if($result->num_rows){
+					$row = $result->fetch_assoc();
+					return new DocTypeInfo($row['maloai'], $row['tenloai'], $row['thoigianthem']);
+				}else{
+					throw Exception('Không tồn tại mã loại văn bản ' . $maloai);
+				}
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
 	}
 ?>
