@@ -14,12 +14,12 @@
 		if(isset($_POST['madonvi'])){
 			$department = $user->getDonVi($_POST['madonvi']);
 ?>
-
-			<form>
+			<form action="/ajax/deletedepartment.php" onsubmit="ajaxSubmitDelete(this); return false;">
 			<div>Bạn có muốn xóa đơn vị <?php echo $department->getTenDonVi(); ?> (<?php echo $department->getMaDonVi(); ?>)?</div>
-			<div><button type="button">Xóa đơn vị ban hành</button></div>
+			<div><input type="hidden" name="madonvi" value="<?php echo $department->getMaDonVi(); ?>"/></div>
+			<div><input type="hidden" name="deletedepartment" value="deletedepartment"/></div>
+			<div><button type="submit">Xóa đơn vị ban hành</button></div>
 			</form>
-
 <?php
 		}else{
 			throw new Exception('Yêu cầu không hợp lệ');

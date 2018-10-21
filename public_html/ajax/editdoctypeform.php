@@ -13,15 +13,15 @@
 		if(isset($_POST['maloai'])){
 			$doctypeinfo = $user->getLoaiVanBan($_POST['maloai']);
 ?>
-
-			<form>
+			<form action="/ajax/editdoctype.php" onsubmit="ajaxSubmitEdit(this);return false;">
 			<div>Mã loại</div>
-			<div><input type="text" size="30" name="maloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>
+			<div><input type="text" size="30" name="newmaloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>
 			<div>Tên loại</div>
 			<div><input type="text" size="30" name="tenloai" value="<?php echo $doctypeinfo->getTenLoai(); ?>"/></div>
-			<div><button type="button">Lưu thông tin</button></div>
+			<div><input type="hidden" name="maloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>
+			<div><input type="hidden" name="editdoctype" value="editdoctype"/></div>
+			<div><button type="submit">Lưu thông tin</button></div>
 			</form>
-
 <?php
 		}else{
 			throw new Exception('Yêu cầu không hợp lệ!');

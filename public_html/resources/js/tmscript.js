@@ -1,12 +1,28 @@
 "use strict";
 
 (function(){
+	Element.prototype.$css = function(p, v){
+		this.style[p] = v;
+		return this;
+	}
 	Node.prototype.$css = function(p, v){
 		this.style[p] = v;
 		return this;
 	}
+	Element.prototype.$gcss = function(p){
+		return this.style[p];
+	}
+	Node.prototype.$gcss = function(p){
+		return this.style[p];
+	}
+	Element.prototype.$get = function(query){
+		return this.querySelector(query);
+	}
 	Node.prototype.$get = function(query){
 		return this.querySelector(query);
+	}
+	Element.prototype.$gets = function(query){
+		return this.querySelectorAll(query);
 	}
 	Node.prototype.$gets = function(query){
 		return this.querySelectorAll(query);

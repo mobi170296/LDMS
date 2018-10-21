@@ -15,7 +15,7 @@
 			$issuedunit = $user->getDonViBanHanh($_POST['madonvi']);
 ?>
 
-			<form>
+			<form action="/ajax/editissuedunit.php" onsubmit="ajaxSubmitEdit(this);return false;">
 			<div>Mã đơn vị</div>
 			<div><input type="text" size="30" name="madonvi" value="<?php echo $issuedunit->getMaDonVi(); ?>"/></div>
 			<div>Tên đơn vị</div>
@@ -28,7 +28,9 @@
 			</div>
 			<div>Địa chỉ</div>
 			<div><textarea name="diachi" rows="4" cols="30" spellcheck="false"><?php echo $issuedunit->getDiaChi(); ?></textarea></div>
-			<div><button type="button">Lưu thông tin</button></div>
+			<div><input type="hidden" name="newmadonvi" value="<?php echo $issuedunit->getMaDonVi(); ?>"/></div>
+			<div><input type="hidden" name="editissuedunit" value="editissuedunit"/></div>
+			<div><button type="submit">Lưu thông tin</button></div>
 			</form>
 
 <?php

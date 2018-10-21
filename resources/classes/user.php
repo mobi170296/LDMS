@@ -547,14 +547,17 @@
 				$result = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
 				if($result->num_rows){
 					$result = $this->dbcon->query('SELECT EXISTS(SELECT id FROM nguoidung WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\')');
-					
 					$row = $result->fetch_row();
-					
 					if($row[0]){
-						throw new ExistedUserException('Người dùng ở đơn vị \''. $madonvi .'\' này đã có không thể xóa đơn vị này!');
-					}else{
-						$this->dbcon->query('DELETE FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
+						throw new ExistedUserException('Đã có người dùng ở đơn vị \''. $madonvi .'\' này không thể xóa đơn vị này!');
 					}
+					
+					$result = $this->dbcon->query('SELECT EXISTS(SELECT id FROM congvanden WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\')');
+					$row = $result->fetch_row();
+					if($row[0]){
+						throw new ExistedLegalDocumentException('Hệ thống đã tồn tại công văn đến của đơn vị \''.$madonvi.'\' này không thể xóa đơn vị này!');
+					}
+					$this->dbcon->query('DELETE FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
 				}else{
 					throw new NotExistedDepartmentException('Đơn vị \''. $madonvi. '\' không tồn tại không thể xóa');
 				}
@@ -867,14 +870,14 @@
 		public function getDanhSachNhom($start=null, $length=null){
 			try{
 				if($start===null){
-					$result = $this->dbcon->query('SELECT * FROM nhom');
+					$result = $this->dbcon->query('SELECT * FROM nhom ORDER BY thoigianthem DESC');
 					$groups = [];
 					while($row = $result->fetch_assoc()){
 						$groups[] = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
 					}
 					return $groups;
 				}else{
-					$result = $this->dbcon->query('SELECT * FROM nhom limit ' . $start .', ' . $length);
+					$result = $this->dbcon->query('SELECT * FROM nhom ORDER BY thoigianthem DESC LIMIT ' . $start .', ' . $length);
 					$groups = [];	
 					while($row = $result->fetch_assoc()){
 						$groups[] = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
@@ -888,14 +891,14 @@
 		public function getDanhSachDonVi($start=null, $length=null){
 			try{
 				if($start===null){
-					$result = $this->dbcon->query('SELECT * FROM donvi');
+					$result = $this->dbcon->query('SELECT * FROM donvi ORDER BY thoigianthem DESC');
 					$departments = [];
 					while($row = $result->fetch_assoc()){
 						$departments[] = new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
 					}
 					return $departments;
 				}else{
-					$result = $this->dbcon->query('SELECT * FROM donvi limit ' . $start .', ' . $length);
+					$result = $this->dbcon->query('SELECT * FROM donvi ORDER BY thoigianthem DESC LIMIT ' . $start .', ' . $length);
 					$departments = [];
 					while($row = $result->fetch_assoc()){
 						$departments[] = new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['thoigianthem']);
@@ -909,13 +912,13 @@
 		public function getDanhSachDonViBanHanh($start=null, $length=null){
 			try{
 				if($start===null){
-					$result = $this->dbcon->query('SELECT * FROM donvibanhanh');
+					$result = $this->dbcon->query('SELECT * FROM donvibanhanh ORDER BY thoigianthem DESC');
 					$issuedunits = [];
 					while($row = $result->fetch_assoc()){
 						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
 					}
 				}else{
-					$result = $this->dbcon->query('SELECT * FROM donvibanhanh limit '.$start .', '.$length);
+					$result = $this->dbcon->query('SELECT * FROM donvibanhanh ORDER BY thoigianthem DESC LIMIT '.$start .', '.$length);
 					$issuedunits = [];
 					while($row = $result->fetch_assoc()){
 						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
@@ -930,12 +933,12 @@
 			try{
 				$doctypes = [];
 				if($start===null){
-					$result = $this->dbcon->query('SELECT * FROM loaivanban');
+					$result = $this->dbcon->query('SELECT * FROM loaivanban ORDER BY thoigianthem DESC');
 					while($row = $result->fetch_assoc()){
 						$doctypes[] = new DocTypeInfo($row['maloai'], $row['tenloai'], $row['thoigianthem']);
 					}
 				}else{
-					$result = $this->dbcon->query('SELECT * FROM loaivanban limit ' . $start .',' .$length);
+					$result = $this->dbcon->query('SELECT * FROM loaivanban ORDER BY thoigianthem DESC LIMIT ' . $start .',' .$length);
 					while($row = $result->fetch_assoc()){
 						$doctypes[] = new DocTypeInfo($row['maloai'], $row['tenloai'], $row['thoigianthem']);
 					}

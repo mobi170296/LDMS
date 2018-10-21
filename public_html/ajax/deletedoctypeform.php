@@ -13,12 +13,12 @@
 		if(isset($_POST['maloai'])){
 			$doctypeinfo = $user->getLoaiVanBan($_POST['maloai']);
 ?>
-
-			<form>
+			<form action="/ajax/deletedoctype.php" onSubmit="ajaxSubmitDelete(this);return false;">
 			<div>Bạn có muốn xóa loại văn bản <?php echo $doctypeinfo->getTenLoai(); ?> (<?php echo $doctypeinfo->getMaLoai(); ?>)?</div>
-			<div><button type="button">Xóa loại công văn</button></div>
+			<div><input type="hidden" name="maloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>
+			<div><input type="hidden" name="deletedoctype" value="deletedoctype"/></div>
+			<div><button type="submit">Xóa loại công văn</button></div>
 			</form>
-
 <?php
 		}else{
 			throw new Exception('Yêu cầu không hợp lệ');

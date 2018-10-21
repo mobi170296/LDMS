@@ -12,12 +12,13 @@
 
 <div id="doctype-list">
 	<table class="list-table">
-		<tr><th>Mã đơn vị</th><th>Tên đơn vị</th><th>Địa chỉ</th><th>Thời gian thêm</th><th>Thao tác</th></tr>
+		<tr><th>Mã đơn vị</th><th>Tên đơn vị</th><th>Bên ngoài</th><th>Địa chỉ</th><th>Thời gian thêm</th><th>Thao tác</th></tr>
 		<?php
 			foreach($issuedunits as $issuedunit){
 				echo '<tr>';
 				echo '<td>'.$issuedunit->getMaDonVi().'</td>';
 				echo '<td>'.$issuedunit->getTenDonVi().'</td>';
+				echo '<td>'.($issuedunit->getBenNgoai()?'x':'').'</td>';
 				echo '<td>'.$issuedunit->getDiaChi().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($issuedunit->getThoiGianThem())->getDateTimeString().'</td>';
 				echo '<td><a class="action-btn" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])">Sửa</a><a class="action-btn" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])">Xóa</a></td>';

@@ -10,7 +10,7 @@
 					 'ERROR_PAGE' => __DIR__.'/../resources/templates/error.php',
 					];
 
-	$CNF['HEADER'] = ['TITLE' => '', 'STYLES' => ['/resources/css/mstyles.css'], 'SCRIPTS' => ['/resources/js/mscripts.js'],
+	$CNF['HEADER'] = ['TITLE' => '', 'STYLES' => ['/resources/css/mstyles.css'], 'SCRIPTS' => ['/resources/js/tmscript.js'],
 	'PAGE_ICON' => '/images/icons/page_icon.png'];
 
 	$CNF['BODY'] = ['MAIN_TEMPLATE' => $CNF['PATHS']['TEMPLATES'] . '/main.php'];

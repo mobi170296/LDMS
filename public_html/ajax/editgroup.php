@@ -14,6 +14,9 @@
 		try{
 			if(isset($_POST['editgroup'])){
 				$data_error = [];
+				if(!isset($_POST['manhom']) || !is_string($_POST['manhom']) || !preg_match('/^\w{1,10}$/i', $_POST['manhom'])){
+					$data_error[] = 'Mã nhóm không hợp lệ, mã nhóm phải ít hơn hoặc bằng 10 ký tự, chỉ chứa chỉ chữ số, chữ cái và _';
+				}
 				if(!isset($_POST['newmanhom']) || !is_string($_POST['newmanhom']) || !preg_match('/^\w{1,10}$/i', $_POST['newmanhom'])){
 					$data_error[] = 'Mã nhóm không hợp lệ, mã nhóm phải ít hơn hoặc bằng 10 ký tự, chỉ chứa chỉ chữ số, chữ cái và _';
 				}
