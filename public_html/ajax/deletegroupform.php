@@ -14,9 +14,11 @@
 			$group = $user->getNhom($_POST['manhom']);
 ?>
 
-			<form>
+			<form action="/ajax/deletegroup.php" method="post" onsubmit="ajaxSubmitDelete(this);return false;">
 			<div>Bạn có muốn xóa nhóm <?php echo $group->getTenNhom(); ?> (<?php echo $group->getMaNhom(); ?>)?</div>
-			<div><button type="button">Xóa nhóm người dùng</button></div>
+			<div><input type="hidden" name="manhom" value="<?php echo $group->getMaNhom(); ?>"/></div>
+			<div><input type="hidden" name="deletegroup" value="deletegroup"/></div>
+			<div><button type="submit">Xóa nhóm người dùng</button></div>
 			</form>
 
 <?php

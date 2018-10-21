@@ -34,11 +34,9 @@ div#quick-login{
 div#menu{
 	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
 	font-size: 10pt;
-	user-select: none;
 	width: 100%;
-	overflow-y: auto;
-	overflow-x: hidden;
 	box-sizing: border-box;
+	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-o-user-select: none;
@@ -53,7 +51,7 @@ div#menu a.menu-item{
 	color: white;
 	position: relative;
 }
-div#menu a.selected-menu-item:after{
+div#menu a.selected-menu-item::after{
 	content: '';
 	margin-top: -10px;
 	position: absolute;
