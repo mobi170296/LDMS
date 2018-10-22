@@ -20,11 +20,22 @@
 				echo '<td>'.$department->getTenDonVi().'</td>';
 				echo '<td>'.$department->getEmail().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($department->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn" onclick="showFormPopup(\'/ajax/editdepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])">Sửa</a><a class="action-btn" onclick="showFormPopup(\'/ajax/deletedepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])">Xóa</a></td>';
+				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editdepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deletedepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])">Xóa</a></td>';
 				echo '</tr>';
 			}
 		?>
 	</table>
+	<div id="pp-wrapper">
+		<?php
+			try{
+				$pp_pt = ceil($user->countRecordsInTable('donvi') / 10);
+				$pp_cp = 1;
+				require $CNF['PATHS']['TEMPLATES'].'/pagepartition.php';
+			}catch(Exception $e){
+				echo '<div class="error-message-box">'.$e->getMessage().'</div>';
+			}
+		?>
+	</div>
 </div>
 
 <?php

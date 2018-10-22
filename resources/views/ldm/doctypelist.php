@@ -18,7 +18,7 @@
 				echo '<td>'.$doctype->getMaLoai().'</td>';
 				echo '<td>'.$doctype->getTenLoai().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($doctype->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']])">Sửa</a><a class="action-btn" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']]);">Xóa</a></td>';
+				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']]);">Xóa</a></td>';
 				echo '</tr>';
 			}
 		?>

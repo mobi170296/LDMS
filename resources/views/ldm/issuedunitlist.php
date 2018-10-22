@@ -21,7 +21,7 @@
 				echo '<td>'.($issuedunit->getBenNgoai()?'x':'').'</td>';
 				echo '<td>'.$issuedunit->getDiaChi().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($issuedunit->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])">Sửa</a><a class="action-btn" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])">Xóa</a></td>';
+				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])">Xóa</a></td>';
 				echo '</tr>';
 			}
 		?>

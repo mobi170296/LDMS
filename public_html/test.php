@@ -1,5 +1,5 @@
 <?php
-var_dump($_REQUEST);
-
-var_dump($_FILES);
+foreach($_SERVER as $k => $v){
+	echo $k . ' ' . $v . '<br/>';
+}
 ?>

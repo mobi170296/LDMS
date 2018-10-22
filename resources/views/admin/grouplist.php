@@ -19,7 +19,7 @@
 				echo '<td>'.$group->getMaNhom().'</td>';
 				echo '<td>'.$group->getTenNhom().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($group->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn" onclick="showFormPopup(\'/ajax/editgroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])">Sửa</a><a class="action-btn" onclick="showFormPopup(\'/ajax/deletegroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])">Xóa</a></td>';
+				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editgroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deletegroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])">Xóa</a></td>';
 				echo '</tr>';
 			}
 		?>

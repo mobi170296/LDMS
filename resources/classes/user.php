@@ -1000,5 +1000,13 @@
 				throw $e;
 			}
 		}
+		public function countRecordsInTable($tablename){
+			try{
+				$result = $this->dbcon->query('SELECT COUNT(*) FROM ' . $tablename);
+				return $result->fetch_row()[0];
+			}catch(Exception $e){
+				throw $e;
+			}
+		}
 	}
 ?>
