@@ -69,6 +69,8 @@ function showFormPopup(desturl, aid){
 	var popup = $get('div#popup');
 	var pc = $get('div#popup-content');
 	popup.$css('display', 'block');
+	$get('div#left-panel').$css('filter', 'blur(1px)');
+	$get('div#content').$css('filter', 'blur(1px)');
 	pc.innerHTML = '';
 	pc.append(createEID('div', 'loading-icon'));
 	//pc.$css('top', '0px');

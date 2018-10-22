@@ -11,7 +11,7 @@
 					];
 
 	$CNF['HEADER'] = ['TITLE' => '', 'STYLES' => ['/resources/css/mstyles.css'], 'SCRIPTS' => ['/resources/js/tmscript.js'],
-	'PAGE_ICON' => '/images/icons/page_icon.png'];
+	'PAGE_ICON' => '/resources/images/icons/icon.ico'];
 
 	$CNF['BODY'] = ['MAIN_TEMPLATE' => $CNF['PATHS']['TEMPLATES'] . '/main.php'];
 ?>

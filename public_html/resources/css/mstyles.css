@@ -4,9 +4,7 @@
 }
 body{
 	margin: 0px;
-	background-image: url('/resources/images/bgs/bg.png');
-	background-repeat: no-repeat;
-	background-size: cover;
+	
 }
 div#container{
 	
@@ -17,6 +15,9 @@ div#left-panel{
 	width: 20%;
 	overflow: hidden;
 	box-sizing: border-box;
+	background-image: url('/resources/images/bgs/bg.png');
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 div#content{
 	float: left;
@@ -51,15 +52,6 @@ div#menu{
 	-o-user-select: none;
 	-ms-user-select: none;
 }
-div#menu a.menu-item{
-	box-sizing: border-box;
-	display: block;
-	padding: 5px;
-	width: 100%;
-	text-decoration: none;
-	color: white;
-	position: relative;
-}
 div#menu a.selected-menu-item::after{
 	content: '';
 	margin-top: -10px;
@@ -78,15 +70,32 @@ div#menu div.menu-l1-title{
 	padding: 5px 0px;
 	color: #fff;
 	cursor: pointer;
+	border: 2px solid #fff;
+	font-weight: 600;
+	background-color: #fff;
+	color: #00ABFF;
 }
 div#menu div.menu-l1-items{
 	color: #fff;
 	overflow: hidden;
 	transition: all 300ms linear;
 }
+div#menu a.menu-item{
+	box-sizing: border-box;
+	display: block;
+	padding: 5px;
+	width: 100%;
+	text-decoration: none;
+	color: white;
+	position: relative;
+	padding-left: 10px;
+	transition: all 500ms;
+	cursor: pointer;
+}
 div#menu a.menu-item:hover{
 	padding-left: 20px;
-	cursor: pointer;
+	background-color: rgba(255,255,255,0.8);
+	color: #1A699B;
 }
 div.success-message-box{
 	background: green;
@@ -109,6 +118,22 @@ input[type="text"], input[type="password"]{
 input[type="text"]:focus{
 	box-shadow: 0px 0px 10px 0px #d1d1d1;
 }
+button{
+	padding: 5px 15px;
+	border: 2px solid #1A699B;
+	background-color: #fff;
+	border-radius: 4px;
+	color: #1A699B;
+	cursor: pointer;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+	font-size: 10pt;
+	transition: all 300ms;
+	margin: 5px 0px;
+}
+button:hover{
+	background-color: #1A699B;
+	color: #fff;
+}
 textarea{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 11pt;
@@ -121,7 +146,7 @@ textarea{
 select{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 10pt;
-	padding: 5px 20px;
+	padding: 3px 10px;
 	border: 1px solid #D1D1D1;
 }
 div#quick-login{
@@ -164,6 +189,7 @@ table.list-table td:focus{
 }
 div#popup{
 	position: fixed;
+	z-index: 1;
 	display: none;
 	text-align: center;
 	width: 100vw;
@@ -171,7 +197,7 @@ div#popup{
 	overflow: auto;
 	top: 0px;
 	left: 0px;
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0,0,0,0.4);
 	transition: all 500ms;
 }
 div#popup-content{

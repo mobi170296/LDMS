@@ -20,4 +20,7 @@
 		?>
 	</head>
 	<body>
+		<div id="popup">
+			<div id="popup-content"></div>
+		</div>
 		<div id="container">

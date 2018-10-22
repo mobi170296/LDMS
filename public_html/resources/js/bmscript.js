@@ -4,6 +4,8 @@
 	if(p!=null){
 		p.onclick = function(e){
 			$get('div#popup-content').$css('top', '-100%');
+			$get('div#left-panel').$css('filter', 'none');
+			$get('div#content').$css('filter', 'none');
 			window.setTimeout(function(e){e.$css('display', 'none')}, 500, this);
 		}
 	}
