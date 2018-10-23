@@ -44,4 +44,23 @@
 			}
 		}
 	}
+	var page_btns = $gets('button.page-btn');
+	if(page_btns!=null){
+		for(var i=0; i<page_btns.length; i++){
+			page_btns[i].onclick = function(e){
+				var uri=document.location.href;
+				if(/p=\d+/i.test(uri)){
+					uri=uri.replace(/p=\d+/, 'p='+parseInt(this.innerHTML));
+					console.log(this.innerHTML);
+				}else{
+					if(uri.indexOf('?')>=0){
+						uri+='&p=' + pasreInt(this.innerHTML);
+					}else{
+						uri+='?p=' + parseInt(this.innerHTML);
+					}
+				}
+				document.location.href=uri;
+			}
+		}
+	}
 })();

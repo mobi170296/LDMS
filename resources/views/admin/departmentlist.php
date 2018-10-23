@@ -6,10 +6,21 @@
 		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_DON_VI'])){
 			throw new Exception('Bạn không có quyền xem đơn vị');
 		}
-		$departments = $user->getDanhSachDonVi();
 		echo '<div id="page-title">Danh sách Khoa - Đơn vị</div>';
+		
+		if(isset($_GET['p'])){
+			if(is_numeric($_GET['p']) && intval($_GET['p'])>0){
+				$pp_cp = intval($_GET['p']);
+			}else{
+				$pp_cp = 1;
+			}
+		}else{
+			$pp_cp = 1;
+		}
+		
+		
+		$departments = $user->getDanhSachDonVi(10*($pp_cp-1), 10);
 ?>
-
 <div id="doctype-list">
 	<table class="list-table">
 		<tr><th>Mã đơn vị</th><th>Tên đơn vị</th><th>Email</th><th>Thời gian thêm</th><th>Thao tác</th></tr>
