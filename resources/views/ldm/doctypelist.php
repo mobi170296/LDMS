@@ -6,8 +6,20 @@
 		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_LOAI_VAN_BAN'])){
 			throw new Exception('Bạn không có quyền liệt kê danh sách loại văn bản');
 		}
-		$doctypes = $user->getDanhSachLoaiVanBan();
 		echo '<div id="page-title">Danh sách Loại văn bản</div>';
+		if(isset($_GET['p'])){
+			if(is_numeric($_GET['p']) && intval($_GET['p'])>0){
+				$pp_cp = intval($_GET['p']);
+			}else{
+				$pp_cp = 1;
+			}
+		}else{
+			$pp_cp = 1;
+		}
+		$doctypes = $user->getDanhSachLoaiVanBan(10*($pp_cp-1), 10);
+		if(count($doctypes)==0){
+			throw new Exception('Không có loại văn bản nào ở trang này');
+		}
 ?>
 <div id="doctype-list">
 	<table class="list-table">
@@ -23,6 +35,15 @@
 			}
 		?>
 	</table>
+	<?php
+		try{
+			$pp_pt = ceil($user->countRecordsInTable('donvibanhanh') / 10);
+			$pp_cp = 1;
+			require $CNF['PATHS']['TEMPLATES'].'/pagepartition.php';
+		}catch(Exception $e){
+			echo '<div class="error-message-box">'.$e->getMessage().'</div>';
+		}
+	?>
 </div>
 
 <?php

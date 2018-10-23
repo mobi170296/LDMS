@@ -54,7 +54,7 @@
 					console.log(this.innerHTML);
 				}else{
 					if(uri.indexOf('?')>=0){
-						uri+='&p=' + pasreInt(this.innerHTML);
+						uri+='&p=' + parseInt(this.innerHTML);
 					}else{
 						uri+='?p=' + parseInt(this.innerHTML);
 					}

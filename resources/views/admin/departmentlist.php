@@ -20,6 +20,9 @@
 		
 		
 		$departments = $user->getDanhSachDonVi(10*($pp_cp-1), 10);
+		if(count($departments)==0){
+			throw new Exception('Không có Khoa - Đơn vị nào ở trang này');
+		}
 ?>
 <div id="doctype-list">
 	<table class="list-table">
@@ -36,7 +39,6 @@
 			}
 		?>
 	</table>
-	<div id="pp-wrapper">
 		<?php
 			try{
 				$pp_pt = ceil($user->countRecordsInTable('donvi') / 10);
@@ -46,7 +48,6 @@
 				echo '<div class="error-message-box">'.$e->getMessage().'</div>';
 			}
 		?>
-	</div>
 </div>
 
 <?php

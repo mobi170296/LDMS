@@ -6,8 +6,21 @@
 		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_DON_VI_BAN_HANH'])){
 			throw new Exception('Bạn không có quyền xem đơn vị ban hành');
 		}
-		$issuedunits = $user->getDanhSachDonViBanHanh();
+		
 		echo '<div id="page-title">Danh sách đơn vị ban hành</div>';
+		if(isset($_GET['p'])){
+			if(is_numeric($_GET['p']) && intval($_GET['p'])>0){
+				$pp_cp = intval($_GET['p']);
+			}else{
+				$pp_cp = 1;
+			}
+		}else{
+			$pp_cp = 1;
+		}
+		$issuedunits = $user->getDanhSachDonViBanHanh(($pp_cp-1)*10, 10);
+		if(count($issuedunits)==0){
+			throw new Exception('Không có đơn vị ban hành nào ở trang này');
+		}
 ?>
 
 <div id="doctype-list">
@@ -26,6 +39,15 @@
 			}
 		?>
 	</table>
+	<?php
+		try{
+			$pp_pt = ceil($user->countRecordsInTable('donvibanhanh') / 10);
+			$pp_cp = 1;
+			require $CNF['PATHS']['TEMPLATES'].'/pagepartition.php';
+		}catch(Exception $e){
+			echo '<div class="error-message-box">'.$e->getMessage().'</div>';
+		}
+	?>
 </div>
 
 <?php

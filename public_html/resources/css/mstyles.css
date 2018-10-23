@@ -2,6 +2,10 @@
 	background-color: #b4d8f7;
 	color: #000;
 }
+@font-face{
+	font-family: 'banhmi';
+	src: url('/resources/css/fonts/UVNBanhMi.TTF');
+}
 body{
 	margin: 0px;
 	
@@ -18,20 +22,47 @@ div#left-panel{
 	background-image: url('/resources/images/bgs/bg.png');
 	background-repeat: no-repeat;
 	background-size: cover;
+	box-shadow: 0px 0px 20px 0px #9a9;
 }
 div#content{
 	float: left;
 	overflow-y: auto;
-	padding: 20px;
+	padding: 20px 40px;
 	height: 100vh;
 	width: 80%;
 	box-sizing: border-box;
 }
-
+div#page-title{
+	margin: 10px 0px;
+	text-align: center;
+	font-size: 14pt;
+	text-transform: uppercase;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+	background-color: #2699E3;
+	color: #fff;
+	padding: 5px 20px;
+}
 div#logo{
 	text-align: center;
 	text-transform: uppercase;
 	height: 50px;
+	color: #fff;
+}
+a#logo-link{
+	display: block;
+	text-decoration: none;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+	color: #fff;
+	font-family: 'banhmi';
+	font-size: 16pt;
+	text-shadow: 1px 1px 5px #000;
+	user-select: none;
+	-moz-user-select: none;
+}
+a#logo-link:active{
 	color: #fff;
 }
 div#basic-info{
@@ -68,7 +99,6 @@ div#menu a.selected-menu-item{
 }
 div#menu div.menu-l1-title{
 	padding: 5px 0px;
-	color: #fff;
 	cursor: pointer;
 	border: 2px solid #fff;
 	font-weight: 600;
@@ -151,16 +181,19 @@ textarea{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 11pt;
 	padding: 10px 20px;
-	border: 1px solid #D1D1D1;
+	border: 1px solid #0af;
 	border-radius: 3px;
 	color: #000;
 	resize: vertical;
+}
+textarea:focus{
+	box-shadow: 0px 0px 4px 0px #0af;
 }
 select{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 10pt;
 	padding: 3px 10px;
-	border: 1px solid #D1D1D1;
+	border: 1px solid #0af;
 }
 label{
 	user-select: none;
@@ -173,6 +206,7 @@ div#quick-login div{
 	padding: 5px 0px;
 }
 table.list-table{
+	margin: 0px auto;
 	border: 1px solid #ddd;
 	border-collapse: collapse;
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
@@ -188,9 +222,14 @@ table.list-table td{
 	border: 1px solid #FFFFFF;
 	padding: 5px 2em 5px 5px;
 }
-
+table.list-table td:last-child{
+	text-align: center;
+	padding: 0px;
+	width: 12em;
+}
 table.list-table a.action-btn{
-	margin: 0px 5px;
+	display: inline-block;
+	margin: 5px 5px;
 	padding: 2px 9px;
 	border-radius: 6px;
 	cursor: pointer;
@@ -236,12 +275,12 @@ div#popup-content{
 	top: -100%;
 	left: 0px;
 	display: inline-block;
-	margin: 20px 0px;
-	padding: 20px 50px;
+	margin: 0px 0px;
+	padding: 50px 50px 20px;
 	text-align: left;
 	background-color: rgba(255,255,255,1);
-	border-radius: 10px;
-	box-shadow: 0px 0px 10px 0px rgba(255,255,255,0.6);
+	border-radius: 0px 0px 20px 20px;
+	box-shadow: 0px 0px 20px 0px #fff;
 }
 @keyframes loading-icon{
 	0%{

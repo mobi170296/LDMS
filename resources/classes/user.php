@@ -1000,13 +1000,76 @@
 				throw $e;
 			}
 		}
-		public function countRecordsInTable($tablename){
+		public function countRecordsInTable($tablename, $conditions=null){
 			try{
-				$result = $this->dbcon->query('SELECT COUNT(*) FROM ' . $tablename);
+				if($conditions){
+					$result = $this->dbcon->query('SELECT COUNT(*) FROM ' . $tablename . ' WHERE ' . $conditions);
+				}else{
+					$result = $this->dbcon->query('SELECT COUNT(*) FROM ' . $tablename); 
+				}
 				return $result->fetch_row()[0];
 			}catch(Exception $e){
 				throw $e;
 			}
+		}
+		public function getDanhSachCongVanDen($start=null, $length=null){
+			$legaldocuments = [];
+			if($start===null){
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE idnguoinhap='.$this->id);
+				while($row=$result->fetch_assoc()){
+					$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
+					$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
+					if($subresult->num_rows){
+						$subrow = $subresult->fetch_assoc();
+						$legaldocument->setDonVi(new DepartmentInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['thoigianthem']));
+					}else{
+						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+					}
+					$subresult = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$row['madonvibanhanh'].'\'');
+					if($subresult->num_rows){
+						$subrow = $subresult->fetch_assoc();
+						$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+					}else{
+						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+					}
+					$subresult = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$row['maloaivanban'].'\'');
+					if($subresult->num_rows){
+						$subrow = $subresult->fetch_assoc();
+						$legaldocument->setLoaiVanBan(new DocTypeInfo($subrow['maloai'], $subrow['tenloai'], $subrow['thoigianthem']));
+					}else{
+						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+					}
+					$legaldocuments[] = $legaldocument;
+				}
+			}else{
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE idnguoinhap='.$this->id.' LIMIT '. $start . ', '. $length);
+				while($row=$result->fetch_assoc()){
+					$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
+					$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
+					if($subresult->num_rows){
+						$subrow = $subresult->fetch_assoc();
+						$legaldocument->setDonVi(new DepartmentInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['thoigianthem']));
+					}else{
+						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+					}
+					$subresult = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$row['madonvibanhanh'].'\'');
+					if($subresult->num_rows){
+						$subrow = $subresult->fetch_assoc();
+						$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+					}else{
+						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+					}
+					$subresult = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$row['maloaivanban'].'\'');
+					if($subresult->num_rows){
+						$subrow = $subresult->fetch_assoc();
+						$legaldocument->setLoaiVanBan(new DocTypeInfo($subrow['maloai'], $subrow['tenloai'], $subrow['thoigianthem']));
+					}else{
+						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+					}
+					$legaldocuments[] = $legaldocument;
+				}
+			}
+			return $legaldocuments;
 		}
 	}
 ?>

@@ -1,3 +1,4 @@
+<div id="pp-wrapper">
 <?php
 	#
 	# prefix: $pp_
@@ -35,3 +36,4 @@
 		}
 	}
 ?>
+</div>

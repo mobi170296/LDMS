@@ -1,6 +1,6 @@
 <div id="left-panel">
 	<div id="logo">
-		Logo here
+		<a id="logo-link" href="/index.php">Hệ Thống Quản lý Công Văn</a>
 	</div>
 	<?php
 	if(!$user->isDangNhap()){
@@ -30,7 +30,7 @@
 			<div class="menu-l1-title">Quản lý công văn</div>
 			<div class="menu-l1-items">
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/addicld.php') echo ' selected-menu-item'; ?>" href="/ldm/addicld.php">Đăng ký công văn đến</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/icldlist.php') echo ' selected-menu-item'; ?>" href="/ldm/icldlist.php">Danh sách công văn</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn chờ kiểm duyệt</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>">Danh sách công văn chờ phê duyệt</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/adddoctype.php') echo ' selected-menu-item'; ?>" href="/ldm/adddoctype.php">Thêm loại văn bản</a>

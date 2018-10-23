@@ -1,6 +1,7 @@
 <?php
 	class LegalDocumentInfo{
 		public $id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem;
+		public $donvi, $donvibanhanh, $loaivanban;
 		public function __construct($id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem=null){
 			$this->id = $id;
 			$this->soden = $soden;
@@ -67,7 +68,25 @@
 			return $this->madonvi;
 		}
 		public function getThoiGianThem(){
-			
+			return $this->thoigianthem;
+		}
+		public function getDonVi(){
+			return $this->donvi;
+		}
+		public function setDonVi($di){
+			$this->donvi = $di;
+		}
+		public function getDonViBanHanh(){
+			return $this->donvibanhanh;
+		}
+		public function setDonViBanHanh($ii){
+			$this->donvibanhanh = $ii;
+		}
+		public function getLoaiVanBan(){
+			return $this->loaivanban;
+		}
+		public function setLoaiVanBan($dti){
+			$this->loaivanban = $dti;
 		}
 	}
 ?>
