@@ -136,6 +136,7 @@ div.success-message-box{
 	max-width: 400px;
 }
 div.error-message-box{
+	margin: 0px auto;
 	background: #ff4743;
 	color: #fff;
 	padding: 5px 20px;
@@ -236,6 +237,7 @@ table.list-table{
 	border: 1px solid #ddd;
 	border-collapse: collapse;
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
+	font-size: 12pt;
 }
 table.list-table tr:nth-child(even){
 	background-color: #B7F0FF;
@@ -245,8 +247,9 @@ table.list-table th{
 	text-align: left;
 }
 table.list-table td{
-	border: 1px solid #FFFFFF;
+	border: 1px solid #fff;
 	padding: 5px 2em 5px 5px;
+	height: 10px;
 }
 table.list-table td:last-child{
 	text-align: center;
@@ -301,6 +304,7 @@ div#popup-content{
 	left: 0px;
 	display: inline-block;
 	margin: 0px auto 20px;
+	max-width: 800px;
 	padding: 20px 50px;
 	text-align: left;
 	background-color: rgba(255,255,255,1);

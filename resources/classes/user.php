@@ -6,7 +6,8 @@
 	require_once $CNF['PATHS']['LIBRARY'] . '/database/mdatabase.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/datetime/mdatetime.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/collection/mset.php';
-	
+	require_once $CNF['PATHS']['LIBRARY'] . '/datachecker/datachecker.php';
+
 	require_once __DIR__ . '/legaldocument.php';
 	require_once __DIR__ . '/userinfo.php';
 	require_once __DIR__ . '/exceptions.php';
@@ -1148,6 +1149,233 @@
 				return $legaldocumentinfo;
 			}else{
 				throw new Exception('Bạn không có quyền xem công văn này');
+			}
+		}
+		public function getDanhSachCongVanDenChoKiemDuyet($start=null, $length=null){
+			$legaldocuments = [];
+			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN']) && !$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền xem danh sách công văn chờ kiểm duyệt');
+			}
+			if($start===null){
+				if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN'] && !$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']))){
+					throw new MissingPrivilegeException('Bạn không có quyền xem danh sách công văn chờ kiểm duyệt');
+				}
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id)");
+
+
+				while($row = $result->fetch_assoc()){
+					$legaldocuments[] = $this->getCongVanDen($row['id']);
+				}
+			}else{
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id) LIMIT $start, $length");
+
+				$legaldocuments = [];
+
+				while($row = $result->fetch_assoc()){
+					$legaldocuments[] = $this->getCongVanDen($row['id']);
+				}
+			}
+			return $legaldocuments;
+		}
+		public function getDanhSachCongVanDenChoPheDuyet($start=null, $length=null){
+			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN']) && !$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền xem danh sách công văn chờ phê duyệt');
+			}
+			$legaldocuments = [];
+			if($start===null){
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id)");
+
+				while($row = $result->fetch_assoc()){
+					$legaldocuments[] = $this->getCongVanDen($row['id']);
+				}
+			}else{
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id) LIMIT $start, $length");
+
+				while($row = $result->fetch_assoc()){
+					$legaldocuments[] = $this->getCongVanDen($row['id']);
+				}
+			}
+			return $legaldocuments;
+		}
+		public function themYKienKiemDuyet($idcongvan, $ykien){
+			if(!$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền kiểm duyệt công văn đến');
+			}
+			$result = $this->dbcon->query('SELECT * FROM kiemduyet WHERE idnguoikiemduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			
+			if(!$result->num_rows){
+				throw new Exception('Bạn không thể kiểm duyệt công văn này');
+			}
+			
+			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']);
+			
+			if(!$result->num_rows){
+				throw new Exception('Công văn này không thể kiểm duyệt nữa! Chỉ có công văn đợi kiểm duyệt mới có thể kiểm duyệt!');
+			}
+			
+			$this->dbcon->query('UPDATE kiemduyet SET ykienkiemduyet=\''.$this->dbcon->realEscapeString(htmlspecialchars($ykien)).'\', thoigiankiemduyet=now() WHERE idcongvan='.$idcongvan.' AND idnguoikiemduyet='.$this->id);
+		}
+		public function suaYKienKiemDuyet($idcongvan, $ykien){
+			$this->themYKienKiemDuyet($idcongvan, $ykien);
+		}
+		public function xoaYKienKiemDuyet($idcongvan){
+			if(!$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền kiểm duyệt công văn đến');
+			}
+			$result = $this->dbcon->query('SELECT * FROM kiemduyet WHERE idnguoikiemduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			
+			if(!$result->num_rows){
+				throw new Exception('Bạn không thể xóa ý kiến kiểm duyệt công văn này');
+			}
+			
+			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']);
+			
+			if(!$result->num_rows){
+				throw new Exception('Công văn này không thể xóa kiểm duyệt! Chỉ có công văn đợi kiểm duyệt mới có thể thao tác xóa ý kiến kiểm duyệt!');
+			}
+			
+			$this->dbcon->query('DELETE FROM kienduyet WHERE idcongvan='.$idcongvan.' AND idnguoikiemduyet='.$this->id);
+		}
+		public function xacNhanYKienKiemDuyet($idcongvan){
+			if(!$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền kiểm duyệt công văn đến');
+			}
+			try{
+				$this->dbcon->startTransactionRW();
+				$result = $this->dbcon->query('SELECT * FROM kiemduyet WHERE idnguoikiemduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			
+				if(!$result->num_rows){
+					throw new Exception('Bạn không thể xác nhận ý kiến kiểm duyệt công văn này');
+				}
+
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']);
+
+				if(!$result->num_rows){
+					throw new Exception('Công văn này không thể xác nhận kiểm duyệt! Chỉ có công văn đợi kiểm duyệt mới có thể thao tác xác nhận ý kiến kiểm duyệt!');
+				}
+
+				$this->dbcon->query('UPDATE kiemduyet SET thoigiankiemduyet=now() WHERE idcongvan='.$idcongvan);
+				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DA_KIEM_DUYET'] .' WHERE id='.$idcongvan);
+				$this->dbcon->commit();
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
+			}
+		}
+		
+		public function themYKienPheDuyet($idcongvan, $ykien){
+			if(!$this->quyen->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền phê duyệt công văn đến');
+			}
+			$result = $this->dbcon->query('SELECT * FROM pheduyet WHERE idnguoipheduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			
+			if(!$result->num_rows){
+				throw new Exception('Bạn không thể phê duyệt công văn này');
+			}
+			
+			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
+			
+			if(!$result->num_rows){
+				throw new Exception('Công văn này không thể phê duyệt nữa! Chỉ có công văn đợi phê duyệt mới có thể phê duyệt!');
+			}
+			
+			$this->dbcon->query('UPDATE pheduyet SET ykienpheduyet=\''.$this->dbcon->realEscapeString(htmlspecialchars($ykien)).'\', thoigianpheduyet=now() WHERE idcongvan='.$idcongvan.' AND idnguoipheduyet='.$this->id);
+		}
+		public function suaYKienPheDuyet($idcongvan, $ykien){
+			$this->themYKienPheDuyet($idcongvan, $ykien);
+		}
+		public function xoaYKienPheDuyet($idcongvan){
+			if(!$this->quyen->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền phê duyệt công văn đến');
+			}
+			$result = $this->dbcon->query('SELECT * FROM pheduyet WHERE idnguoipheduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			
+			if(!$result->num_rows){
+				throw new Exception('Bạn không thể xóa ý kiến phê duyệt công văn này');
+			}
+			
+			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
+			
+			if(!$result->num_rows){
+				throw new Exception('Công văn này không thể xóa ý kiến phê duyệt! Chỉ có công văn đợi phê duyệt mới có thể thao tác xóa ý kiến phê duyệt!');
+			}
+			
+			$this->dbcon->query('DELETE FROM pheduyet WHERE idcongvan='.$idcongvan.' AND idnguoipheduyet='.$this->id);
+		}
+		public function xacNhanYKienPheDuyet($idcongvan){
+			if(!$this->quyen->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền phê duyệt công văn đến');
+			}
+			try{
+				$this->dbcon->startTransactionRW();
+				$result = $this->dbcon->query('SELECT * FROM pheduyet WHERE idnguoipheduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			
+				if(!$result->num_rows){
+					throw new Exception('Bạn không thể xác nhận ý kiến phê duyệt công văn này');
+				}
+
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
+
+				if(!$result->num_rows){
+					throw new Exception('Công văn này không thể xác nhận phê duyệt! Chỉ có công văn đợi phê duyệt mới có thể thao tác xác nhận ý kiến phê duyệt!');
+				}
+				
+				$this->dbcon->query('UPDATE pheduyet SET thoigianpheduyet=now() WHERE idcongvan='.$idcongvan);
+				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DA_PHE_DUYET'] .' WHERE id='.$idcongvan);
+				$this->dbcon->commit();
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
+			}
+		}
+		public function chuyenKiemDuyet($idcongvan, $idnguoikiemduyet){
+			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền chuyển cho người khác kiểm duyệt công văn');
+			}
+			try{
+				$this->dbcon->startTransactionRW();
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE idnguoinhap='.$this->id. ' AND id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DA_NHAP']);
+
+				if(!$result->num_rows){
+					throw new Exception('Bạn không thể chuyển cho người khác kiểm duyệt công văn này có thể công văn này bạn không quản lý hoặc có thể công văn này đã được kiểm duyệt rồi');
+				}
+
+				$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$idnguoikiemduyet);
+				if(!$result->num_rows){
+					throw new Exception('Người chuyển cho kiểm duyệt công văn không tồn tại!');
+				}
+
+				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET'] .' WHERE id='.$idcongvan);
+				$this->dbcon->insert('kiemduyet', ['idcongvan', 'idnguoikiemduyet'], [intval($idcongvan), intval($idnguoikiemduyet)]);
+				$this->dbcon->commit();
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
+			}
+		}
+		public function chuyenPheDuyet($idcongvan, $idnguoipheduyet){
+			if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN'])){
+				throw new MissingPrivilegeException('Bạn không có quyền chuyển cho người khác phê duyệt công văn');
+			}
+			try{
+				$this->dbcon->startTransactionRW();
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE idnguoinhap='.$this->id. ' AND id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DA_KIEM_DUYET']);
+
+				if(!$result->num_rows){
+					throw new Exception('Bạn không thể chuyển cho người khác phê duyệt công văn này có thể công văn này bạn không quản lý hoặc có thể công văn này chưa được kiểm duyệt hoặc có thể công văn này đã được phê duyệt rồi');
+				}
+
+				$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$idnguoipheduyet);
+				if(!$result->num_rows){
+					throw new Exception('Người chuyển cho phê duyệt công văn không tồn tại!');
+				}
+
+				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET'] . ' WHERE id='.$idcongvan);
+				$this->dbcon->insert('pheduyet', ['idcongvan', 'idnguoipheduyet'], [intval($idcongvan), intval($idnguoipheduyet)]);
+				$this->dbcon->commit();
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
 			}
 		}
 	}

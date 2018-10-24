@@ -159,15 +159,15 @@
 		public function getTrangThaiString(){
 			switch($this->trangthai){
 				case LEGALDOCUMENT_STATUS['DA_NHAP']:
-					return 'Đã nhập, chưa xử lý';
+					return 'Đã nhập';
 				case LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']:
-					return 'Đã nhập, chưa xử lý';
+					return 'Đợi kiểm duyệt';
 				case LEGALDOCUMENT_STATUS['DA_PHE_DUYET']:
-					return 'Đã nhập, chưa xử lý';
+					return 'Đã kiểm duyệt';
 				case LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']:
-					return 'Đã nhập, chưa xử lý';
+					return 'Đợi phê duyệt';
 				case LEGALDOCUMENT_STATUS['DA_PHE_DUYET']:
-					return 'Đã nhập, chưa xử lý';
+					return 'Đã phê duyệt';
 			}
 			return 'Không rõ trạng thái';
 		}

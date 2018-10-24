@@ -1,12 +1,10 @@
 <?php
 	try{
 		if(!$user->isDangNhap()){
-			throw new Exception('Bạn chưa đăng nhập');
+			throw new Exception('Bạn chưa đăng nhập không thể truy cập trang này');
 		}
-		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_CONG_VAN_DEN'])){
-			throw new Exception('Bạn không có quyền liệt kê danh sách loại văn bản');
-		}
-		echo '<div id="page-title">Danh sách công văn đến</div>';
+		echo '<div id="page-title">DANH SÁCH CÔNG VĂN ĐẾN CHỜ PHÊ DUYỆT</div>';
+		
 		if(isset($_GET['p'])){
 			if(is_numeric($_GET['p']) && intval($_GET['p'])>0){
 				$pp_cp = intval($_GET['p']);
@@ -16,9 +14,10 @@
 		}else{
 			$pp_cp = 1;
 		}
-		$legaldocuments = $user->getDanhSachCongVanDen(10*($pp_cp-1), 10);
-		if(count($legaldocuments)==0){
-			throw new Exception('Không có công văn đến nào ở trang này');
+		
+		$legaldocuments = $user->getDanhSachCongVanDenChoPheDuyet(($pp_cp-1)*10, 10);
+		if(!count($legaldocuments)){
+			throw new Exception('Không có công văn nào chờ phê duyệt ở trang này');
 		}
 ?>
 <div id="legaldocument-list">

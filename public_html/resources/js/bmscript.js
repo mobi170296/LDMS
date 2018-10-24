@@ -4,9 +4,9 @@
 	if(p!=null){
 		p.onclick = function(e){
 			$get('div#popup-content').$css('top', '-'+$get('div#popup-content').clientHeight+'px');
-			$get('div#left-panel').$css('filter', 'none');
-			$get('div#content').$css('filter', 'none');
-			window.setTimeout(function(e){e.$css('display', 'none')}, 500, this);
+			
+			window.setTimeout(function(e){e.$css('display', 'none');$get('div#left-panel').$css('filter', 'none');
+			$get('div#content').$css('filter', 'none');}, 500, this);
 		}
 	}
 	var pc = $get('div#popup-content');
