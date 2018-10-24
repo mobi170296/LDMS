@@ -13,5 +13,6 @@
 	$CNF['HEADER'] = ['TITLE' => '', 'STYLES' => ['/resources/css/mstyles.css'], 'SCRIPTS' => ['/resources/js/tmscript.js'],
 	'PAGE_ICON' => '/resources/images/icons/icon.ico'];
 
-	$CNF['BODY'] = ['MAIN_TEMPLATE' => $CNF['PATHS']['TEMPLATES'] . '/main.php'];
+	$CNF['BODY'] = ['MAIN_TEMPLATE' => $CNF['PATHS']['TEMPLATES'] . '/main.php',
+				   'LEGALDOCUMENT_URL'=>'/resources/legaldocuments'];
 ?>

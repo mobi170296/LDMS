@@ -1,7 +1,57 @@
 <?php
+	class Censorship{
+		public $idcongvan, $nguoikiemduyet, $ykienkiemduyet, $thoigiankiemduyet;
+		public function __construct($idcongvan, $nguoikiemduyet, $ykiemkiemduyet, $thoigiankiemduyet, $thoigianthem=null){
+			$this->idcongvan = $idcongvan;
+			$this->nguoikiemduyet = $nguoikiemduyet;
+			$this->ykienkiemduyet = $ykiemkiemduyet;
+			$this->thoigiankiemduyet = $thoigiankiemduyet;
+			$this->thoigianthem = $thoigianthem;
+		}
+		public function getIDCongVan(){
+			return $this->idcongvan;
+		}
+		public function getNguoiKiemDuyet(){
+			return $this->nguoikiemduyet;
+		}
+		public function getYKienKiemDuyet(){
+			return $this->ykienkiemduyet;
+		}
+		public function getThoiGianKiemDuyet(){
+			return $this->thoigiankiemduyet;
+		}
+		public function getThoiGianThem(){
+			return $this->thoigianthem;
+		}
+	}
+	class Approved{
+		public $idcongvan, $nguoipheduyet, $ykienpheduyet, $thoigianpheduyet;
+		public function __construct($idcongvan, $nguoipheduyet, $ykienpheduyet, $thoigianpheduyet, $thoigianthem){
+			$this->idcongvan = $idcongvan;
+			$this->nguoipheduyet = $nguoipheduyet;
+			$this->ykienpheduyet = $ykienpheduyet;
+			$this->thoigianpheduyet = $thoigianpheduyet;
+			$this->thoigianthem = $thoigianthem;
+		}
+		public function getIDCongVan(){
+			return $this->idcongvan;
+		}
+		public function getNguoiPheDuyet(){
+			return $this->nguoipheduyet;
+		}
+		public function getYKienPheDuyet(){
+			return $this->ykienpheduyet;
+		}
+		public function getThoiGianPheDuyet(){
+			return $this->thoigianpheduyet;
+		}
+		public function getThoiGianThem(){
+			return $this->thoigianthem;
+		}
+	}
 	class LegalDocumentInfo{
 		public $id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem;
-		public $donvi, $donvibanhanh, $loaivanban;
+		public $donvi, $donvibanhanh, $loaivanban, $nguoinhap, $kiemduyet, $pheduyet; 
 		public function __construct($id, $soden, $kyhieu, $thoigianden, $ngayvanban, $madonvibanhanh, $trichyeu, $nguoiky, $maloaivanban, $thoihangiaiquyet, $tentaptin, $trangthai, $idnguoinhap, $madonvi, $thoigianthem=null){
 			$this->id = $id;
 			$this->soden = $soden;
@@ -87,6 +137,39 @@
 		}
 		public function setLoaiVanBan($dti){
 			$this->loaivanban = $dti;
+		}
+		public function getNguoiNhap(){
+			return $this->nguoinhap;
+		}
+		public function setNguoiNhap($nguoinhap){
+			$this->nguoinhap = $nguoinhap;
+		}
+		public function getKiemDuyet(){
+			return $this->kiemduyet;
+		}
+		public function setKiemDuyet($kiemduyet){
+			$this->kiemduyet = $kiemduyet;
+		}
+		public function getPheDuyet(){
+			return $this->pheduyet;
+		}
+		public function setPheDuyet($pheduyet){
+			$this->pheduyet = $pheduyet;
+		}
+		public function getTrangThaiString(){
+			switch($this->trangthai){
+				case LEGALDOCUMENT_STATUS['DA_NHAP']:
+					return 'Đã nhập, chưa xử lý';
+				case LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']:
+					return 'Đã nhập, chưa xử lý';
+				case LEGALDOCUMENT_STATUS['DA_PHE_DUYET']:
+					return 'Đã nhập, chưa xử lý';
+				case LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']:
+					return 'Đã nhập, chưa xử lý';
+				case LEGALDOCUMENT_STATUS['DA_PHE_DUYET']:
+					return 'Đã nhập, chưa xử lý';
+			}
+			return 'Không rõ trạng thái';
 		}
 	}
 ?>

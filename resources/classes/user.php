@@ -1071,5 +1071,84 @@
 			}
 			return $legaldocuments;
 		}
+		public function getCongVanDen($id){
+			$viewOK = false;
+			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$id);
+			if(!$result->num_rows){
+				throw new NotExistedLegalDocumentException('Không tồn tại công văn này!');
+			}
+			$row = $result->fetch_assoc();
+			
+			if($row['idnguoinhap']==$this->id){
+				$viewOK = true;
+			}
+			$legaldocumentinfo = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
+			
+			$result = $this->dbcon->query('SELECT * FROM loaivanban WHERE maloai=\''.$row['maloaivanban'].'\'');
+			if(!$result->num_rows){
+				throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+			}
+			$subrow = $result->fetch_assoc();
+			$legaldocumentinfo->setLoaiVanBan(new DocTypeInfo($subrow['maloai'], $subrow['tenloai'], $subrow['thoigianthem']));
+			
+			$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$row['madonvibanhanh'].'\'');
+			if(!$result->num_rows){
+				throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+			}
+			$subrow = $result->fetch_assoc();
+			$legaldocumentinfo->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+			
+			$result = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
+			if(!$result->num_rows){
+				throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+			}
+			$subrow = $result->fetch_assoc();
+			$legaldocumentinfo->setDonVi(new DepartmentInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['thoigianthem']));
+			
+			$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$row['idnguoinhap']);
+			if(!$result->num_rows){
+				throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
+			}
+			$subrow = $result->fetch_assoc();
+			$legaldocumentinfo->setNguoiNhap(new UserInfo($subrow['id'], $subrow['maso'], '', $subrow['ho'], $subrow['ten'], $subrow['ngaysinh'], $subrow['email'], $subrow['sodienthoai'], $subrow['diachi'], $subrow['madonvi'], $subrow['manhom'], $subrow['tinhtrang']));
+			
+			$result = $this->dbcon->query('SELECT * FROM kiemduyet WHERE idcongvan='.$row['id']);
+			if($result->num_rows){
+				$subrow = $result->fetch_assoc();
+				if($subrow['idnguoikiemduyet']==$this->id){
+					$viewOK = true;
+				}
+				$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$subrow['idnguoikiemduyet']);
+				if(!$result->num_rows){
+					throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database');
+				}
+				$subsubrow = $result->fetch_assoc();
+				$legaldocumentinfo->setKiemDuyet(new Censorship($subrow['idcongvan'], new UserInfo($subsubrow['id'], $subsubrow['maso'], $subsubrow['matkhau'], $subsubrow['ho'], $subsubrow['ten'], $subsubrow['ngaysinh'], $subsubrow['email'], $subsubrow['sodienthoai'], $subsubrow['diachi'], $subsubrow['madonvi'], $subsubrow['manhom'], $subsubrow['tinhtrang']), $subrow['ykienkiemduyet'], $subrow['thoigiankiemduyet'], $subrow['thoigianthem']));
+			}else{
+				$legaldocumentinfo->setKiemDuyet(null);
+			}
+			
+			$result = $this->dbcon->query('SELECT * FROM pheduyet WHERE idcongvan='.$row['id']);
+			if($result->num_rows){
+				$subrow = $result->fetch_assoc();
+				if($subrow['idnguoipheduyet']==$this->id){
+					$viewOK = true;
+				}
+				$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$subrow['idnguoipheduyet']);
+				if(!$result->num_rows){
+					throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database');
+				}
+				$subsubrow = $result->fetch_assoc();
+				$legaldocumentinfo->setPheDuyet(new Approved($subrow['idcongvan'], new UserInfo($subsubrow['id'], $subsubrow['maso'], $subsubrow['matkhau'], $subsubrow['ho'], $subsubrow['ten'], $subsubrow['ngaysinh'], $subsubrow['email'], $subsubrow['sodienthoai'], $subsubrow['diachi'], $subsubrow['madonvi'], $subsubrow['manhom'], $subsubrow['tinhtrang']), $subrow['ykienpheduyet'], $subrow['thoigianpheduyet'], $subrow['thoigianthem']));
+			}else{
+				$legaldocumentinfo->setPheDuyet(null);
+			}
+			
+			if($viewOK){
+				return $legaldocumentinfo;
+			}else{
+				throw new Exception('Bạn không có quyền xem công văn này');
+			}
+		}
 	}
 ?>

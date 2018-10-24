@@ -31,7 +31,7 @@
 				echo '<td>'.$legaldocument->getKyHieu().'</td>';
 				echo '<td>'.$legaldocument->getDonViBanHanh()->getTenDonVi().'</td>';
 				echo '<td>'.$legaldocument->getTrichYeu().'</td>';
-				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$legaldocument->getID().'\']])">Chi tiết</a><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$legaldocument->getID().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$legaldocument->getID().'\']]);">Xóa</a></td>';
+				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/showiclddetail.php\', [[\'id\', \''.$legaldocument->getID().'\']])">Chi tiết</a><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$legaldocument->getID().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$legaldocument->getID().'\']]);">Xóa</a></td>';
 				echo '</tr>';
 			}
 		?>

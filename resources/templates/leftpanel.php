@@ -1,6 +1,6 @@
 <div id="left-panel">
 	<div id="logo">
-		<a id="logo-link" href="/index.php">Hệ Thống Quản lý Công Văn</a>
+		<a id="logo-link" href="/index.php">Quản lý Công Văn</a>
 	</div>
 	<?php
 	if(!$user->isDangNhap()){
