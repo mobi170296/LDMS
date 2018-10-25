@@ -162,7 +162,7 @@
 					return 'Đã nhập';
 				case LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']:
 					return 'Đợi kiểm duyệt';
-				case LEGALDOCUMENT_STATUS['DA_PHE_DUYET']:
+				case LEGALDOCUMENT_STATUS['DA_KIEM_DUYET']:
 					return 'Đã kiểm duyệt';
 				case LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']:
 					return 'Đợi phê duyệt';

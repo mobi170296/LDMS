@@ -73,7 +73,7 @@ function showFormPopup(desturl, aid){
 	$get('div#content').$css('filter', 'blur(1px)');
 	pc.innerHTML = '';
 	pc.append(createEID('div', 'loading-icon'));
-	//pc.$css('top', '0px');
+	pc.$css('top', '0px');
 	var xhr = $ajax();
 	xhr.open('post', desturl);
 	xhr.onreadystatechange = function(e){

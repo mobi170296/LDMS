@@ -4,7 +4,7 @@
 	require_once $CNF['PATHS']['CLASSES'].'/user.php';
 	header('content-type: text/html');
 	try{
-		$mcon = new MDatabase(DATABASE['HOST'], DATABASE['USERNAME'], DATABASE['PASSWORD'], DATABASE['DB_NAME']);
+		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
 		$user->dangNhap();
 		if(!$user->getQuyen()->contain(PRIVILEGES['SUA_NHOM'])){

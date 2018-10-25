@@ -248,7 +248,7 @@ table.list-table th{
 }
 table.list-table td{
 	border: 1px solid #fff;
-	padding: 5px 2em 5px 5px;
+	padding: 5px;
 	height: 10px;
 }
 table.list-table td:last-child{
@@ -256,17 +256,35 @@ table.list-table td:last-child{
 	padding: 0px;
 	width: 12em;
 }
+table.list-table div.abstract-wrapper{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 1.1em;
+}
+table.list-table div.abstract-wrapper.w15{
+	width: 15em;
+}
+table.list-table div.abstract-wrapper.w10{
+	width: 10em;
+}
 table.list-table a.action-btn{
+	box-sizing: border-box;
 	display: inline-block;
 	margin: 5px 5px;
 	padding: 2px 9px;
-	border-radius: 6px;
 	cursor: pointer;
 	user-select: none;
 	-moz-user-select: none;
 	font-family: Arial;
 	font-size: 9pt;
 	transition: all 200ms;
+	width: 24px;
+	height: 24px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
 }
 table.list-table a.positive{
 	border: 2px solid #0af;
@@ -275,15 +293,61 @@ table.list-table a.negative{
 	border: 2px solid #f00;
 }
 table.list-table a.positive:hover{
-	background-color: #0ae;
-	color: #fff;
+	box-shadow: 0px 0px 5px 0px #0af;
 }
 table.list-table a.negative:hover{
-	background-color: #f00;
-	color: #fff;
+	box-shadow: 0px 0px 5px 0px #f00;
+}
+table.list-table a.detail{
+	background-image: url(images/icons/detail.png);
+}
+table.list-table a.edit{
+	background-image: url(images/icons/edit.png);
+}
+table.list-table a.delete{
+	background-image: url(images/icons/delete.png);
+}
+table.list-table a.censorship-forward{
+	background-image: url(images/icons/censorship-forward.png);
+}
+table.list-table a.approval-forward{
+	background-image: url(images/icons/approval-forward.png);
+}
+table.list-table a.add-censorship{
+	background-image: url(images/icons/censorship.png);
+}
+table.list-table a.delete-censorship{
+	background-image: url(images/icons/censorship.png);
+}
+table.list-table a.verify-censorship{
+	background-image: url(images/icons/censorship.png);
 }
 table.list-table td:focus{
 	background-color: red;
+}
+a.text-image-btn{
+	display: inline-block;
+	border: 2px solid #0af;
+	padding: 2px 10px;
+	cursor: pointer;
+	margin: 5px;
+}
+a.text-image-btn::before{
+	box-sizing: border-box;
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: inline-block;
+	margin: 0px 5px;
+	width: 24px;
+	height: 24px;
+	content: ' ';
+	vertical-align: middle;
+}
+a.text-image-btn.censorship-forward::before{
+	background-image: url(images/icons/censorship-forward.png);
+}
+a.text-image-btn.approval-forward::before{
+	background-image: url(images/icons/approval-forward.png);
 }
 div#popup{
 	position: fixed;
@@ -362,4 +426,5 @@ div.legaldocument-info div.data-title::after{
 div.legaldocument-info div.data-content{
 	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 12pt;
+	padding-left: 2em;
 }

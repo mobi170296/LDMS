@@ -5,7 +5,7 @@
 	require_once $CNF['PATHS']['CLASSES'].'/ajaxeditresult.php';
 	header('content-type: application/json');
 	try{
-		$mcon = new MDatabase(DATABASE['HOST'], DATABASE['USERNAME'], DATABASE['PASSWORD'], DATABASE['DB_NAME']);
+		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
 		$user->dangNhap();
 		if(!$user->getQuyen()->contain(PRIVILEGES['XOA_NHOM'])){
@@ -31,11 +31,11 @@
 			echo json_encode(new AJAXEditResult(0, $e->getErrors()), JSON_UNESCAPED_UNICODE);
 			exit();
 		}catch(Exception $e){
-			echo json_encode(new AJAXEditResult(0, $e->getMessage()), JSON_UNESCAPED_UNICODE);
+			echo json_encode(new AJAXEditResult(0, [$e->getMessage()]), JSON_UNESCAPED_UNICODE);
 			exit();
 		}
 	}catch(Exception $e){
-		echo json_encode(new AJAXEditResult(0, $e->getMessage()), JSON_UNESCAPED_UNICODE);
+		echo json_encode(new AJAXEditResult(0, [$e->getMessage()]), JSON_UNESCAPED_UNICODE);
 		exit();
 	}
 ?>

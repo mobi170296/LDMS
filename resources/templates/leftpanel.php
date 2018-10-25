@@ -31,8 +31,8 @@
 			<div class="menu-l1-items">
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/addicld.php') echo ' selected-menu-item'; ?>" href="/ldm/addicld.php">Đăng ký công văn đến</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/icldlist.php') echo ' selected-menu-item'; ?>" href="/ldm/icldlist.php">Danh sách công văn</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>" href="/ldm/wcicldlist.php">Danh sách công văn chờ kiểm duyệt</a>
-				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>" href="/ldm/waicldlist.php">Danh sách công văn chờ phê duyệt</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/wcicldlist.php') echo ' selected-menu-item'; ?>" href="/ldm/wcicldlist.php">Danh sách công văn chờ kiểm duyệt</a>
+				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/waicldlist.php') echo ' selected-menu-item'; ?>" href="/ldm/waicldlist.php">Danh sách công văn chờ phê duyệt</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='') echo ' selected-menu-item'; ?>" href="">Tìm kiếm công văn</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/adddoctype.php') echo ' selected-menu-item'; ?>" href="/ldm/adddoctype.php">Thêm loại văn bản</a>
 				<a class="menu-item<?php if($_SERVER['SCRIPT_NAME']=='/ldm/doctypelist.php') echo ' selected-menu-item'; ?>" href="/ldm/doctypelist.php">Danh sách loại văn bản</a>

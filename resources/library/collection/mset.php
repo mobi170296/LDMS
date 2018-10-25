@@ -73,5 +73,13 @@
 			}
 			return $string;
 		}
+		public function contains($values){
+			foreach($values as $v){
+				if($this->contain($v)){
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 ?>

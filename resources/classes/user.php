@@ -1016,7 +1016,7 @@
 		public function getDanhSachCongVanDen($start=null, $length=null){
 			$legaldocuments = [];
 			if($start===null){
-				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE idnguoinhap='.$this->id);
+				$result = $this->dbcon->query("SELECT * FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND kiemduyet.idnguoikiemduyet={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND pheduyet.idnguoipheduyet={$this->id}");
 				while($row=$result->fetch_assoc()){
 					$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
 					$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
@@ -1043,7 +1043,7 @@
 					$legaldocuments[] = $legaldocument;
 				}
 			}else{
-				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE idnguoinhap='.$this->id.' LIMIT '. $start . ', '. $length);
+				$result = $this->dbcon->query("SELECT * FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND kiemduyet.idnguoikiemduyet={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND pheduyet.idnguoipheduyet={$this->id} LIMIT $start,$length");
 				while($row=$result->fetch_assoc()){
 					$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
 					$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
@@ -1157,9 +1157,6 @@
 				throw new MissingPrivilegeException('Bạn không có quyền xem danh sách công văn chờ kiểm duyệt');
 			}
 			if($start===null){
-				if(!$this->quyen->contain(PRIVILEGES['THEM_CONG_VAN_DEN'] && !$this->quyen->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']))){
-					throw new MissingPrivilegeException('Bạn không có quyền xem danh sách công văn chờ kiểm duyệt');
-				}
 				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id)");
 
 
@@ -1183,13 +1180,13 @@
 			}
 			$legaldocuments = [];
 			if($start===null){
-				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id)");
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id)");
 
 				while($row = $result->fetch_assoc()){
 					$legaldocuments[] = $this->getCongVanDen($row['id']);
 				}
 			}else{
-				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id) LIMIT $start, $length");
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id) LIMIT $start, $length");
 
 				while($row = $result->fetch_assoc()){
 					$legaldocuments[] = $this->getCongVanDen($row['id']);
@@ -1340,9 +1337,9 @@
 					throw new Exception('Bạn không thể chuyển cho người khác kiểm duyệt công văn này có thể công văn này bạn không quản lý hoặc có thể công văn này đã được kiểm duyệt rồi');
 				}
 
-				$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$idnguoikiemduyet);
+				$result = $this->dbcon->query("SELECT nguoidung.id FROM nguoidung JOIN quyennguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$idnguoikiemduyet} AND quyennguoidung.quyen=".PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']." UNION SELECT nguoidung.id FROM nguoidung JOIN nhom ON nguoidung.manhom=nhom.manhom JOIN quyennhomnguoidung WHERE nguoidung.id={$idnguoikiemduyet} AND quyennhomnguoidung.quyen=".PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']);
 				if(!$result->num_rows){
-					throw new Exception('Người chuyển cho kiểm duyệt công văn không tồn tại!');
+					throw new Exception('Không thể chuyển cho người dùng này kiểm duyệt công văn!');
 				}
 
 				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET'] .' WHERE id='.$idcongvan);
@@ -1365,7 +1362,8 @@
 					throw new Exception('Bạn không thể chuyển cho người khác phê duyệt công văn này có thể công văn này bạn không quản lý hoặc có thể công văn này chưa được kiểm duyệt hoặc có thể công văn này đã được phê duyệt rồi');
 				}
 
-				$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$idnguoipheduyet);
+				$result = $this->dbcon->query("SELECT nguoidung.id FROM nguoidung JOIN quyennguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$idnguoipheduyet} AND quyennguoidung.quyen=".PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']." UNION SELECT nguoidung.id FROM nguoidung JOIN nhom ON nguoidung.manhom=nhom.manhom JOIN quyennhomnguoidung WHERE nguoidung.id={$idnguoipheduyet} AND quyennhomnguoidung.quyen=".PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']);
+				
 				if(!$result->num_rows){
 					throw new Exception('Người chuyển cho phê duyệt công văn không tồn tại!');
 				}
@@ -1377,6 +1375,17 @@
 				$this->dbcon->rollback();
 				throw $e;
 			}
+		}
+		public function getDanhSachNguoiDungByQuyen($quyen){
+			$result = $this->dbcon->query("SELECT nguoidung.*, donvi.tendonvi, donvi.email FROM nguoidung INNER JOIN donvi ON nguoidung.madonvi=donvi.madonvi INNER JOIN quyennguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE quyennguoidung.quyen={$quyen} UNION SELECT nguoidung.*, donvi.tendonvi, donvi.email FROM nguoidung INNER JOIN donvi ON nguoidung.madonvi=donvi.madonvi INNER JOIN nhom ON nguoidung.manhom=nhom.manhom INNER JOIN quyennhomnguoidung ON nhom.manhom=quyennhomnguoidung.manhom WHERE quyennhomnguoidung.quyen={$quyen}");
+			
+			$userinfos = [];
+			while($row = $result->fetch_assoc()){
+				$userinfo = new UserInfo($row['id'], $row['maso'], $row['matkhau'], $row['ho'], $row['ten'], $row['ngaysinh'], $row['email'], $row['sodienthoai'], $row['diachi'], $row['madonvi'], $row['manhom'], $row['tinhtrang']);
+				$userinfo->setDonVi(new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], null));
+				$userinfos[] = $userinfo;
+			}
+			return $userinfos;
 		}
 	}
 ?>

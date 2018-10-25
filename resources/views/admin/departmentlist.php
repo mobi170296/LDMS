@@ -34,7 +34,7 @@
 				echo '<td>'.$department->getTenDonVi().'</td>';
 				echo '<td>'.$department->getEmail().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($department->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive" onclick="showFormPopup(\'/ajax/editdepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])">Sửa</a><a class="action-btn negative" onclick="showFormPopup(\'/ajax/deletedepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])">Xóa</a></td>';
+				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])"></a></td>';
 				echo '</tr>';
 			}
 		?>

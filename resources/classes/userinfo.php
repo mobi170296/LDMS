@@ -2,6 +2,7 @@
 	require_once(__DIR__ . '/../library/datetime/mdatetime.php');
 	class UserInfo{
 		public $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $quyen;
+		public $donvi;
 		public function __construct($id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang){
 			$this->id = $id;
 			$this->maso = $maso;
@@ -64,6 +65,12 @@
 		}
 		public function setQuyen($quyen){
 			$this->quyen = $quyen;
+		}
+		public function setDonVi($d){
+			$this->donvi = $d;
+		}
+		public function getDonVi(){
+			return $this->donvi;
 		}
 	}
 ?>
