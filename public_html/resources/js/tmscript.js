@@ -27,6 +27,7 @@
 	Node.prototype.$gets = function(query){
 		return this.querySelectorAll(query);
 	}
+	HTMLOptionsCollection.prototype.removeAll=function(){while(this.length)this.remove(0);}
 })();
 
 function $get(query){
@@ -37,6 +38,16 @@ function $gets(query){
 }
 function $create(name){
 	return document.createElement(name);
+}
+function createEID(name, id){
+	var e = $create(name);
+	e.id = id;
+	return e;
+}
+function createEC(name, cls){
+	var e = $create(name);
+	e.className = cls;
+	return e;
 }
 function $ajax(){
 	if(typeof ActiveXObject == 'function'){
@@ -55,15 +66,17 @@ function getMaxDayOfMonth(month, year){
 	var maxday = [31, (m4 & !(m100 ^ m400)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	return maxday[month - 1];
 }
-function createEID(name, id){
-	var e = $create(name);
-	e.id = id;
-	return e;
-}
-function createEC(name, cls){
-	var e = $create(name);
-	e.className = cls;
-	return e;
+function updateDaySelect(ds,ms,ys){
+	if(ds&&ms&&ys){
+		var m=ms.value,y=ys.value;
+		ds.options.removeAll();
+		var max=getMaxDayOfMonth(m,y);
+		for(var i=1;i<=max;i++){
+			var o=$create('option');
+			o.value=o.innerHTML=i;
+			ds.options.add(o);
+		}
+	}
 }
 function showFormPopup(desturl, aid){
 	var popup = $get('div#popup');

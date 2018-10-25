@@ -108,14 +108,14 @@ try{
 					}
 				?>
 			</select> /
-			<select name="thangden">
+			<select name="thangden" onchange="updateDaySelect(this.form['ngayden'],this,this.form['namden']);">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.($currentdate['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="namden">
+			<select name="namden" onchange="updateDaySelect(this.form['ngayden'],this.form['thangden'],this);">
 				<?php 
 					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.($currentdate['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
@@ -153,14 +153,14 @@ try{
 					}
 				?>
 			</select> /
-			<select name="thangvanban">
+			<select name="thangvanban" onchange="updateDaySelect(this.form['ngayvanban'],this,this.form['namvanban']);">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.($currentdate['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="namvanban">
+			<select name="namvanban" onchange="updateDaySelect(this.form['ngayvanban'],this.form['thangvanban'],this);">
 				<?php 
 					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.($currentdate['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
@@ -197,7 +197,7 @@ try{
 			</select>
 		</div>
 		<div>Thời hạn giải quyết</div>
-		<div><input type="checkbox" name="thoihangiaiquyet" value="" checked="checked"/></div>
+		<div><input type="checkbox" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;" checked="checked"/></div>
 		<div>
 			<select name="ngaygiaiquyet">
 				<?php 
@@ -206,14 +206,14 @@ try{
 					}
 				?>
 			</select> /
-			<select name="thanggiaiquyet">
+			<select name="thanggiaiquyet" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this,this.form['namgiaiquyet']);">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.($currentdate['mon']==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="namgiaiquyet">
+			<select name="namgiaiquyet" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this.form['thanggiaiquyet'],this);">
 				<?php 
 					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.($currentdate['year']==$i?'selected="selected"':'').'>'.$i.'</option>';
@@ -227,6 +227,7 @@ try{
 		</form>
 	</div>
 </div>
+<!--
 <script type="text/javascript">
 	var addicldform = document.forms['add-icld'];
 	addicldform['thangden'].onchange = function(e){
@@ -323,6 +324,7 @@ try{
 		this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;
 	}
 </script>
+-->
 <?php
 }catch(Exception $e){
 	echo '<div class="error-message-box">'.$e->getMessage().'</div>';

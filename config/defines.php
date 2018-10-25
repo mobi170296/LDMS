@@ -42,6 +42,32 @@ define('PRIVILEGES',
 	   ]
 );
 
+define('PRIVILEGES_LABEL',
+	   [1 => 'Thêm người dùng',
+		'Sửa thông tin người dùng',
+		'Xóa thông tin người dùng',
+		'Thêm nhóm',
+		'Sửa nhóm',
+		'Xóa nhóm',
+		'Cấp quyền cho người dùng',
+		'Cấp quyền cho nhóm',
+		'Thêm Khoa Đơn Vị',
+		'Sửa thông tin Khoa Đơn vị',
+		'Xóa thông tin Khoa Đơn vị',
+		'Thêm loại văn bản',
+		'Sửa thông tin loại văn bản',
+		'Xóa loại văn bản',
+		'Thêm đơn vị ban hành',
+		'Sửa thông tin đơn vị ban hành',
+		'Xóa thông tin đơn vị ban hành',
+		'Thêm công văn đến',
+		'Sửa thông tin công văn đến',
+		'Xóa công văn đến',
+		'Kiểm duyệt công văn đến',
+		'Phê duyệt công văn đến'
+	   ]
+);
+
 define('LEGALDOCUMENT_STATUS',
 	  [
 		  'DA_NHAP' => 1,

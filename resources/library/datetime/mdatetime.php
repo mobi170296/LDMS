@@ -39,13 +39,13 @@
 		public function getYear(){
 			return $this->year;
 		}
-		public function getHour(){
+		public function getHours(){
 			return $this->hour;
 		}
-		public function getMinute(){
+		public function getMinutes(){
 			return $this->minute;
 		}
-		public function getSecond(){
+		public function getSeconds(){
 			return $this->second;
 		}
 		public function getDateString($delimiter='/'){

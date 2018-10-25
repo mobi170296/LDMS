@@ -757,6 +757,9 @@
 				if($docinfo->getMaDonVi()!=$this->getMaDonVi()){
 					throw new Exception('Bạn không thể cập nhật công văn của đơn vị khác');
 				}
+				if($docinfo->getIDNguoiNhap()!=$this->getID()){
+					throw new Exception('Bạn không thể cập nhật công văn không phải của bạn nhập');
+				}
 				$result = $this->dbcon->lockRow('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\'');
 				if($result->num_rows==0){
 					throw new NotExistedIssuedUnitException('Đơn vị ban hành không tồn tại không thể thay đổi thông tin công văn');
