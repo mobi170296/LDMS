@@ -41,7 +41,7 @@ function adjustHeightMenu(){
 		}else{
 			var l=$get('#left-panel');
 			if(l){
-				l.$css('display','none');
+				l.$css('display',null);
 			}
 		}
 		adjustHeightMenu();
