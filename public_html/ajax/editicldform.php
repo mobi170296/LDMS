@@ -18,13 +18,13 @@
 		$legaldocument = $user->getCongVanDen($_POST['id']);
 		$currentdate = getdate();
 		$dtthoigianden = MDateTime::parseDateTime($legaldocument->getThoiGianDen());
-		$dtngayvanban = MDateTime::parseDate($legaldocument->getThoiGianDen());
+		$dtngayvanban = MDateTime::parseDate($legaldocument->getNgayVanBan());
 		$dtthoihangiaiquyet = MDateTime::parseDate($legaldocument->getThoiHanGiaiQuyet());
 ?>
 
 <div id="add-icld-form-wrapper">
 	<div id="add-icld-form">
-		<form action="" method="post" enctype="multipart/form-data" name="add-icld">
+		<form action="/ajax/editicld.php" method="post" enctype="multipart/form-data" name="add-icld" onsubmit="ajaxSubmitEdit(this);">
 		<div>Số đến</div>
 		<div><input type="text" name="soden" value="<?php echo $legaldocument->getSoDen(); ?>"/></div>
 		<div>Ký hiệu</div>
@@ -33,7 +33,7 @@
 		<div>
 			<select name="ngayden">
 				<?php 
-					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
+					for($i=1;$i<=MCalendar::getMaxDayOfMonth($dtthoigianden->getMonth(), $dtthoigianden->getYear());$i++){
 						echo '<option value="'.$i.'" '.($dtthoigianden!=null&&$dtthoigianden->getDay()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
@@ -47,7 +47,7 @@
 			</select> /
 			<select name="namden" onchange="updateDaySelect(this.form['ngayden'],this.form['thangden'],this);">
 				<?php 
-					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
+					for($i=$dtthoigianden->getYear() - 5;$i<=$dtthoigianden->getYear() + 5;$i++){
 						echo '<option value="'.$i.'" '.($dtthoigianden!=null&&$dtthoigianden->getYear()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
@@ -78,7 +78,7 @@
 		<div>
 			<select name="ngayvanban">
 				<?php 
-					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
+					for($i=1;$i<=MCalendar::getMaxDayOfMonth($dtngayvanban->getMonth(), $dtngayvanban->getYear());$i++){
 						echo '<option value="'.$i.'" '.($dtngayvanban!=null&&$dtngayvanban->getDay()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
@@ -92,7 +92,7 @@
 			</select> /
 			<select name="namvanban" onchange="updateDaySelect(this.form['ngayvanban'],this.form['thangvanban'],this);">
 				<?php 
-					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
+					for($i=$dtngayvanban->getYear() - 5;$i<=$dtngayvanban->getYear() + 5;$i++){
 						echo '<option value="'.$i.'" '.($dtngayvanban!=null&&$dtngayvanban->getYear()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
@@ -127,23 +127,23 @@
 			</select>
 		</div>
 		<div>Thời hạn giải quyết</div>
-		<div><input type="checkbox" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;" <?php echo ($legaldocument->getThoiHanGiaiQuyet()!=''?'checked="checked"':'');?>/></div>
+		<div><input type="checkbox" name="thoihangiaiquyet" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;"/></div>
 		<div>
-			<select name="ngaygiaiquyet">
+			<select name="ngaygiaiquyet" disabled="disabled">
 				<?php 
 					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
 						echo '<option value="'.$i.'" '.($dtthoihangiaiquyet!=null&&$dtthoihangiaiquyet->getDay()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="thanggiaiquyet" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this,this.form['namgiaiquyet']);">
+			<select name="thanggiaiquyet" disabled="disabled" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this,this.form['namgiaiquyet']);">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.($dtthoihangiaiquyet!=null&&$dtthoihangiaiquyet->getMonth()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="namgiaiquyet" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this.form['thanggiaiquyet'],this);">
+			<select name="namgiaiquyet" disabled="disabled" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this.form['thanggiaiquyet'],this);">
 				<?php 
 					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.($dtthoihangiaiquyet!=null&&$dtthoihangiaiquyet->getYear()==$i?'selected="selected"':'').'>'.$i.'</option>';
@@ -153,7 +153,9 @@
 		</div>
 		<div>Tập tin đính kèm</div>
 		<div><input type="file" name="taptindinhkem" accept="application/pdf"/></div>
-		<div><button type="submit" name="addicld">Thêm công văn đến</button></div>
+		<div><input type="hidden" name="editicld" value="editicld"/></div>
+		<div><input type="hidden" name="id" value="<?php echo $_POST['id'];?>"/></div>
+		<div><button type="submit">Lưu thông tin mới</button></div>
 		</form>
 	</div>
 </div>

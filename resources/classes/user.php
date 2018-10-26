@@ -754,6 +754,14 @@
 				
 				$docinfo = $legaldocument->getLegalDocumentByID($id);
 				# Không có ngoại lệ tức là công văn đã tồn tại có thể sửa thông tin
+				
+				if($docinfo->getSoDen()!=$newdocinfo->getSoDen()){
+					$result = $this->dbcon->query("SELECT EXISTS(SELECT id FROM congvanden WHERE soden={$newdocinfo->getSoDen()} AND madonvi='{$this->getMaDonVi()}')");
+					$row = $result->fetch_row();
+					if($row[0]){
+						throw new Exception('Đơn vị hiện tại đã có công văn có số đến này!');
+					}
+				}
 				if($docinfo->getMaDonVi()!=$this->getMaDonVi()){
 					throw new Exception('Bạn không thể cập nhật công văn của đơn vị khác');
 				}
@@ -770,13 +778,14 @@
 					throw new NotExistedDocTypeException('Loại văn bản không tồn tại không thể thay đổi thông tin công văn');
 				}
 				
+				/*
 				#Kiểm tra thử
 				#Nếu người dùng này đang nhập công văn thì chắc chắn rằng đơn vị nhập công văn sẽ tồn tại
 				$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonVi()).'\'');
 				if($result->num_rows==0){
 					throw new NotExistedDepartmentException('Đơn vị nhận văn bản không tồn tại không thể thay đổi thông tin');
 				}
-				
+				*/
 				$result = $this->dbcon->lockRow('SELECT * FROM congvanden WHERE id!='.$id.' AND soden='.$newdocinfo->getSoDen().' AND madonvi= \''.$this->dbcon->realEscapeString($newdocinfo->getMaDonVi()).'\' AND year(thoigianden)=year(\''.$newdocinfo->getThoiGianDen().'\')');
 				
 				if($result->num_rows){
@@ -799,27 +808,23 @@
 										   ', trichyeu=\''.$this->dbcon->realEscapeString($newdocinfo->getTrichYeu()).'\''.
 										   ', nguoiky=\''.$this->dbcon->realEscapeString($newdocinfo->getNguoiKy()).'\''.
 										   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.
-										   ', thoihangiaiquyet='.MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()).
+											($newdocinfo->getThoiHanGiaiQuyet()!=null?
+										   ', thoihangiaiquyet='.MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()):'').
 										   ', tentaptin=\''.$this->dbcon->realEscapeString($filename).'\''.
-										   ', trangthai='.$newdocinfo->getTrangThai().
-										   ', idnguoinhap='.$newdocinfo->getIDNguoiNhap().
-										   ', madonvi=\''.$newdocinfo->getMaDonVi().'\''.
 										   ' WHERE id='.$id);
 					}
-				}
-				$this->dbcon->query('UPDATE congvanden SET soden='.$newdocinfo->getSoDen().
+				}else{
+					$this->dbcon->query('UPDATE congvanden SET soden='.$newdocinfo->getSoDen().
 										   ', kyhieu=\''.$this->dbcon->realEscapeString($newdocinfo->getKyHieu()).'\''.
 										   ', thoigianden=\''.$this->dbcon->realEscapeString($newdocinfo->getThoiGianDen()).'\''.
 										   ', ngayvanban=\''.$this->dbcon->realEscapeString($newdocinfo->getNgayVanBan()).'\''.
 										   ', madonvibanhanh=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\''.
 										   ', trichyeu=\''.$this->dbcon->realEscapeString($newdocinfo->getTrichYeu()).'\''.
 										   ', nguoiky=\''.$this->dbcon->realEscapeString($newdocinfo->getNguoiKy()).'\''.
-										   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.
-										   ', thoihangiaiquyet='.MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()).
-										   ', trangthai='.$newdocinfo->getTrangThai().
-										   ', idnguoinhap='.$newdocinfo->getIDNguoiNhap().
-										   ', madonvi=\''.$newdocinfo->getMaDonVi().'\''.
+										   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.($newdocinfo->getThoiHanGiaiQuyet()!=null?
+										   ', thoihangiaiquyet='.MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()):'').
 										   ' WHERE id='.$id);
+				}
 				$this->dbcon->commit();
 			}catch(Exception $e){
 				$this->dbcon->rollback();
@@ -827,7 +832,7 @@
 			}
 		}
 		public function xoaCongVanDen($id, $destfile){
-			if(!$this->dbcon->contain($PRIVILEGES['XOA_CONG_VAN_DEN'])){
+			if(!$this->quyen->contain(PRIVILEGES['XOA_CONG_VAN_DEN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền xóa công văn');
 			}
 			try{
