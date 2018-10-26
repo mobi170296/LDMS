@@ -3,7 +3,7 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập');
 		}
-		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_CONG_VAN_DEN'])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'], PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'], PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']])){
 			throw new Exception('Bạn không có quyền liệt kê danh sách loại văn bản');
 		}
 		echo '<div id="page-title">Danh sách công văn đến</div>';

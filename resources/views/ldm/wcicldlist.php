@@ -35,8 +35,8 @@
 				echo <<<CONTROLBTN
 				<td>
 				<a class="action-btn positive detail" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Chi tiết công văn"></a>
-				<a class="action-btn positive add-censorship" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện cho ý kiến kiểm duyệt"></a>
-				<a class="action-btn positive delete-censorship" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện xóa ý kiến kiểm duyệt"></a>
+				<a class="action-btn positive add-censorship" onclick="showFormPopup('/ajax/addcensorshipform.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện cho ý kiến kiểm duyệt"></a>
+				<a class="action-btn positive delete-censorship" onclick="showFormPopup('/ajax/deletecensorshipform.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện xóa ý kiến kiểm duyệt"></a>
 				<a class="action-btn positive verify-censorship" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện xác nhận ý kiến kiểm duyệt"></a>
 				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deleteicldform.php', [['id', '{$legaldocument->getID()}']]);" title="Xóa công văn"></a>
 				</td>

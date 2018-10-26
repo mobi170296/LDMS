@@ -321,13 +321,13 @@ table.list-table a.approval-forward{
 	background-image: url(images/icons/approval-forward.png);
 }
 table.list-table a.add-censorship{
-	background-image: url(images/icons/censorship.png);
+	background-image: url(images/icons/add-censorship.png);
 }
 table.list-table a.delete-censorship{
-	background-image: url(images/icons/censorship.png);
+	background-image: url(images/icons/delete-censorship.png);
 }
 table.list-table a.verify-censorship{
-	background-image: url(images/icons/censorship.png);
+	background-image: url(images/icons/verify-censorship.png);
 }
 table.list-table td:focus{
 	background-color: red;

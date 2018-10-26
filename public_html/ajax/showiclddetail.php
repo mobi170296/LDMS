@@ -45,16 +45,20 @@
 	<div class="data-content"><?php echo $legaldocument->getDonVi()->getTenDonVi(); ?></div>
 	<div class="data-title">Thời gian nhập</div>
 	<div class="data-content"><?php echo $legaldocument->getThoiGianThem(); ?></div>
+	<div class="data-title">Ý kiến kiểm duyệt</div>
+	<div class="data-content"><?php echo ($legaldocument->getKiemDuyet()!=null)?$legaldocument->getKiemDuyet()->getYKienKiemDuyet():'<font color="red">Chưa kiểm duyệt</font>'; ?></div>
+	<div class="data-title">Thời gian nhập</div>
+	<div class="data-content"><?php echo ($legaldocument->getPheDuyet()!=null)?$legaldocument->getPheDuyet()->getYKienPheDuyet():'<font color="red">Chưa phê duyệt</font>'; ?></div>
 	
 	
 	<div>
 		<?php
-			if($legaldocument->getTrangThai()==LEGALDOCUMENT_STATUS['DA_NHAP']){
+			if($legaldocument->getTrangThai()==LEGALDOCUMENT_STATUS['DA_NHAP']&&$legaldocument->getIDNguoiNhap()==$user->getID()){
 				echo <<<BUTTON
 				<a class="text-image-btn censorship-forward" onClick="showFormPopup('/ajax/censorshipforwardform.php',[['id', '{$_POST['id']}']])">Chuyển kiểm duyệt</a>
 BUTTON;
 			}
-			if($legaldocument->getTrangThai()==LEGALDOCUMENT_STATUS['DA_KIEM_DUYET']){
+			if($legaldocument->getTrangThai()==LEGALDOCUMENT_STATUS['DA_KIEM_DUYET']&&$legaldocument->getIDNguoiNhap()==$user->getID()){
 				echo <<<BUTTON
 				<a class="text-image-btn approval-forward" onClick="showFormPopup('/ajax/approvalforwardform.php',[['id', '{$_POST['id']}']])">Chuyển phê duyệt</a>
 BUTTON;
