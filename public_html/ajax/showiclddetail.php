@@ -2,7 +2,7 @@
 	session_start();
 	require_once __DIR__.'/../../config/config.php';
 	require_once $CNF['PATHS']['CLASSES'].'/user.php';
-
+	require_once $CNF['PATHS']['LIBRARY'].'/datetime/mdatetime.php';
 	try{
 		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
@@ -24,9 +24,9 @@
 	<div class="data-title">Ký hiệu</div>
 	<div class="data-content"><?php echo $legaldocument->getKyHieu(); ?></div>
 	<div class="data-title">Thời gian đến</div>
-	<div class="data-content"><?php echo $legaldocument->getThoiGianDen(); ?></div>
+	<div class="data-content"><?php echo MDateTime::parseDateTime($legaldocument->getThoiGianDen())->getDateTimeString('/', ':'); ?></div>
 	<div class="data-title">Ngày văn bản</div>
-	<div class="data-content"><?php echo $legaldocument->getNgayVanBan(); ?></div>
+	<div class="data-content"><?php echo MDateTime::parseDate($legaldocument->getNgayVanBan())->getDateString('/'); ?></div>
 	<div class="data-title">Đơn vị ban hành</div>
 	<div class="data-content"><?php echo $legaldocument->getDonViBanHanh()->getTenDonVi(); ?></div>
 	<div class="data-title">Trích yếu</div>
@@ -36,7 +36,7 @@
 	<div class="data-title">Loại văn bản</div>
 	<div class="data-content"><?php echo $legaldocument->getLoaiVanBan()->getTenLoai(); ?></div>
 	<div class="data-title">Thời hạn giải quyết</div>
-	<div class="data-content"><?php echo $legaldocument->getThoiHanGiaiQuyet(); ?></div>
+	<div class="data-content"><?php echo $legaldocument->getThoiHanGiaiQuyet()!=''?'<font color="red">'.MDateTime::parseDate($legaldocument->getThoiHanGiaiQuyet())->getDateString('/').'</font>':'<font color="blue">Không có thời hạn giải quyêt</font>'; ?></div>
 	<div class="data-title">Trạng thái</div>
 	<div class="data-content"><?php echo $legaldocument->getTrangThaiString(); ?></div>
 	<div class="data-title">Người nhập</div>
@@ -44,11 +44,11 @@
 	<div class="data-title">Đơn vị nhận văn bản</div>
 	<div class="data-content"><?php echo $legaldocument->getDonVi()->getTenDonVi(); ?></div>
 	<div class="data-title">Thời gian nhập</div>
-	<div class="data-content"><?php echo $legaldocument->getThoiGianThem(); ?></div>
+	<div class="data-content"><?php echo MDateTime::parseDateTime($legaldocument->getThoiGianThem())->getDateTimeString('/', ':'); ?></div>
 	<div class="data-title">Ý kiến kiểm duyệt</div>
-	<div class="data-content"><?php echo ($legaldocument->getKiemDuyet()!=null)?$legaldocument->getKiemDuyet()->getYKienKiemDuyet():'<font color="red">Chưa kiểm duyệt</font>'; ?></div>
-	<div class="data-title">Thời gian nhập</div>
-	<div class="data-content"><?php echo ($legaldocument->getPheDuyet()!=null)?$legaldocument->getPheDuyet()->getYKienPheDuyet():'<font color="red">Chưa phê duyệt</font>'; ?></div>
+	<div class="data-content"><?php echo ($legaldocument->getKiemDuyet()!=null&&$legaldocument->getKiemDuyet()->getYKienKiemDuyet()!='')?'<font color="blue">'.$legaldocument->getKiemDuyet()->getYKienKiemDuyet().'</font>':'<font color="red">Chưa kiểm duyệt</font>'; ?></div>
+	<div class="data-title">Ý kiến phê duyệt</div>
+	<div class="data-content"><?php echo ($legaldocument->getPheDuyet()!=null&&$legaldocument->getPheDuyet()->getYKienPheDuyet()!='')?'<font color="blue">'.$legaldocument->getPheDuyet()->getYKienPheDuyet().'</font>':'<font color="red">Chưa phê duyệt</font>'; ?></div>
 	
 	
 	<div>

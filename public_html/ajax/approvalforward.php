@@ -5,14 +5,14 @@
 	require_once $CNF['PATHS']['CLASSES'].'/ajaxeditresult.php';
 	header('content-type: application/json');
 	try{
+		if(!isset($_POST['approvalicld'])){
+			throw new Exception('Yêu cầu không hợp lệ');
+		}
 		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
 		$user->dangNhap();
 		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_CONG_VAN_DEN'])){
 			throw new Exception('Bạn không có quyền chuyển phê duyệt công văn đến');
-		}
-		if(!isset($_POST['approvalicld'])){
-			throw new Exception('Yêu cầu không hợp lệ');
 		}
 		try{
 			$data_error = [];

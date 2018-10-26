@@ -5,8 +5,11 @@
 	require_once $CNF['PATHS']['CLASSES'].'/ajaxeditresult.php';
 	header('content-type: application/json');
 	try{
-		if(!isset($_POST['id'])||!is_numeric($_POST['id'])){
+		if(!isset($_POST['deletecensorship'])){
 			throw new Exception('Yêu cầu không hợp lệ');
+		}
+		if(!isset($_POST['id'])||!is_numeric($_POST['id'])){
+			throw new Exception('Công văn này không tồn tại');
 		}
 		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);

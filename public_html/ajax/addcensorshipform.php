@@ -15,6 +15,9 @@
 		}
 		
 		$legaldocument = $user->getCongVanDen($_POST['id']);
+		if($legaldocument->getTrangThai()!=LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']){
+			throw new Exception('Công văn này không thể kiểm duyệt');
+		}
 ?>
 	<div id="add-censorship-form">
 		<form action="/ajax/addcensorship.php" method="post" onSubmit="ajaxSubmitEdit(this);return false;">

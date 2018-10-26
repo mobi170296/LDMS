@@ -20,6 +20,11 @@
 		$dtthoigianden = MDateTime::parseDateTime($legaldocument->getThoiGianDen());
 		$dtngayvanban = MDateTime::parseDate($legaldocument->getNgayVanBan());
 		$dtthoihangiaiquyet = MDateTime::parseDate($legaldocument->getThoiHanGiaiQuyet());
+		/*
+		if($dtthoihangiaiquyet==null){
+			$dtthoihangiaiquyet = new MDateTime($currentdate['mday'],$currentdate['mon'],$currentdate['year']);
+		}
+		*/
 ?>
 
 <div id="add-icld-form-wrapper">
@@ -126,7 +131,7 @@
 				?>
 			</select>
 		</div>
-		<div>Thời hạn giải quyết</div>
+		<div>Thời hạn giải quyết <?php echo $dtthoihangiaiquyet==null?'<font color="#f70"><b>(Hiện chưa có thời hạn giải quyết)<b></font>':'';?></div>
 		<div><input type="checkbox" name="thoihangiaiquyet" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;"/></div>
 		<div>
 			<select name="ngaygiaiquyet" disabled="disabled">

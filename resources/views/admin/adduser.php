@@ -81,14 +81,14 @@
 				}
 				?>
 			</select>/
-			<select name="thang">
+			<select name="thang" onChange="updateDaySelect(this.form['ngay'],this,this.form['nam'])">
 				<?php
 				for($i=1; $i<=12; $i++){
 					echo '<option value="'.$i.'" '.(isset($_POST['thang']) && $_POST['thang']==$i ? 'selected="selected"' : '').'>'.$i.'</option>';
 				}
 				?>
 			</select>/
-			<select name="nam">
+			<select name="nam" onChange="updateDaySelect(this.form['ngay'],this.form['thang'],this)">
 				<?php
 				for($i=2010; $i>=1950; $i--){
 					echo '<option value="'.$i.'" '.(isset($_POST['nam']) && $_POST['nam']==$i ? 'selected="selected"' : '') .'>'.$i.'</option>';
@@ -128,6 +128,7 @@
 		</form>
 		</div>
 	</div>
+<!--
 	<script type="text/javascript">
 		document.forms['add-user']['thang'].onchange = function(e){
 			var vm = this.value;
@@ -156,6 +157,7 @@
 			}
 		}
 	</script>
+-->
 <?php
 			}catch(Exception $e){
 				echo $e->getMessage();

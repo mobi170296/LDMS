@@ -7,6 +7,7 @@
 	require_once $CNF['PATHS']['LIBRARY'] . '/datetime/mdatetime.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/collection/mset.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/datachecker/datachecker.php';
+	require_once $CNF['PATHS']['LIBRARY'] . '/word/mword.php';
 
 	require_once __DIR__ . '/legaldocument.php';
 	require_once __DIR__ . '/userinfo.php';
@@ -1263,7 +1264,10 @@
 				if(!$result->num_rows){
 					throw new Exception('Bạn không thể xác nhận ý kiến kiểm duyệt công văn này');
 				}
-
+				$row = $result->fetch_assoc();
+				if(MWord::count($row['ykienkiemduyet'])<3){
+					throw new Exception('Ý kiến kiểm duyệt không hợp lệ không thể xác nhận kiểm duyệt được!');
+				}
 				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']);
 
 				if(!$result->num_rows){
@@ -1304,19 +1308,28 @@
 			if(!$this->quyen->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
 				throw new MissingPrivilegeException('Bạn không có quyền phê duyệt công văn đến');
 			}
-			$result = $this->dbcon->query('SELECT * FROM pheduyet WHERE idnguoipheduyet='.$this->id . ' AND idcongvan='.$idcongvan);
+			try{
+				$this->dbcon->startTransactionRW();
+				$result = $this->dbcon->query('SELECT * FROM pheduyet WHERE idnguoipheduyet='.$this->id . ' AND idcongvan='.$idcongvan);
 			
-			if(!$result->num_rows){
-				throw new Exception('Bạn không thể xóa ý kiến phê duyệt công văn này');
+				if(!$result->num_rows){
+					throw new Exception('Bạn không thể xóa ý kiến phê duyệt công văn này');
+				}
+
+				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
+
+				if(!$result->num_rows){
+					throw new Exception('Công văn này không thể xóa ý kiến phê duyệt! Chỉ có công văn đợi phê duyệt mới có thể thao tác xóa ý kiến phê duyệt!');
+				}
+
+				$this->dbcon->query('DELETE FROM pheduyet WHERE idcongvan='.$idcongvan.' AND idnguoipheduyet='.$this->id);
+				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DA_KIEM_DUYET'].' WHERE id='.$idcongvan);
+				
+				$this->dbcon->commit();
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
 			}
-			
-			$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
-			
-			if(!$result->num_rows){
-				throw new Exception('Công văn này không thể xóa ý kiến phê duyệt! Chỉ có công văn đợi phê duyệt mới có thể thao tác xóa ý kiến phê duyệt!');
-			}
-			
-			$this->dbcon->query('DELETE FROM pheduyet WHERE idcongvan='.$idcongvan.' AND idnguoipheduyet='.$this->id);
 		}
 		public function xacNhanYKienPheDuyet($idcongvan){
 			if(!$this->quyen->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
@@ -1329,7 +1342,10 @@
 				if(!$result->num_rows){
 					throw new Exception('Bạn không thể xác nhận ý kiến phê duyệt công văn này');
 				}
-
+				$row = $result->fetch_assoc();
+				if(MWord::count($row['ykienpheduyet'])<3){
+					throw new Exception('Ý kiến phê duyệt không hợp lệ không thể xác nhận phê duyệt được!');
+				}
 				$result = $this->dbcon->query('SELECT * FROM congvanden WHERE id='.$idcongvan. ' AND trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
 
 				if(!$result->num_rows){

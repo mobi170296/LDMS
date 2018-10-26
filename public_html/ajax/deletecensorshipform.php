@@ -21,6 +21,7 @@
 			<div id="page-title">Xóa kiểm duyệt công văn "<?php echo $legaldocument->getKyHieu(); ?>" của đơn vị "<?php echo $legaldocument->getDonVi()->getTenDonVi(); ?>"</div>
 			
 			<div><input type="hidden" name="id" value="<?php echo $legaldocument->getID(); ?>"/></div>
+			<div><input type="hidden" name="deletecensorship" value="deletecensorship"/></div>
 			<div><button type="submit">Xóa ý kiến</button></div>
 		</form>
 	</div>

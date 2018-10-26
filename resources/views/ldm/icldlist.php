@@ -34,9 +34,9 @@
 				echo '<td>'.$legaldocument->getTrangThaiString().'</td>';
 				echo <<<CONTROLBTN
 				<td>
-				<a class="action-btn positive detail" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Chi tiết công văn"></a>
-				<a class="action-btn positive edit" onclick="showFormPopup('/ajax/editicldform.php', [['id', '{$legaldocument->getID()}']])" title="Sửa công văn"></a>
-				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deleteicldform.php', [['id', '{$legaldocument->getID()}']]);" title="Xóa công văn"></a>
+				<a class="action-btn positive detail" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', {$legaldocument->getID()}]])" title="Chi tiết công văn"></a>
+				<a class="action-btn positive edit" onclick="showFormPopup('/ajax/editicldform.php', [['id', {$legaldocument->getID()}]])" title="Sửa công văn"></a>
+				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deleteicldform.php', [['id', {$legaldocument->getID()}]]);" title="Xóa công văn"></a>
 				</td>
 CONTROLBTN;
 				echo '</tr>';

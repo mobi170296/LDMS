@@ -53,10 +53,10 @@
 	<div class="data-content"><?php echo $legaldocument->getDonVi()->getTenDonVi(); ?></div>
 	<div class="data-title">Thời gian nhập</div>
 	<div class="data-content"><?php echo $legaldocument->getThoiGianThem(); ?></div>
-	<form action="/ajax/approvalforward.php" method="post" onSubmit="ajaxSubmitEdit(this);">
+	<form action="/ajax/approvalforward.php" method="post" onSubmit="ajaxSubmitEdit(this);return false;">
 		<div>Chọn người phê duyệt</div>
 		<div>
-			<select name="idnguoikiemduyet">
+			<select name="idnguoipheduyet">
 				<?php
 					foreach($validusers as $u){
 						echo '<option value="'.$u->getID().'">'.$u->getMaSo().' - '.$u->getHo(). ' ' .$u->getTen().' - '. $u->getDonVi()->getTenDonVi() .'</option>';
@@ -64,7 +64,7 @@
 				?>
 			</select>
 		</div>
-		<div><input type="hidden" name="idcongvan" value="<?php $legaldocument->getID(); ?>" /></div>
+		<div><input type="hidden" name="idcongvan" value="<?php echo $legaldocument->getID(); ?>" /></div>
 		<div><input type="hidden" name="approvalicld" value="approvalicld"/></div>
 		<div><button type="submit">Chuyển kiểm duyệt</button></div>
 	</form>

@@ -17,7 +17,7 @@
 	?>
 	<div id="basic-info">
 		<div>Xin chào <?php echo $user->getHo() . ' ' . $user->getTen(); ?></div>
-		<div style="text-align: center;"><a href="/user/logout.php">Thoát tài khoản</a></div>
+		<div style="text-align: center;"><a id="logout-btn" href="/user/logout.php">Thoát tài khoản</a></div>
 	</div>
 	<?php
 	}
