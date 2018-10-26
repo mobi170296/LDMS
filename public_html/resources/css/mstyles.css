@@ -19,6 +19,7 @@ div#menu-btn{
 	top: 5px;
 	border: 2px solid #f00;
 	cursor: pointer;
+	z-index: 3;
 }
 div#splash{
 	width: 100vw;
@@ -31,6 +32,7 @@ div#container{
 	
 }
 div#left-panel{
+	display: block;
 	float: left;
 	height: 100vh;
 	width: 20%;
@@ -291,7 +293,7 @@ table.list-table div.abstract-wrapper{
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	height: 1.1em;
+	height: 1.2em;
 }
 table.list-table div.abstract-wrapper.w15{
 	width: 15em;

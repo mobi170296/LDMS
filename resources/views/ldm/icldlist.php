@@ -30,7 +30,7 @@
 				echo '<td>'.$legaldocument->getSoDen().'</td>';
 				echo '<td>'.$legaldocument->getKyHieu().'</td>';
 				echo '<td><div class="abstract-wrapper w10">'.$legaldocument->getDonViBanHanh()->getTenDonVi().'</div></td>';
-				echo '<td><div class="abstract-wrapper w15">'.$legaldocument->getTrichYeu().'</div></td>';
+				echo '<td><div class="abstract-wrapper w10">'.$legaldocument->getTrichYeu().'</div></td>';
 				echo '<td>'.$legaldocument->getTrangThaiString().'</td>';
 				echo <<<CONTROLBTN
 				<td>

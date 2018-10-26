@@ -33,6 +33,17 @@ function adjustHeightMenu(){
 	}
 	adjustHeightMenu();
 	window.onresize=function(e){
+		if(window.innerWidth>=800){
+			var l=$get('#left-panel');
+			if(l){
+				l.$css('display','block');
+			}
+		}else{
+			var l=$get('#left-panel');
+			if(l){
+				l.$css('display','none');
+			}
+		}
 		adjustHeightMenu();
 	}
 	document.body.onload=function(e){var s=$get('#splash');if(s)s.$css('display','none');}
