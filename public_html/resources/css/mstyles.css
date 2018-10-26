@@ -9,6 +9,17 @@
 body{
 	margin: 0px;
 }
+div#menu-btn{
+	display: none;
+	box-sizing: border-box;
+	width: 32px;
+	height: 32px;
+	position: fixed;
+	right: 5px;
+	top: 5px;
+	border: 2px solid #f00;
+	cursor: pointer;
+}
 div#splash{
 	width: 100vw;
 	height: 100vh;
@@ -99,6 +110,7 @@ div#menu{
 	-webkit-user-select: none;
 	-o-user-select: none;
 	-ms-user-select: none;
+	overflow-x: hidden;
 }
 div#menu a.selected-menu-item::after{
 	content: '';
@@ -259,7 +271,7 @@ table.list-table{
 	width: 100%;
 }
 table.list-table tr:nth-child(even){
-	background-color: #DADADA;
+	background-color: #DCF2FF;
 }
 table.list-table th{
 	border: 1px solid #fff;
@@ -450,4 +462,21 @@ div.legaldocument-info div.data-title::after{
 div.legaldocument-info div.data-content{
 	font-family: "Tahoma";
 	font-size: 14pt;
+}
+@media screen and (max-width: 800px){
+	div#left-panel{
+		float: none;
+		display: none;
+		width: 100vw;
+		height: 100vh;
+	}
+	div#content{
+		float: none;
+		display: block;
+		width: 100vw;
+		height: auto;
+	}
+	div#menu-btn{
+		display: block;
+	}
 }

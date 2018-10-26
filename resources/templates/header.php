@@ -3,6 +3,7 @@
 	<head>
 		<noscript><meta http-equiv="refresh" content="0;url='/error/noscript.html'"/></noscript>
 		<meta charset="utf-8"/>
+		<meta name="theme-color" content="#0af"/>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 		<link rel="shortcut icon" href="<?php if(isset($CNF['HEADER']['PAGE_ICON'])) echo $CNF['HEADER']['PAGE_ICON']; ?>"/>
 		<title><?php if(isset($CNF['HEADER']['TITLE'])) echo $CNF['HEADER']['TITLE']; ?></title>
@@ -20,6 +21,8 @@
 		?>
 	</head>
 	<body>
+		<div id="menu-btn">
+		</div>
 		<div id="splash">
 			<div id="loading-icon"></div>
 		</div>
