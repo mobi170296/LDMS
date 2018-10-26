@@ -1,5 +1,6 @@
 // JavaScript Document
 (function(){
+	document.body.onload=function(e){var s=$get('#splash');if(s)s.$css('display','none');}
 	var p = $get('div#popup');
 	if(p!=null){
 		p.onclick = function(e){

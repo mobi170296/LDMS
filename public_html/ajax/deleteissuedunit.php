@@ -8,7 +8,7 @@
 		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
 		$user->dangNhap();
-		if(!$user->getQuyen()->contain(PRIVILEGES['XOA_DON_VI'])){
+		if(!$user->getQuyen()->contain(PRIVILEGES['XOA_DON_VI_BAN_HANH'])){
 			throw new Exception('Bạn không có quyền xóa đơn vị');
 		}
 		try{

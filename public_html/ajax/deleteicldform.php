@@ -9,8 +9,8 @@
 		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
 		$user->dangNhap();
-		if(!$user->getQuyen()->contain(PRIVILEGES['SUA_CONG_VAN_DEN'])){
-			throw new Exception('Bạn không có quyền sưa công văn đến');
+		if(!$user->getQuyen()->contain(PRIVILEGES['XOA_CONG_VAN_DEN'])){
+			throw new Exception('Bạn không có quyền xóa công văn đến');
 		}
 		if(!isset($_POST['id'])||!is_numeric($_POST['id'])){
 			throw new Exception('Yêu cầu không hợp lệ');

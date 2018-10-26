@@ -3,8 +3,6 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập không thể truy cập trang này');
 		}
-		echo '<div id="page-title">DANH SÁCH CÔNG VĂN ĐẾN CHỜ KIỂM DUYỆT</div>';
-		
 		if(isset($_GET['p'])){
 			if(is_numeric($_GET['p']) && intval($_GET['p'])>0){
 				$pp_cp = intval($_GET['p']);
@@ -18,6 +16,9 @@
 		if(!count($legaldocuments)){
 			throw new Exception('Không có công văn nào chờ kiểm duyệt ở trang này');
 		}
+		
+		echo '<div id="page-title">DANH SÁCH CÔNG VĂN ĐẾN CHỜ KIỂM DUYỆT</div>';
+		
 ?>
 <div id="legaldocument-list">
 	<table class="list-table">
@@ -37,8 +38,7 @@
 				<a class="action-btn positive add-censorship" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện cho ý kiến kiểm duyệt"></a>
 				<a class="action-btn positive delete-censorship" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện xóa ý kiến kiểm duyệt"></a>
 				<a class="action-btn positive verify-censorship" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', '{$legaldocument->getID()}']])" title="Thực hiện xác nhận ý kiến kiểm duyệt"></a>
-				<a class="action-btn positive edit" onclick="showFormPopup('/ajax/editdoctypeform.php', [['maloai', '{$legaldocument->getID()}']])" title="Sửa công văn"></a>
-				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deletedoctypeform.php', [['maloai', '{$legaldocument->getID()}']]);" title="Xóa công văn"></a>
+				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deleteicldform.php', [['id', '{$legaldocument->getID()}']]);" title="Xóa công văn"></a>
 				</td>
 CONTROLBTN;
 				echo '</tr>';

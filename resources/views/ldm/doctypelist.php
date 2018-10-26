@@ -30,14 +30,14 @@
 				echo '<td>'.$doctype->getMaLoai().'</td>';
 				echo '<td>'.$doctype->getTenLoai().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($doctype->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']])"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']]);"></a></td>';
+				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']])" title="Sửa thông tin loại văn bản"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']]);" title="Xóa loại văn bản"></a></td>';
 				echo '</tr>';
 			}
 		?>
 	</table>
 	<?php
 		try{
-			$pp_pt = ceil($user->countRecordsInTable('donvibanhanh') / 10);
+			$pp_pt = ceil($user->countRecordsInTable('loaivanban') / 10);
 			$pp_cp = 1;
 			require $CNF['PATHS']['TEMPLATES'].'/pagepartition.php';
 		}catch(Exception $e){

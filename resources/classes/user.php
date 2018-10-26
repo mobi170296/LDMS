@@ -840,6 +840,9 @@
 				
 				$legaldocument = new LegalDocument($this->dbcon);
 				$docinfo = $legaldocument->getLegalDocumentByID($id);
+				if($docinfo->getIDNguoiNhap()!=$this->getID()){
+					throw new Exception('Bạn không có quyền xóa công văn không phải của bạn quản lý');
+				}
 				
 				if(unlink(dirname($destfile).'/'.$docinfo->getTenTapTin())){
 					$this->dbcon->query('DELETE FROM congvanden WHERE id='.$id);

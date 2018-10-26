@@ -20,6 +20,9 @@
 		?>
 	</head>
 	<body>
+		<div id="splash">
+			<div id="loading-icon"></div>
+		</div>
 		<div id="popup">
 			<div id="popup-content"></div>
 		</div>

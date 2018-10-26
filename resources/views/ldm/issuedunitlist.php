@@ -34,7 +34,7 @@
 				echo '<td>'.($issuedunit->getBenNgoai()?'x':'').'</td>';
 				echo '<td>'.$issuedunit->getDiaChi().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($issuedunit->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])"></a></td>';
+				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])" title="Sửa thông tin đơn vị ban hành"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])" title="Xóa đơn vị ban hành"></a></td>';
 				echo '</tr>';
 			}
 		?>
