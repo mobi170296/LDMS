@@ -12,14 +12,19 @@ body{
 div#menu-btn{
 	display: none;
 	box-sizing: border-box;
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	position: fixed;
 	right: 5px;
 	top: 5px;
-	border: 2px solid #f00;
+	border: 1px solid #0af;
+	border-radius: 50%;
 	cursor: pointer;
-	z-index: 3;
+	z-index: 1;
+	background-image: url(images/icons/menu-icon.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
 }
 div#splash{
 	width: 100vw;
@@ -384,7 +389,7 @@ a.text-image-btn.approval-forward::before{
 }
 div#popup{
 	position: fixed;
-	z-index: 1;
+	z-index: 2;
 	display: none;
 	text-align: center;
 	width: 100vw;
@@ -392,7 +397,23 @@ div#popup{
 	overflow: auto;
 	top: 0px;
 	left: 0px;
-	background-color: rgba(0,0,0,0.4);
+	background-color: rgba(0,0,0,0.2);
+}
+div#popup-close-btn{
+	position: fixed;
+	top: 5px;
+	right: 30px;
+	box-sizing: border-box;
+	border: 1px solid #f00;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	background-image: url(images/icons/close-icon.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center center;
+	z-index: 3;
+	cursor: pointer;
 }
 div#popup-content{
 	transition: all 500ms;

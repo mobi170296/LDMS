@@ -32,6 +32,9 @@
 		public function getTen(){
 			return $this->ten;
 		}
+		public function getFullName(){
+			return $this->ho . ' ' . $this->ten;
+		}
 		public function getNgaySinh(){
 			return $this->ngaysinh;
 //			$date = [];

@@ -27,6 +27,7 @@
 			<div id="loading-icon"></div>
 		</div>
 		<div id="popup">
+			<div id="popup-close-btn"></div>
 			<div id="popup-content"></div>
 		</div>
 		<div id="container">
