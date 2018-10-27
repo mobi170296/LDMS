@@ -23,10 +23,10 @@ function adjustHeightMenu(){
 		mb.onclick=function(e){
 			var l=$get('#left-panel');
 			if(l){
-				if(l.style.display=='block'){
-					l.$css('display', 'none');
-				}else{
+				if(getComputedStyle(l).display=='none'){
 					l.$css('display', 'block');
+				}else{
+					l.$css('display', 'none');
 				}
 			}
 		}
@@ -62,31 +62,46 @@ function adjustHeightMenu(){
 			e.stopPropagation();
 		}
 	}
-	var mt = $gets('div.menu-l1-title');
-	if(mt!=null){
+//	var mt = $gets('div.menu-l1-title');
+//	if(mt!=null){
+//		for(var i=0;i<mt.length;i++){
+//			var cc = mt[i].nextElementSibling.children;
+//			var h = 0;
+//			for(var j=0; j<cc.length; j++){
+//				h+=cc[i].clientHeight;
+//			}
+//			mt[i].nextElementSibling.$css('height', h+'px');
+//			
+//			mt[i].onclick = function(e){
+//				var c = this.nextElementSibling;
+//				if(c!=null){
+//					var ch = getComputedStyle(c).height;
+//					if(ch=='0px'){
+//						var cc = c.children;
+//						var h = 0;
+//						for(var j=0; j<cc.length; j++){
+//							h+=parseInt(getComputedStyle(cc[j]).height);
+//						}
+//						c.$css('height', h+'px');
+//					}else{
+//						c.$css('height', '0px');
+//						
+//					}
+//				}
+//			}
+//		}
+//	}
+	var mt=$gets('div.menu-l1-title');
+	if(mt){
 		for(var i=0;i<mt.length;i++){
-			var cc = mt[i].nextElementSibling.children;
-			var h = 0;
-			for(var j=0; j<cc.length; j++){
-				h+=parseInt(getComputedStyle(cc[j]).height);
-			}
-			mt[i].nextElementSibling.$css('height', h+'px');
-			
-			mt[i].onclick = function(e){
-				var c = this.nextElementSibling;
-				if(c!=null){
-					var ch = getComputedStyle(c).height;
-					if(ch=='0px'){
-						var cc = c.children;
-						var h = 0;
-						for(var j=0; j<cc.length; j++){
-							h+=parseInt(getComputedStyle(cc[j]).height);
-						}
-						c.$css('height', h+'px');
-					}else{
-						c.$css('height', '0px');
-						
-					}
+			mt[i].nextElementSibling.realHeight=mt[i].nextElementSibling.clientHeight;
+			mt[i].nextElementSibling.$css('height', mt[i].nextElementSibling.realHeight+'px');
+			mt[i].onclick=function(e){
+				var m=this.nextElementSibling;
+				if(m.clientHeight){
+					m.$css('height', '0px');
+				}else{
+					m.$css('height', m.realHeight+'px');
 				}
 			}
 		}

@@ -360,9 +360,6 @@ table.list-table a.delete-censorship{
 table.list-table a.verify-censorship{
 	background-image: url(images/icons/verify-censorship.png);
 }
-table.list-table td:focus{
-	background-color: red;
-}
 a.text-image-btn{
 	display: inline-block;
 	border: 2px solid #0af;
@@ -488,10 +485,14 @@ div.legaldocument-info div.data-content{
 }
 @media screen and (max-width: 800px){
 	div#left-panel{
-		float: none;
-		display: none;
-		width: 100vw;
-		height: 100vh;
+		position: absolute;
+		display: block;
+		width: 70vw;
+		height: auto !important;
+		z-index: 1;
+	}
+	div.menu-l1-items{
+		height: auto !important;
 	}
 	div#content{
 		float: none;
@@ -501,5 +502,6 @@ div.legaldocument-info div.data-content{
 	}
 	div#menu-btn{
 		display: block;
+		z-index: 2;
 	}
 }

@@ -27,7 +27,11 @@
 	Node.prototype.$gets = function(query){
 		return this.querySelectorAll(query);
 	}
-	HTMLOptionsCollection.prototype.removeAll=function(){while(this.length)this.remove(0);}
+//	if(HTMLOptionsCollection!=undefined){
+//		HTMLOptionsCollection.prototype.removeAll=function(){while(this.length)this.remove(0);}
+//	}else{
+//		
+//	}
 })();
 
 function $get(query){
@@ -69,7 +73,9 @@ function getMaxDayOfMonth(month, year){
 function updateDaySelect(ds,ms,ys){
 	if(ds&&ms&&ys){
 		var m=ms.value,y=ys.value;
-		ds.options.removeAll();
+		while(ds.options.length){
+			ds.options[0].remove();
+		}
 		var max=getMaxDayOfMonth(m,y);
 		for(var i=1;i<=max;i++){
 			var o=$create('option');
@@ -85,7 +91,7 @@ function showFormPopup(desturl, aid){
 	$get('div#left-panel').$css('filter', 'blur(2px)');
 	$get('div#content').$css('filter', 'blur(2px)');
 	pc.innerHTML = '';
-	pc.append(createEID('div', 'loading-icon'));
+	pc.appendChild(createEID('div', 'loading-icon'));
 	pc.$css('top', '0px');
 	var xhr = $ajax();
 	xhr.open('post', desturl);

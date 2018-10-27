@@ -48,11 +48,11 @@
 	<div class="data-title">Ý kiến kiểm duyệt</div>
 	<div class="data-content"><?php echo ($legaldocument->getKiemDuyet()!=null&&$legaldocument->getKiemDuyet()->getYKienKiemDuyet()!='')?'<font color="blue">'.$legaldocument->getKiemDuyet()->getYKienKiemDuyet().'</font>':'<font color="red">Chưa kiểm duyệt</font>'; ?></div>
 	<div class="data-title">Người kiểm duyệt</div>
-	<div class="data-content"><?php echo $legaldocument->getKiemDuyet()!=null?'<font color="#f70">'.$legaldocument->getKiemDuyet()->getNguoiKiemDuyet()->getFullName().' ('.$legaldocument->getKiemDuyet()->getNguoiKiemDuyet()->getMaDonVi().')</font>':'<font color="red">Chưa kiểm duyệt</font>'; ?></div>
+	<div class="data-content"><?php echo $legaldocument->getKiemDuyet()!=null?'<font color="orange">'.$legaldocument->getKiemDuyet()->getNguoiKiemDuyet()->getFullName().' ('.$legaldocument->getKiemDuyet()->getNguoiKiemDuyet()->getMaDonVi().')</font>':'<font color="red">Chưa kiểm duyệt</font>'; ?></div>
 	<div class="data-title">Ý kiến phê duyệt</div>
 	<div class="data-content"><?php echo ($legaldocument->getPheDuyet()!=null&&$legaldocument->getPheDuyet()->getYKienPheDuyet()!='')?'<font color="blue">'.$legaldocument->getPheDuyet()->getYKienPheDuyet().'</font>':'<font color="red">Chưa phê duyệt</font>'; ?></div>
 	<div class="data-title">Người phê duyệt</div>
-	<div class="data-content"><?php echo $legaldocument->getPheDuyet()!=null?'<font color="#f70">'.$legaldocument->getPheDuyet()->getNguoiPheDuyet()->getFullName().' ('.$legaldocument->getPheDuyet()->getNguoiPheDuyet()->getMaDonVi().')</font>':'<font color="red">Chưa phê duyệt</font>'; ?></div>
+	<div class="data-content"><?php echo $legaldocument->getPheDuyet()!=null?'<font color="orange">'.$legaldocument->getPheDuyet()->getNguoiPheDuyet()->getFullName().' ('.$legaldocument->getPheDuyet()->getNguoiPheDuyet()->getMaDonVi().')</font>':'<font color="red">Chưa phê duyệt</font>'; ?></div>
 	
 	<div>
 		<?php
