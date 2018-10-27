@@ -7,53 +7,35 @@
 	$CNF['BODY']['CURRENT_SCRIPT'] = '/user/login.php';
 	# Xử lý ở đây với những yêu cầu trước khi gửi content
 	
-	require_once $CNF['PATHS']['TEMPLATES'].'/dbinit.php';
-
-
-	$error = '';
-
-	$user = new User($mcon);
 	try{
-		$user->dangNhap();
-		#dang nhap thanh cong
-		#khong duoc vao trang nay
-		header('location: /');
-		exit();
-	}catch(Exception $e){
-		#dang nhap that bai co the chua co session
-	}
-	
-	if(isset($_POST['login'])){
-		if(isset($_POST['maso']) && is_string($_POST['maso']) && preg_match('/^[a-cA-C]?[0-9]{1,8}$/', $_POST['maso'])){
+		require_once $CNF['PATHS']['TEMPLATES'].'/dbinit.php';
+		$user = new User($mcon);
+		try{
+			#Thử đăng nhập bằng session hiện tại!
+			$user->dangNhap();
+			#Đăng nhập thành công yêu cầu không hợp lệ chuyển về homepage
+			header('location: /');
+			exit();
+		}catch(Exception $e){
 			
-		}else{
-			$error .= 'Mã số cán bộ không hợp lệ<br/>';
 		}
 		
-		if(isset($_POST['matkhau']) && is_string($_POST['matkhau']) && strlen($_POST['matkhau']) >= 6){
-			
-		}else{
-			$error .= 'Mật khẩu không hợp lệ phải dài hơn 6 ký tự<br/>';
-		}
-		
-		if($error == ''){
-			try{
-				$user->dangNhap($_POST['maso'], $_POST['matkhau']);
-				header('location: /');
-			}catch(Exception $e){
-				$error .= $e->getMessage() .'<br/>';
+		if(isset($_POST['login'])){
+			if(!isset($_POST['maso'])||!is_string($_POST['maso'])||!preg_match('/^[a-cA-C]?[0-9]{1,8}$/', $_POST['maso'])||!isset($_POST['matkhau'])||!is_string($_POST['matkhau'])||strlen($_POST['matkhau'])<6){
+				throw new Exception('Mã số hoặc mật khẩu không hợp lệ!');
 			}
+			$user->dangNhap($_POST['maso'], $_POST['matkhau']);
+			header('location: /');
+			exit();
 		}
+	}catch(Exception $e){
+		$error=$e->getMessage();
 	}
 	
 	# Bắt đầu output ở đây
 	# Trang đăng nhập được xử lý khác so với các trang khác
 	require_once($CNF['PATHS']['TEMPLATES'] . '/header.php');
-	#chèn thêm title hay link ở đây
 	
-	if($error != ''){
-		echo '<div class="error-message-box">'.$error.'</div>';
-	}
 	require_once $CNF['PATHS']['VIEWS'].'/user/login.php';
 	
 	require_once($CNF['PATHS']['TEMPLATES'] . '/footer.php');
