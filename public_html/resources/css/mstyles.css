@@ -481,7 +481,7 @@ div.legaldocument-info div.data-title::after{
 }
 div.legaldocument-info div.data-content{
 	font-family: "Tahoma";
-	font-size: 14pt;
+	font-size: 12pt;
 }
 @media screen and (max-width: 800px){
 	div#left-panel{
