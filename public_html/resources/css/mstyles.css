@@ -494,6 +494,12 @@ div.legaldocument-info div.data-content{
 	div.menu-l1-items{
 		height: auto !important;
 	}
+	div.menu-l1{
+		height: auto !important;
+	}
+	div#menu{
+		height: auto !important;
+	}
 	div#content{
 		float: none;
 		display: block;
