@@ -1,9 +1,9 @@
 <?php
 	require_once(__DIR__ . '/../library/datetime/mdatetime.php');
 	class UserInfo{
-		public $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $quyen;
+		public $id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $quyen, $thoigianthem;
 		public $donvi;
-		public function __construct($id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang){
+		public function __construct($id, $maso, $matkhau, $ho, $ten, $ngaysinh, $email, $sodienthoai, $diachi, $madonvi, $manhom, $tinhtrang, $thoigianthem=null){
 			$this->id = $id;
 			$this->maso = $maso;
 			$this->matkhau = $matkhau;
@@ -16,6 +16,7 @@
 			$this->madonvi = $madonvi;
 			$this->manhom = $manhom;
 			$this->tinhtrang = $tinhtrang;
+			$this->thoigianthem = $thoigianthem;
 		}
 		public function getID(){
 			return $this->id;
@@ -74,6 +75,9 @@
 		}
 		public function getDonVi(){
 			return $this->donvi;
+		}
+		public function getThoiGianThem(){
+			return $this->thoigianthem;
 		}
 	}
 ?>

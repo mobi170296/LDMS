@@ -10,6 +10,9 @@
 						$data_error[] = 'Mã số cán bộ không hợp lệ';
 					}
 					if(isset($_POST['matkhau'][0]) && is_string($_POST['matkhau'][0]) && isset($_POST['matkhau'][1]) && is_string($_POST['matkhau'][1]) && strlen($_POST['matkhau'][0])){
+						if(strlen($_POST['matkhau'][0])<6){
+							$data_error[] = 'Độ dài mật khẩu không hợp lệ';
+						}
 						if($_POST['matkhau'][0] != $_POST['matkhau'][1]){
 							$data_error[] = 'Mật khẩu không trùng';
 						}

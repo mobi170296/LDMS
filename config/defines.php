@@ -42,7 +42,7 @@ define('PRIVILEGES',
 	   ]
 );
 
-define('PRIVILEGES_LABEL',
+define('PRIVILEGE_LABELS',
 	   [1 => 'Thêm người dùng',
 		'Sửa thông tin người dùng',
 		'Xóa thông tin người dùng',

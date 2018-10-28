@@ -55,7 +55,7 @@
 			return sprintf('%02d' . $delimiter . '%02d' . $delimiter . '%02d', $this->hour, $this->minute, $this->second);
 		}
 		public function getDateTimeString($dd='/', $td=':'){
-			return $this->getTimeString($td) .' '. $this->getDateString($dd);
+			return $this->getTimeString($td) .' ngày '. $this->getDateString($dd);
 		}
 		
 		

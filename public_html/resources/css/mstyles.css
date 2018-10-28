@@ -179,9 +179,9 @@ div#menu a.menu-item span{
 	padding: 0px 10px;
 	font-size: 1em;
 	background-color: #FB66A7;
-	border: 1px solid #F10187;
+	border: 1px solid #FD3CA2;
 	color: #FFFFFF;
-	border-radius: 5px;
+	border-radius: 10px;
 }
 div#menu a.menu-item:hover{
 	padding-left: 20px;
@@ -505,7 +505,7 @@ div.legaldocument-info div.data-title::after{
 	content: ':';
 }
 div.legaldocument-info div.data-content{
-	font-family: "Tahoma";
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
 	font-size: 12pt;
 }
 @media screen and (max-width: 800px){

@@ -297,7 +297,7 @@
 					}
 					$sql = 'UPDATE nguoidung SET ';
 					$sql .= 'maso=\''.$newuserinfo->getMaSo().'\',';
-					$sql .= 'matkhau='. (new MDBPasswordData($this->dbcon->realEscapeString($newuserinfo->getMatKhau())))->toDBValueString().',';
+					$sql .= $newuserinfo->getMatKhau()!==null?'matkhau='. (new MDBPasswordData($this->dbcon->realEscapeString($newuserinfo->getMatKhau())))->toDBValueString().',':'';
 					$sql .= 'ho=\''.$newuserinfo->getHo().'\',';
 					$sql .= 'ten=\''.$newuserinfo->getTen().'\',';
 					$sql .= 'ngaysinh=\''.$newuserinfo->getNgaySinh().'\',';
@@ -332,9 +332,22 @@
 
 						if($row[0]){
 							throw new ExistedLegalDocumentException('Đã tồn tại công văn do người này nhập không thể xóa người dùng này được!');
-						}else{
-							$result = $this->dbcon->query('DELETE FROM nguoidung WHERE id='.$id);
 						}
+						$result = $this->dbcon->query('SELECT EXISTS(SELECT idcongvan FROM kiemduyet WHERE idnguoikiemduyet='.$id.')');
+
+						$row = $result->fetch_row();
+
+						if($row[0]){
+							throw new ExistedLegalDocumentException('Đã tồn tại công văn do người này kiểm duyệt không thể xóa người dùng này được!');
+						}
+						$result = $this->dbcon->query('SELECT EXISTS(SELECT idcongvan FROM pheduyet WHERE idnguoipheduyet='.$id.')');
+
+						$row = $result->fetch_row();
+
+						if($row[0]){
+							throw new ExistedLegalDocumentException('Đã tồn tại công văn do người này phê duyệt không thể xóa người dùng này được!');
+						}
+						$result = $this->dbcon->query('DELETE FROM nguoidung WHERE id='.$id);
 					}else{
 						throw new NotExistedUserException('Người dùng không tồn tại không thể thực hiện thao tác xóa!');
 					}
@@ -1419,6 +1432,19 @@
 				$userinfo = new UserInfo($row['id'], $row['maso'], $row['matkhau'], $row['ho'], $row['ten'], $row['ngaysinh'], $row['email'], $row['sodienthoai'], $row['diachi'], $row['madonvi'], $row['manhom'], $row['tinhtrang']);
 				$userinfo->setDonVi(new DepartmentInfo($row['madonvi'], $row['tendonvi'], $row['email'], null));
 				$userinfos[] = $userinfo;
+			}
+			return $userinfos;
+		}
+		public function getDanhSachNguoiDung($start=null, $length=null){
+			if($start===null){
+				$result = $this->dbcon->query('SELECT * FROM nguoidung');
+			}
+			else{
+				$result = $this->dbcon->query('SELECT * FROM nguoidung LIMIT '.$start.', '.$length);
+			}
+			$userinfos = [];
+			while($row=$result->fetch_assoc()){
+				$userinfos[] = new UserInfo($row['id'], $row['maso'], $row['matkhau'], $row['ho'], $row['ten'], $row['ngaysinh'], $row['email'], $row['sodienthoai'], $row['diachi'], $row['madonvi'], $row['manhom'], $row['tinhtrang'], $row['thoigianthem']);
 			}
 			return $userinfos;
 		}
