@@ -1,5 +1,5 @@
 <?php
-	require_once(__DIR__.'./defines.php');
+	require_once(__DIR__.'/defines.php');
 	
 	$CNF['PATHS'] = [
 					 'LIBRARY' => __DIR__.'/../resources/library',
