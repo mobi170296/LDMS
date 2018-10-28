@@ -1422,5 +1422,17 @@
 			}
 			return $userinfos;
 		}
+		public function getSoCongVanDen(){
+			$result = $this->dbcon->query("SELECT COUNT(*) FROM (SELECT id FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT idcongvan FROM kiemduyet WHERE idnguoikiemduyet={$this->id} UNION SELECT idcongvan FROM pheduyet WHERE idnguoipheduyet={$this->id}) t");
+			return $result->fetch_row()[0];
+		}
+		public function getSoCongVanDenChoKiemDuyet(){
+			$result = $this->dbcon->query("SELECT count(*) FROM congvanden JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE (congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id}) AND congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']);
+			return $result->fetch_row()[0];
+		}
+		public function getSoCongVanDenChoPheDuyet(){
+			$result = $this->dbcon->query("SELECT count(*) FROM congvanden JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE (congvanden.idnguoinhap={$this->id} OR pheduyet.idnguoipheduyet={$this->id}) AND congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
+			return $result->fetch_row()[0];
+		}
 	}
 ?>

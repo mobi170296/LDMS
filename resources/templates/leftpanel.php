@@ -36,13 +36,13 @@
 						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/addicld.php'?' selected-menu-item':'').'" href="/ldm/addicld.php">Đăng ký công văn đến</a>';
 					}
 					if($user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'],PRIVILEGES['SUA_CONG_VAN_DEN'],PRIVILEGES['XOA_CONG_VAN_DEN'],PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'],PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']])){
-						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/icldlist.php'?' selected-menu-item':'').'" href="/ldm/icldlist.php">Danh sách công văn</a>';
+						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/icldlist.php'?' selected-menu-item':'').'" href="/ldm/icldlist.php">Danh sách công văn <span>'.$user->getSoCongVanDen().'</span></a>';
 					}
 					if($user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'],PRIVILEGES['SUA_CONG_VAN_DEN'],PRIVILEGES['XOA_CONG_VAN_DEN'],PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']])){
-						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/wcicldlist.php'?' selected-menu-item':'').'" href="/ldm/wcicldlist.php">Danh sách công văn chờ kiểm duyệt</a>';
+						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/wcicldlist.php'?' selected-menu-item':'').'" href="/ldm/wcicldlist.php">Danh sách công văn chờ kiểm duyệt<span>'.$user->getSoCongVanDenChoKiemDuyet().'</span></a>';
 					}
 					if($user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'],PRIVILEGES['SUA_CONG_VAN_DEN'],PRIVILEGES['XOA_CONG_VAN_DEN'],PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']])){
-						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/waicldlist.php'?' selected-menu-item':'').'" href="/ldm/waicldlist.php">Danh sách công văn chờ phê duyệt</a>';
+						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/waicldlist.php'?' selected-menu-item':'').'" href="/ldm/waicldlist.php">Danh sách công văn chờ phê duyệt<span>'.$user->getSoCongVanDenChoPheDuyet().'</span></a>';
 					}
 					if($user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'],PRIVILEGES['SUA_CONG_VAN_DEN'],PRIVILEGES['XOA_CONG_VAN_DEN'],PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'],PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']])){
 						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/ldm/searchicld.php'?' selected-menu-item':'').'" href="/ldm/searchicld.php">Tìm kiếm công văn</a>';

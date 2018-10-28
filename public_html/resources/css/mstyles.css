@@ -168,8 +168,20 @@ div#menu a.menu-item{
 	color: white;
 	position: relative;
 	padding-left: 10px;
-	transition: all 500ms;
+	transition: all 200ms;
 	cursor: pointer;
+}
+div#menu a.menu-item span{
+	position: absolute;
+	top: 5px;
+	right: 12px;
+	display: inline-block;
+	padding: 0px 10px;
+	font-size: 1em;
+	background-color: #FB66A7;
+	border: 1px solid #F10187;
+	color: #FFFFFF;
+	border-radius: 5px;
 }
 div#menu a.menu-item:hover{
 	padding-left: 20px;
@@ -499,7 +511,7 @@ div.legaldocument-info div.data-content{
 @media screen and (max-width: 800px){
 	div#left-panel{
 		position: absolute;
-		display: block;
+		display: none;
 		width: 70vw;
 		height: auto !important;
 		z-index: 1;
