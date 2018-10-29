@@ -14,6 +14,7 @@
 		}
 		$userinfo = $user->getNguoiDung($_POST['id']);
 ?>
+	<div id="page-title">Cấp quyền cho người dùng</div>
 	<div id="grant-privileges-form">
 		<form action="/ajax/grantuserprivileges.php" method="post" enctype="application/x-www-form-urlencoded" onSubmit="ajaxSubmitEdit(this);return false;">
 			<?php
@@ -26,7 +27,7 @@
 			?>
 			<div><input type="hidden" name="id" value="<?php echo $_POST['id']; ?>"/></div>
 			<div><input type="hidden" name="grantuserprivileges" value="grantuserprivileges"/></div>
-			<div><button>Cấp quyền cho người dùng</button></div>
+			<div><button type="submit">Cấp quyền cho người dùng</button></div>
 		</form>
 	</div>
 <?php

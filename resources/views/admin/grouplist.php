@@ -35,7 +35,16 @@
 				echo '<td>'.$group->getMaNhom().'</td>';
 				echo '<td>'.$group->getTenNhom().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($group->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editgroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletegroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a></td>';
+				echo '<td>';
+				if($user->getQuyen()->contain(PRIVILEGES['SUA_NHOM'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['CAP_QUYEN_NHOM'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_NHOM'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletegroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a></td>';
+				}
 				echo '</tr>';
 			}
 		?>

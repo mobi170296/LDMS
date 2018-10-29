@@ -1001,16 +1001,19 @@
 			}
 		}
 		public function getNhom($manhom){
-			try{
-				$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
-				if($result->num_rows){
-					$row = $result->fetch_assoc();
-					return new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
-				}else{
-					throw new Exception('Không tồn tại nhóm ' . $manhom);
+			$result = $this->dbcon->query('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($manhom).'\'');
+			if($result->num_rows){
+				$row = $result->fetch_assoc();
+				$groupinfo = new GroupInfo($row['manhom'], $row['tennhom'], $row['thoigianthem']);
+				$result = $this->dbcon->query('SELECT * FROM quyennhomnguoidung WHERE manhom=\''.$this->dbcon->realEscapeString($row['manhom']).'\'');
+				$quyen = new MSet();
+				while($row = $result->fetch_assoc()){
+					$quyen->addElement($row['quyen']);
 				}
-			}catch(Exception $e){
-				throw $e;
+				$groupinfo->setQuyen($quyen);
+				return $groupinfo;
+			}else{
+				throw new Exception('Không tồn tại nhóm ' . $manhom);
 			}
 		}
 		public function getDonVi($madonvi){
