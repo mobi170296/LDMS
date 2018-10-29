@@ -32,15 +32,21 @@
 				echo '<td><div class="abstract-wrapper w10">'.$legaldocument->getTrichYeu().'</div></td>';
 				echo '<td><div class="abstract-wrapper w10">'.(($legaldocument->getKiemDuyet()!=null&&$legaldocument->getKiemDuyet()->getYKienKiemDuyet()!=null)?$legaldocument->getKiemDuyet()->getYKienKiemDuyet():'<font color="red">Chưa có ý kiến</font>').'</div></td>';
 				echo '<td>'.$legaldocument->getTrangThaiString().'</td>';
-				echo <<<CONTROLBTN
-				<td>
-				<a class="action-btn positive detail" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', {$legaldocument->getID()}]])" title="Chi tiết công văn"></a>
-				<a class="action-btn positive add-censorship" onclick="showFormPopup('/ajax/addcensorshipform.php', [['id', {$legaldocument->getID()}]])" title="Thực hiện cho ý kiến kiểm duyệt"></a>
-				<a class="action-btn positive delete-censorship" onclick="showFormPopup('/ajax/deletecensorshipform.php', [['id', {$legaldocument->getID()}]])" title="Thực hiện xóa ý kiến kiểm duyệt"></a>
-				<a class="action-btn positive verify-censorship" onclick="showFormPopup('/ajax/verifycensorshipform.php', [['id', {$legaldocument->getID()}]])" title="Thực hiện xác nhận ý kiến kiểm duyệt"></a>
-				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deleteicldform.php', [['id', {$legaldocument->getID()}]]);" title="Xóa công văn"></a>
-				</td>
-CONTROLBTN;
+				echo '<td>';
+				echo '<a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/showiclddetail.php\', [[\'id\', '.$legaldocument->getID().']])" title="Chi tiết công văn"></a>';
+				if($user->getQuyen()->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+					echo '<a class="action-btn positive add-censorship" onclick="showFormPopup(\'/ajax/addcensorshipform.php\', [[\'id\', '.$legaldocument->getID().']])" title="Thực hiện cho ý kiến kiểm duyệt"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+					echo '<a class="action-btn positive delete-censorship" onclick="showFormPopup(\'/ajax/deletecensorshipform.php\', [[\'id\', '.$legaldocument->getID().']])" title="Thực hiện xóa ý kiến kiểm duyệt"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'])){
+					echo '<a class="action-btn positive verify-censorship" onclick="showFormPopup(\'/ajax/verifycensorshipform.php\', [[\'id\', '.$legaldocument->getID().']])" title="Thực hiện xác nhận ý kiến kiểm duyệt"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_CONG_VAN_DEN'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteicldform.php\', [[\'id\', '.$legaldocument->getID().']]);" title="Xóa công văn"></a>';
+				}
+				echo '</td>';
 				echo '</tr>';
 			}
 		?>
