@@ -39,7 +39,7 @@
 				echo '<td>'.$userinfo->getEmail().'</td>';
 				echo '<td>'.$userinfo->getSoDienThoai().'</td>';
 				echo '<td>'.($userinfo->getTinhTrang()?'<font color="green">Bình thường</font>':'<font color="red">Đã khóa</font>').'</td>';
-				echo '<td><a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/showuserdetail.php\', [[\'id\', '.$userinfo->getID().']])" title="Xem chi tiết người dùng"></a><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/edituserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Sửa thông tin người dùng"></a><a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/grantuserprivilegesform.php\', [[\'id\', '.$userinfo->getID().']])" title="Cấp quyền cho người dùng"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteuserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Xóa người dùng"></a></td>';
+				echo '<td><a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/showuserdetail.php\', [[\'id\', '.$userinfo->getID().']])" title="Xem chi tiết người dùng"></a><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/edituserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Sửa thông tin người dùng"></a><a class="action-btn positive grant-privilege" onclick="showFormPopup(\'/ajax/grantuserprivilegesform.php\', [[\'id\', '.$userinfo->getID().']])" title="Cấp quyền cho người dùng"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteuserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Xóa người dùng"></a></td>';
 				echo '</tr>';
 			}
 		?>

@@ -37,13 +37,13 @@
 				echo '<td>'.MDateTime::parseDateTime($group->getThoiGianThem())->getDateTimeString().'</td>';
 				echo '<td>';
 				if($user->getQuyen()->contain(PRIVILEGES['SUA_NHOM'])){
-					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a>';
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']]);" title="Sửa thông tin nhóm"></a>';
 				}
 				if($user->getQuyen()->contain(PRIVILEGES['CAP_QUYEN_NHOM'])){
-					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a>';
+					echo '<a class="action-btn positive grant-privilege" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])" title="Cấp quyền nhóm"></a>';
 				}
 				if($user->getQuyen()->contain(PRIVILEGES['XOA_NHOM'])){
-					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletegroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])"></a></td>';
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletegroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])" title="Xóa nhóm"></a></td>';
 				}
 				echo '</tr>';
 			}

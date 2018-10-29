@@ -1463,5 +1463,10 @@
 			$result = $this->dbcon->query("SELECT count(*) FROM congvanden JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE (congvanden.idnguoinhap={$this->id} OR pheduyet.idnguoipheduyet={$this->id}) AND congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']);
 			return $result->fetch_row()[0];
 		}
+		#INPUT: critical, content of critical
+		#$_POST[$_POST['tieuchi'][0]]
+		public function timKiemCongVanDen($tieuchi, $noidung){
+			
+		}
 	}
 ?>

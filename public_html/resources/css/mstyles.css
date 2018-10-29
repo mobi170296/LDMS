@@ -45,6 +45,7 @@ div#splash{
 	background-color: #fff;
 	position: fixed;
 	padding: 100px 0px;
+	z-index: 10;
 }
 div#container{
 	
@@ -178,10 +179,11 @@ div#menu a.menu-item span{
 	display: inline-block;
 	padding: 0px 10px;
 	font-size: 1em;
-	background-color: #FB66A7;
-	border: 1px solid #FD3CA2;
+	background-color: #0B90FD;
+	border: 1px solid #0B90FD;
 	color: #FFFFFF;
-	border-radius: 10px;
+	border-radius: 4px;
+	font-weight: bold;
 }
 div#menu a.menu-item:hover{
 	padding-left: 20px;
@@ -385,6 +387,9 @@ table.list-table a.delete-censorship{
 table.list-table a.verify-censorship{
 	background-image: url(images/icons/verify-censorship.png);
 }
+table.list-table a.grant-privilege{
+	background-image: url(images/icons/grant-privilege.png);
+}
 a.text-image-btn{
 	display: inline-block;
 	border: 2px solid #0af;
@@ -528,8 +533,9 @@ div.legaldocument-info div.data-content{
 	div#content{
 		float: none;
 		display: block;
-		width: 100vw;
+		width: auto;
 		height: auto;
+		overflow: visible;
 	}
 	div#menu-btn{
 		display: block;
