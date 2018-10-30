@@ -3,7 +3,7 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập');
 		}
-		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_LOAI_VAN_BAN'])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_LOAI_VAN_BAN'],PRIVILEGES['SUA_LOAI_VAN_BAN'],PRIVILEGES['XOA_LOAI_VAN_BAN']])){
 			throw new Exception('Bạn không có quyền liệt kê danh sách loại văn bản');
 		}
 		echo '<div id="page-title">Danh sách Loại văn bản</div>';
@@ -30,7 +30,14 @@
 				echo '<td>'.$doctype->getMaLoai().'</td>';
 				echo '<td>'.$doctype->getTenLoai().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($doctype->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']])" title="Sửa thông tin loại văn bản"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']]);" title="Xóa loại văn bản"></a></td>';
+				echo '<td>';
+				if($user->getQuyen()->contain(PRIVILEGES['SUA_LOAI_VAN_BAN'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']])" title="Sửa thông tin loại văn bản"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_LOAI_VAN_BAN'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedoctypeform.php\', [[\'maloai\', \''.$doctype->getMaLoai().'\']]);" title="Xóa loại văn bản"></a>';
+				}
+				echo '</td>';
 				echo '</tr>';
 			}
 		?>

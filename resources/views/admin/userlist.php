@@ -3,7 +3,7 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập');
 		}
-		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG']])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG'],PRIVILEGES['CAP_QUYEN_NGUOI_DUNG']])){
 			throw new Exception('Bạn không có quyền xem danh sách người dùng');
 		}
 		
@@ -39,7 +39,20 @@
 				echo '<td>'.$userinfo->getEmail().'</td>';
 				echo '<td>'.$userinfo->getSoDienThoai().'</td>';
 				echo '<td>'.($userinfo->getTinhTrang()?'<font color="green">Bình thường</font>':'<font color="red">Đã khóa</font>').'</td>';
-				echo '<td><a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/showuserdetail.php\', [[\'id\', '.$userinfo->getID().']])" title="Xem chi tiết người dùng"></a><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/edituserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Sửa thông tin người dùng"></a><a class="action-btn positive grant-privilege" onclick="showFormPopup(\'/ajax/grantuserprivilegesform.php\', [[\'id\', '.$userinfo->getID().']])" title="Cấp quyền cho người dùng"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteuserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Xóa người dùng"></a></td>';
+				echo '<td>';
+				if($user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG'],PRIVILEGES['CAP_QUYEN_NGUOI_DUNG']])){
+					echo '<a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/showuserdetail.php\', [[\'id\', '.$userinfo->getID().']])" title="Xem chi tiết người dùng"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['SUA_NGUOI_DUNG'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/edituserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Sửa thông tin người dùng"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['CAP_QUYEN_NGUOI_DUNG'])){
+					echo '<a class="action-btn positive grant-privilege" onclick="showFormPopup(\'/ajax/grantuserprivilegesform.php\', [[\'id\', '.$userinfo->getID().']])" title="Cấp quyền cho người dùng"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_NGUOI_DUNG'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteuserform.php\', [[\'id\', '.$userinfo->getID().']])" title="Xóa người dùng"></a>';
+				}
+				echo '</td>';
 				echo '</tr>';
 			}
 		?>

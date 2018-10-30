@@ -3,6 +3,9 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập không thể truy cập trang này');
 		}
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'],PRIVILEGES['SUA_CONG_VAN_DEN'],PRIVILEGES['XOA_CONG_VAN_DEN'],PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN']])){
+			throw new Exception('Bạn không có quyền xem danh sách công văn chờ kiểm duyệt');
+		}
 		if(isset($_GET['p'])){
 			if(is_numeric($_GET['p']) && intval($_GET['p'])>0){
 				$pp_cp = intval($_GET['p']);

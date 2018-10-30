@@ -3,7 +3,7 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập');
 		}
-		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'], PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'], PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'], PRIVILEGES['SUA_CONG_VAN_DEN'], PRIVILEGES['XOA_CONG_VAN_DEN'], PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'], PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']])){
 			throw new Exception('Bạn không có quyền liệt kê danh sách loại văn bản');
 		}
 		echo '<div id="page-title">Danh sách công văn đến</div>';
@@ -32,13 +32,17 @@
 				echo '<td><div class="abstract-wrapper w10">'.$legaldocument->getDonViBanHanh()->getTenDonVi().'</div></td>';
 				echo '<td><div class="abstract-wrapper w10">'.$legaldocument->getTrichYeu().'</div></td>';
 				echo '<td>'.$legaldocument->getTrangThaiString().'</td>';
-				echo <<<CONTROLBTN
-				<td>
-				<a class="action-btn positive detail" onclick="showFormPopup('/ajax/showiclddetail.php', [['id', {$legaldocument->getID()}]])" title="Chi tiết công văn"></a>
-				<a class="action-btn positive edit" onclick="showFormPopup('/ajax/editicldform.php', [['id', {$legaldocument->getID()}]])" title="Sửa công văn"></a>
-				<a class="action-btn negative delete" onclick="showFormPopup('/ajax/deleteicldform.php', [['id', {$legaldocument->getID()}]]);" title="Xóa công văn"></a>
-				</td>
-CONTROLBTN;
+				echo '<td>';
+				if($user->getQuyen()->contains([PRIVILEGES['THEM_CONG_VAN_DEN'],PRIVILEGES['SUA_CONG_VAN_DEN'],PRIVILEGES['XOA_CONG_VAN_DEN'],PRIVILEGES['KIEM_DUYET_CONG_VAN_DEN'],PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']])){
+					echo '<a class="action-btn positive detail" onclick="showFormPopup(\'/ajax/showiclddetail.php\', [[\'id\', '.$legaldocument->getID().']])" title="Chi tiết công văn"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['SUA_CONG_VAN_DEN'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editicldform.php\', [[\'id\', '.$legaldocument->getID().']])" title="Sửa công văn"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_CONG_VAN_DEN'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteicldform.php\', [[\'id\', '.$legaldocument->getID().']]);" title="Xóa công văn"></a>';
+				}
+				echo '</td>';
 				echo '</tr>';
 			}
 		?>

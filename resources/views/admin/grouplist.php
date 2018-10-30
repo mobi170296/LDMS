@@ -3,7 +3,7 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập');
 		}
-		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_NHOM'])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_NHOM'],PRIVILEGES['SUA_NHOM'],PRIVILEGES['XOA_NHOM'],PRIVILEGES['CAP_QUYEN_NHOM']])){
 			throw new Exception('Bạn không có quyền xem danh sách nhóm');
 		}
 		

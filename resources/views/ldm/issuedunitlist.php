@@ -34,7 +34,14 @@
 				echo '<td>'.($issuedunit->getBenNgoai()?'x':'').'</td>';
 				echo '<td>'.$issuedunit->getDiaChi().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($issuedunit->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])" title="Sửa thông tin đơn vị ban hành"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])" title="Xóa đơn vị ban hành"></a></td>';
+				echo '<td>';
+				if($user->getQuyen()->contain(PRIVILEGES['SUA_DON_VI_BAN_HANH'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])" title="Sửa thông tin đơn vị ban hành"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_DON_VI_BAN_HANH'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteissuedunitform.php\', [[\'madonvi\', \''.$issuedunit->getMaDonVi().'\']])" title="Xóa đơn vị ban hành"></a>';
+				}
+				echo '</td>';
 				echo '</tr>';
 			}
 		?>

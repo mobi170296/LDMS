@@ -3,7 +3,7 @@
 		if(!$user->isDangNhap()){
 			throw new Exception('Bạn chưa đăng nhập');
 		}
-		if(!$user->getQuyen()->contain(PRIVILEGES['THEM_DON_VI'])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_DON_VI'],PRIVILEGES['SUA_DON_VI'],PRIVILEGES['XOA_DON_VI']])){
 			throw new Exception('Bạn không có quyền xem đơn vị');
 		}
 		echo '<div id="page-title">Danh sách Khoa - Đơn vị</div>';
@@ -34,7 +34,14 @@
 				echo '<td>'.$department->getTenDonVi().'</td>';
 				echo '<td>'.$department->getEmail().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($department->getThoiGianThem())->getDateTimeString().'</td>';
-				echo '<td><a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])"></a><a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])"></a></td>';
+				echo '<td>';
+				if($user->getQuyen()->contain(PRIVILEGES['SUA_DON_VI'])){
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editdepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])"></a>';
+				}
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_DON_VI'])){
+					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deletedepartmentform.php\', [[\'madonvi\', \''.$department->getMaDonVi().'\']])"></a>';
+				}
+				echo '</td>';
 				echo '</tr>';
 			}
 		?>
