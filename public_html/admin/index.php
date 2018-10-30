@@ -1,6 +1,5 @@
 <?php
-	$CNF['RUNNING'] = '';
-	require_once('../config/config.php');
+	require_once __DIR__.'/../../config.config.php';
 	
 	$CNF['HEADER']['TITLE'] = 'Quản trị Hệ Thống - Quản lý Công văn';
 	$CNF['HEADER']['STYLES'][] = '/styles/darkstyle.css';

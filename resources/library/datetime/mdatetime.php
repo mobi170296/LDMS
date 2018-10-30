@@ -59,7 +59,7 @@
 		}
 		
 		
-		public function getDateDBString($delimiter='/'){
+		public function getDateDBString($delimiter='-'){
 			return sprintf('%04d' . $delimiter . '%02d' . $delimiter . '%02d', $this->year, $this->month, $this->day);
 		}
 		public function getTimeDBString($delimiter=':'){
