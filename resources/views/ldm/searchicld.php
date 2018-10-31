@@ -91,14 +91,14 @@
 						}
 					?>
 				</select>
-				<select name="fromngayvanban[]" disabled="disabled">
+				<select name="fromngayvanban[]" disabled="disabled" onChange="updateDaySelect(this.form['fromngayvanban[]'][0],this,this.form['fromngayvanban[]'][2])">
 					<?php
 						for($i=1;$i<=12;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
 						}
 					?>
 				</select>
-				<select name="fromngayvanban[]" disabled="disabled">
+				<select name="fromngayvanban[]" disabled="disabled" onChange="updateDaySelect(this.form['fromngayvanban[]'][0],this.form['fromngayvanban[]'][1],this)">
 					<?php
 						for($i=$min;$i<=$max;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
@@ -117,14 +117,14 @@
 						}
 					?>
 				</select>
-				<select name="tongayvanban[]" disabled="disabled">
+				<select name="tongayvanban[]" disabled="disabled" onChange="updateDaySelect(this.form['tongayvanban[]'][0],this,this.form['tongayvanban[]'][2])">
 					<?php
 						for($i=1;$i<=12;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
 						}
 					?>
 				</select>
-				<select name="tongayvanban[]" disabled="disabled">
+				<select name="tongayvanban[]" disabled="disabled" onChange="updateDaySelect(this.form['tongayvanban[]'][0],this.form['tongayvanban[]'][1],this)">
 					<?php
 						for($i=$min;$i<=$max;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
@@ -147,14 +147,14 @@
 						}
 					?>
 				</select>
-				<select name="fromthoigianden[]" disabled="disabled">
+				<select name="fromthoigianden[]" disabled="disabled" onChange="updateDaySelect(this.form['fromthoigianden[]'][0],this,this.form['fromthoigianden[]'][2])">
 					<?php
 						for($i=1;$i<=12;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
 						}
 					?>
 				</select>
-				<select name="fromthoigianden[]" disabled="disabled">
+				<select name="fromthoigianden[]" disabled="disabled" onChange="updateDaySelect(this.form['fromthoigianden[]'][0],this.form['fromthoigianden[]'][1],this)">
 					<?php
 						for($i=$min;$i<=$max;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
@@ -173,14 +173,14 @@
 						}
 					?>
 				</select>
-				<select name="tothoigianden[]" disabled="disabled">
+				<select name="tothoigianden[]" disabled="disabled" onChange="updateDaySelect(this.form['tothoigianden[]'][0],this,this.form['tothoigianden[]'][2])">
 					<?php
 						for($i=1;$i<=12;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
 						}
 					?>
 				</select>
-				<select name="tothoigianden[]" disabled="disabled">
+				<select name="tothoigianden[]" disabled="disabled" onchange="updateDaySelect(this.form['tothoigianden[]'][0],this.form['tothoigianden[]'][1],this)">
 					<?php
 						for($i=$min;$i<=$max;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
@@ -203,14 +203,14 @@
 						}
 					?>
 				</select>
-				<select name="fromthoihangiaiquyet[]" disabled="disabled">
+				<select name="fromthoihangiaiquyet[]" disabled="disabled" onChange="updateDaySelect(this.form['fromthoihangiaiquyet[]'][0],this,this.form['fromthoihangiaiquyet[]'][2])">
 					<?php
 						for($i=1;$i<=12;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
 						}
 					?>
 				</select>
-				<select name="fromthoihangiaiquyet[]" disabled="disabled">
+				<select name="fromthoihangiaiquyet[]" disabled="disabled" onChange="updateDaySelect(this.form['fromthoihangiaiquyet[]'][0],this.form['fromthoihangiaiquyet[]'][2],this)">
 					<?php
 						for($i=$min;$i<=$max;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
@@ -229,14 +229,14 @@
 						}
 					?>
 				</select>
-				<select name="tothoihangiaiquyet[]" disabled="disabled">
+				<select name="tothoihangiaiquyet[]" disabled="disabled" onChange="updateDaySelect(this.form['tothoihangiaiquyet[]'][0],this,this.form['tothoihangiaiquyet[]'][2])">
 					<?php
 						for($i=1;$i<=12;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
 						}
 					?>
 				</select>
-				<select name="tothoihangiaiquyet[]" disabled="disabled">
+				<select name="tothoihangiaiquyet[]" disabled="disabled" onChange="updateDaySelect(this.form['tothoihangiaiquyet[]'][0],this.form['tothoihangiaiquyet[]'][2],this)">
 					<?php
 						for($i=$min;$i<=$max;$i++){
 							echo '<option value="'.$i.'">'.$i.'</option>';
@@ -359,9 +359,9 @@
 				}
 			}
 			if(isset($_GET['tothoihangiaiquyet'])){
-				if(is_array($_GET['tothoigianden'])&&is_numeric($_GET['tothoigianden'][0])&&is_numeric($_GET['tothoihangiaiquyet'][1])&&is_numeric($_GET['tothoigianden'][2])){
-					if(checkdate($_GET['tothoigianden'][1], $_GET['tothoigianden'][0], $_GET['tothoigianden'][2])){
-						$where_clause .= 'cast(thoihangiaiquyet as date)<=\''.(new MDateTime($_GET['tothoigianden'][0],$_GET['tothoigianden'][1],$_GET['tothoigianden'][2]))->getDateDBString().'\' and ';
+				if(is_array($_GET['tothoihangiaiquyet'])&&is_numeric($_GET['tothoihangiaiquyet'][0])&&is_numeric($_GET['tothoihangiaiquyet'][1])&&is_numeric($_GET['tothoihangiaiquyet'][2])){
+					if(checkdate($_GET['tothoihangiaiquyet'][1], $_GET['tothoihangiaiquyet'][0], $_GET['tothoihangiaiquyet'][2])){
+						$where_clause .= 'cast(thoihangiaiquyet as date)<=\''.(new MDateTime($_GET['tothoihangiaiquyet'][0],$_GET['tothoihangiaiquyet'][1],$_GET['tothoihangiaiquyet'][2]))->getDateDBString().'\' and ';
 					}else{
 						$data_errors[] = 'Thời hạn giải quyết không hợp lệ';
 					}
@@ -380,7 +380,13 @@
 				$where_clause .= '1';
 			}
 			
-			$legaldocuments = $user->timKiemCongVanDen($where_clause);
+			if(isset($_GET['p']) && is_numeric($_GET['p']) && intval($_GET['p'])>0){
+				$pp_cp = intval($_GET['p']);
+			}else{
+				$pp_cp = 1;
+			}
+			
+			$legaldocuments = $user->timKiemCongVanDen($where_clause, ($pp_cp-1)*10, 10);
 			if(count($legaldocuments)){
 ?>
 <div id="legaldocument-list">
@@ -409,6 +415,15 @@
 			}
 		?>
 	</table>
+	<?php
+		try{
+			$pp_pt = ceil($user->countSearchResult($where_clause) / 10);
+			$pp_cp = 1;
+			require $CNF['PATHS']['TEMPLATES'].'/pagepartition.php';
+		}catch(Exception $e){
+			echo '<div class="error-message-box">'.$e->getMessage().'</div>';
+		}
+	?>
 </div>
 <?php
 			}else{

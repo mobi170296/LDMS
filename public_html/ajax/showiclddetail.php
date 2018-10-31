@@ -36,7 +36,7 @@
 	<div class="data-title">Loại văn bản</div>
 	<div class="data-content"><?php echo $legaldocument->getLoaiVanBan()->getTenLoai(); ?></div>
 	<div class="data-title">Thời hạn giải quyết</div>
-	<div class="data-content"><?php echo $legaldocument->getThoiHanGiaiQuyet()!=''?'<font color="red">'.MDateTime::parseDate($legaldocument->getThoiHanGiaiQuyet())->getDateString('/').'</font>':'<font color="blue">Không có thời hạn giải quyêt</font>'; ?></div>
+	<div class="data-content"><?php echo $legaldocument->getThoiHanGiaiQuyet()!=''?'<font color="red">'.MDateTime::parseDate($legaldocument->getThoiHanGiaiQuyet())->getDateString('/').'</font>':'<font color="blue">Không có thời hạn giải quyết</font>'; ?></div>
 	<div class="data-title">Trạng thái</div>
 	<div class="data-content"><?php echo $legaldocument->getTrangThaiString(); ?></div>
 	<div class="data-title">Người nhập</div>

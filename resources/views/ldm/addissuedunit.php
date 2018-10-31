@@ -42,13 +42,13 @@
 	<div id="add-issuedunit-form">
 		<form action="" method="post" enctype="application/x-www-form-urlencoded">
 			<div>Mã đơn vị</div>
-			<div><input type="text" size="30" name="madonvi" value=""/></div>
+			<div><input type="text" size="30" name="madonvi" placeholder="Mã đơn vị ban hành" value=""/></div>
 			<div>Tên đơn vị</div>
-			<div><input type="text" size="30" name="tendonvi" value=""/></div>
+			<div><input type="text" size="30" name="tendonvi" placeholder="Tên đơn vị ban hành" value=""/></div>
 			<div>Loại đơn vị</div>
 			<div><input type="radio" name="benngoai" id="rad-add-issuedunit-benngoai" value="1" checked="checked"/><label for="rad-add-issuedunit-benngoai">Bên ngoài</label><input type="radio" name="benngoai" id="rad-add-issuedunit-bentrong" value="0"/><label for="rad-add-issuedunit-bentrong">Bên trong</label></div>
 			<div>Địa chỉ</div>
-			<div><textarea name="diachi" rows="4" cols="30" spellcheck="false"></textarea></div>
+			<div><textarea name="diachi" rows="4" cols="30" spellcheck="false" placeholder="Địa chỉ đơn vị ban hành"></textarea></div>
 			<div><button type="submit" name="addissuedunit" value="addissuedunit">Thêm đơn vị ban hành</button></div>
 		</form>
 	</div>

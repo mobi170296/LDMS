@@ -38,9 +38,9 @@
 	<div id="add-doctype-form">
 		<form action="" method="post" enctype="application/x-www-form-urlencoded">
 		<div>Mã loại văn bản</div>
-		<div><input type="text" size="30" name="maloai"/></div>
+		<div><input type="text" size="30" name="maloai" placeholder="Nhập mã loại văn bản" value="<?php if(isset($_POST['maloai'])&&is_string($_POST['maloai'])) echo htmlspecialchars($_POST['maloai']);?>"/></div>
 		<div>Tên loại văn bản</div>
-		<div><input type="text" size="30" name="tenloai"</div>
+		<div><input type="text" size="30" name="tenloai" placeholder="Nhập tên loại văn bản" value="<?php if(isset($_POST['tenloai'])&&is_string($_POST['tenloai'])) echo htmlspecialchars($_POST['tenloai']);?>" /></div>
 		<div><button type="submit" name="adddoctype" value="adddoctype">Thêm loại văn bản</button></div>
 		</form>
 	</div>

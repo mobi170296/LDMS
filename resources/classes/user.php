@@ -1483,9 +1483,13 @@
 		}
 		#INPUT: critical, content of critical
 		#$_POST[$_POST['tieuchi'][0]]
-		public function timKiemCongVanDen($where){
-			$result = $this->dbcon->query("SELECT * FROM (SELECT congvanden.* FROM congvanden LEFT OUTER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan LEFT OUTER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id} OR pheduyet.idnguoipheduyet={$this->id}) AS c WHERE $where");
+		public function timKiemCongVanDen($where, $start=null, $length=null){
 			$legaldocuments = [];
+			if($start===null){
+				$result = $this->dbcon->query("SELECT * FROM (SELECT congvanden.* FROM congvanden LEFT OUTER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan LEFT OUTER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id} OR pheduyet.idnguoipheduyet={$this->id}) AS c WHERE $where");
+			}else{
+				$result = $this->dbcon->query("SELECT * FROM (SELECT congvanden.* FROM congvanden LEFT OUTER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan LEFT OUTER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id} OR pheduyet.idnguoipheduyet={$this->id}) AS c WHERE $where LIMIT $start, $length");
+			}
 			while($row = $result->fetch_assoc()){
 				$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
 				$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
@@ -1512,6 +1516,22 @@
 				$legaldocuments[] = $legaldocument;
 			}
 			return $legaldocuments;
+		}
+		public function countSearchResult($where){
+			$result = $this->dbcon->query("SELECT count(*) FROM (SELECT congvanden.* FROM congvanden LEFT OUTER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan LEFT OUTER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id} OR pheduyet.idnguoipheduyet={$this->id}) AS c WHERE $where");
+			return $result->fetch_row()[0];
+		}
+		public function countICLD(){
+			$result = $this->dbcon->query("SELECT COUNT(*) FROM congvanden OUTER LEFT JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan LEFT JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id} OR pheduyet.idnguoipheduyet={$this->id}");
+			return $result->fetch_row()[0];
+		}
+		public function countWCICLD(){
+			$result = $this->dbcon->query("SELECT COUNT(*) FROM congvanden JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR kiemduyet.idnguoikiemduyet={$this->id}");
+			return $result->fetch_row()[0];
+		}
+		public function countWAICLD(){
+			$result = $this->dbcon->query("SELECT COUNT(*) FROM congvanden JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap={$this->id} OR pheduyet.idnguoipheduyet={$this->id}");
+			return $result->fetch_row()[0];
 		}
 	}
 ?>

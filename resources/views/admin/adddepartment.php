@@ -35,11 +35,11 @@
 				<div id="add-department-form">
 					<form action="" method="post" enctype="application/x-www-form-urlencoded">
 						<div>Mã đơn vị</div>
-						<div><input type="text" name="madonvi" value="<?php echo isset($_POST['madonvi']) ?$_POST['madonvi'] :'';  ?>"/></div>
+						<div><input type="text" name="madonvi" placeholder="Nhập mã đơn vị" value="<?php echo isset($_POST['madonvi']) ?htmlspecialchars($_POST['madonvi']) :'';  ?>"/></div>
 						<div>Tên đơn vị</div>
-						<div><input type="text" name="tendonvi" value="<?php echo isset($_POST['tendonvi']) ?$_POST['tendonvi'] : '' ; ?>"/></div>
+						<div><input type="text" name="tendonvi" placeholder="Nhập tên đơn vị" value="<?php echo isset($_POST['tendonvi']) ?htmlspecialchars($_POST['tendonvi']) : '' ; ?>"/></div>
 						<div>Email</div>
-						<div><input type="text" name="email" value="<?php echo isset($_POST['email']) ?$_POST['email'] :'';  ?>"/></div>
+						<div><input type="text" name="email" placeholder="Nhập Email đơn vị" value="<?php echo isset($_POST['email'])?htmlspecialchars($_POST['email']) :'';  ?>"/></div>
 						<div><button type="submit" name="adddepartment" value="adddepartment">Thêm đơn vị</button></div>
 					</form>
 				</div>

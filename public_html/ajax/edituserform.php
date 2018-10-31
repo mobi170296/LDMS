@@ -60,7 +60,7 @@
 				<div>Số điện thoại</div>
 				<div><input type="text" name="sodienthoai" value="<?php echo $userinfo->getSoDienThoai(); ?>"/></div>
 				<div>Địa chỉ</div>
-				<div><input type="text" name="diachi" value="<?php echo $userinfo->getDiaChi(); ?>"/></div>
+				<div><textarea name="diachi" rows="4" cols="30"><?php echo $userinfo->getDiaChi(); ?></textarea></div>
 				<div>Mã đơn vị</div>
 				<div>
 					<select name="madonvi">

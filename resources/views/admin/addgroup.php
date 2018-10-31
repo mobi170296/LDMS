@@ -37,9 +37,9 @@
 	<div id="add-group-form">
 		<form action="" method="post" enctype="application/x-www-form-urlencoded">
 			<div>Mã nhóm</div>
-			<div><input type="text" name="manhom" value="<?php echo isset($_POST['manhom']) ? $_POST['manhom'] : ''; ?>"/></div>
+			<div><input type="text" name="manhom" placeholder="Nhập mã nhóm" value="<?php echo isset($_POST['manhom'])? htmlspecialchars($_POST['manhom']) : ''; ?>"/></div>
 			<div>Tên nhóm</div>
-			<div><input type="text" name="tennhom" value="<?php echo isset($_POST['tennhom']) ? $_POST['tennhom'] : ''; ?>"/></div>
+			<div><input type="text" name="tennhom" placeholder="Nhập tên nhóm" value="<?php echo isset($_POST['tennhom'])? htmlspecialchars($_POST['tennhom']) : ''; ?>"/></div>
 			<div><button type="submit" name="addgroup" value="addgroup">Thêm nhóm</button></div>
 		</form>
 	</div>

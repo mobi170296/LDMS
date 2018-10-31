@@ -66,15 +66,15 @@
 		<div id="add-user-form">
 		<form action="" method="post" enctype="application/x-www-form-urlencoded" name="add-user">
 		<div>Mã số cán bộ</div>
-		<div><input type="text" name="maso" value="<?php if(isset($_POST['maso'])) echo $_POST['maso'];?>"/></div>
+		<div><input type="text" name="maso" placeholder="Nhập mã số người dùng" value="<?php if(isset($_POST['maso'])) echo htmlspecialchars($_POST['maso']);?>"/></div>
 		<div>Mật khẩu</div>
-		<div><input type="password" name="matkhau[]"/></div>
+		<div><input type="password" name="matkhau[]" placeholder="Nhập mật khẩu"/></div>
 		<div>Nhập lại mật khẩu</div>
-		<div><input type="password" name="matkhau[]"/></div>
+		<div><input type="password" name="matkhau[]" placeholder="Nhập lại mật khẩu trên"/></div>
 		<div>Họ</div>
-		<div><input type="text" name="ho" value="<?php if(isset($_POST['ho'])) echo $_POST['ho'];?>"/></div>
+		<div><input type="text" name="ho" placeholder="Nhập họ người dùng" value="<?php if(isset($_POST['ho'])) echo htmlspecialchars($_POST['ho']);?>"/></div>
 		<div>Tên</div>
-		<div><input type="text" name="ten" value="<?php if(isset($_POST['ten'])) echo $_POST['ten'];?>"/></div>
+		<div><input type="text" name="ten" placeholder="Nhập tên người dùng" value="<?php if(isset($_POST['ten'])) echo htmlspecialchars($_POST['ten']);?>"/></div>
 		<div>Ngày tháng năm sinh</div>
 		<div>
 			<select name="ngay">
@@ -100,11 +100,11 @@
 			</select>
 		</div>
 		<div>Email</div>
-		<div><input type="text" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>"/></div>
+		<div><input type="text" name="email" placeholder="Nhập Email người dùng" value="<?php if(isset($_POST['email'])) echo htmlspecialchars($_POST['email']); ?>"/></div>
 		<div>Số điện thoại</div>
-		<div><input type="text" name="sodienthoai" value="<?php if(isset($_POST['sodienthoai'])) echo $_POST['sodienthoai']; ?>"/></div>
+		<div><input type="text" name="sodienthoai" placeholder="Nhập số điện thoại người dùng" value="<?php if(isset($_POST['sodienthoai'])) echo htmlspecialchars($_POST['sodienthoai']); ?>"/></div>
 		<div>Địa chỉ</div>
-		<div><input type="text" name="diachi" value="<?php if(isset($_POST['diachi'])) echo $_POST['diachi']; ?>"/></div>
+		<div><textarea name="diachi" rows="4" cols="30" spellcheck="false" placeholder="Nhập địa chỉ người dùng"><?php if(isset($_POST['diachi'])) echo htmlspecialchars($_POST['diachi']); ?></textarea></div>
 		<div>Mã đơn vị</div>
 		<div>
 			<select name="madonvi">
