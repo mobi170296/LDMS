@@ -28,7 +28,7 @@
 	<div class="data-title">Ngày văn bản</div>
 	<div class="data-content"><?php echo MDateTime::parseDate($legaldocument->getNgayVanBan())->getDateString('/'); ?></div>
 	<div class="data-title">Đơn vị ban hành</div>
-	<div class="data-content"><?php echo $legaldocument->getDonViBanHanh()->getTenDonVi(); ?></div>
+	<div class="data-content"><?php echo $legaldocument->getDonViBanHanh()->getTenDonVi(); ?> (<font color="green"><?php echo $legaldocument->getDonViBanHanh()->getMaDonVi(); ?></font>)</div>
 	<div class="data-title">Trích yếu</div>
 	<div class="data-content"><?php echo $legaldocument->getTrichYeu(); ?></div>
 	<div class="data-title">Người ký</div>

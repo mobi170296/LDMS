@@ -19,10 +19,10 @@
 					}else{
 						$data_error[] = 'Mật khẩu không hợp lệ';
 					}
-					if(!isset($_POST['ho']) || !is_string($_POST['ho']) || !preg_match('/^[\p{L}\s]{1,40}$/u', $_POST['ho'])){
+					if(!isset($_POST['ho']) || !is_string($_POST['ho']) || ($_POST['ho']!='' && !preg_match('/^[\p{L}\s]{1,40}$/u', $_POST['ho']))){
 						$data_error[] = 'Họ và tên lót không hợp lệ độ dài họ phải dưới 40';
 					}
-					if(!isset($_POST['ho']) || !is_string($_POST['ho']) || !preg_match('/^[\p{L}\s]{1,20}$/u', $_POST['ho'])){
+					if(!isset($_POST['ten']) || !is_string($_POST['ten']) || !preg_match('/^[\p{L}\s]{1,20}$/u', $_POST['ten'])){
 						$data_error[] = 'Tên không hợp lệ độ dài họ phải dưới 20';
 					}
 					if(isset($_POST['ngay']) && is_numeric($_POST['ngay']) && isset($_POST['thang']) && is_numeric($_POST['thang']) && isset($_POST['nam']) && is_numeric($_POST['nam'])){

@@ -654,7 +654,7 @@
 				if($result->num_rows){
 					throw new ExistedIssuedUnitException('Đơn vị ban hành \''.$issuedunit->getMaDonVi().'\' đã tồn tại không thể thêm');
 				}else{
-					$this->dbcon->insert('donvibanhanh', ['madonvi', 'tendonvi', 'benngoai', 'diachi'], [$this->dbcon->realEscapeString($issuedunit->getMaDonVi()), $this->dbcon->realEscapeString($issuedunit->getTenDonVi()), $issuedunit->getBenNgoai(), $this->dbcon->realEscapeString($issuedunit->getDiaChi())]);
+					$this->dbcon->insert('donvibanhanh', ['madonvi', 'tendonvi', 'email', 'sodienthoai', 'benngoai', 'diachi'], [$this->dbcon->realEscapeString($issuedunit->getMaDonVi()), $this->dbcon->realEscapeString($issuedunit->getTenDonVi()), $this->dbcon->realEscapeString($issuedunit->getEmail()), $this->dbcon->realEscapeString($issuedunit->getSoDienThoai()), $issuedunit->getBenNgoai(), $this->dbcon->realEscapeString($issuedunit->getDiaChi())]);
 				}
 			}catch(Exception $e){
 				throw $e;
@@ -675,7 +675,13 @@
 						}
 					}
 					
-					$this->dbcon->query('UPDATE donvibanhanh SET madonvi=\''.$this->dbcon->realEscapeString($issuedunit->getMaDonVi()).'\', tendonvi=\''.$this->dbcon->realEscapeString($issuedunit->getTenDonVi()).'\', benngoai='.$issuedunit->getBenNgoai().', diachi=\''.$this->dbcon->realEscapeString($issuedunit->getDiaChi()).'\' WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
+					$this->dbcon->query('UPDATE donvibanhanh SET madonvi=\''.$this->dbcon->realEscapeString($issuedunit->getMaDonVi()).
+										'\', tendonvi=\''.$this->dbcon->realEscapeString($issuedunit->getTenDonVi()).
+										'\', benngoai='.$issuedunit->getBenNgoai().
+										', diachi=\''.$this->dbcon->realEscapeString($issuedunit->getDiaChi()).
+										'\', email=\''.$this->dbcon->realEscapeString($issuedunit->getEmail()).
+										'\', sodienthoai=\''.$this->dbcon->realEscapeString($issuedunit->getSoDienThoai())
+										.'\' WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
 				}else{
 					throw new NotExistedIssuedUnitException('Đơn vị ban hành không tồn tại không thể sửa thông tin');
 				}
@@ -941,13 +947,13 @@
 					$result = $this->dbcon->query('SELECT * FROM donvibanhanh ORDER BY thoigianthem DESC');
 					$issuedunits = [];
 					while($row = $result->fetch_assoc()){
-						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['email'], $email['sodienthoai'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
 					}
 				}else{
 					$result = $this->dbcon->query('SELECT * FROM donvibanhanh ORDER BY thoigianthem DESC LIMIT '.$start .', '.$length);
 					$issuedunits = [];
 					while($row = $result->fetch_assoc()){
-						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['sodienthoai'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
 					}
 				}
 				return $issuedunits;
@@ -992,7 +998,7 @@
 				$result = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$this->dbcon->realEscapeString($madonvi).'\'');
 				if($result->num_rows){
 					$row = $result->fetch_assoc();
-					return new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+					return new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['sodienthoai'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
 				}else{
 					throw new Exception('Không tồn tại đơn vị ban hành ' . $madonvi);
 				}
@@ -1057,7 +1063,7 @@
 					$subresult = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$row['madonvibanhanh'].'\'');
 					if($subresult->num_rows){
 						$subrow = $subresult->fetch_assoc();
-						$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+						$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['sodienthoai'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
 					}else{
 						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
 					}
@@ -1084,7 +1090,7 @@
 					$subresult = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$row['madonvibanhanh'].'\'');
 					if($subresult->num_rows){
 						$subrow = $subresult->fetch_assoc();
-						$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+						$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['sodienthoai'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
 					}else{
 						throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
 					}
@@ -1125,7 +1131,7 @@
 				throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
 			}
 			$subrow = $result->fetch_assoc();
-			$legaldocumentinfo->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+			$legaldocumentinfo->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['sodienthoai'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
 			
 			$result = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
 			if(!$result->num_rows){
@@ -1502,7 +1508,7 @@
 				$subresult = $this->dbcon->query('SELECT * FROM donvibanhanh WHERE madonvi=\''.$row['madonvibanhanh'].'\'');
 				if($subresult->num_rows){
 					$subrow = $subresult->fetch_assoc();
-					$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
+					$legaldocument->setDonViBanHanh(new IssuedUnitInfo($subrow['madonvi'], $subrow['tendonvi'], $subrow['email'], $subrow['sodienthoai'], $subrow['benngoai'], $subrow['diachi'], $subrow['thoigianthem']));
 				}else{
 					throw new Exception('Ràng buộc dữ liệu không thỏa mãn. Vui lòng kiểm tra lại Database!');
 				}

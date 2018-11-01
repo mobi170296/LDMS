@@ -20,6 +20,10 @@
 			<div><input type="text" size="30" name="madonvi" value="<?php echo $issuedunit->getMaDonVi(); ?>"/></div>
 			<div>Tên đơn vị</div>
 			<div><input type="text" size="30" name="tendonvi" value="<?php echo $issuedunit->getTenDonVi(); ?>"/></div>
+			<div>Email</div>
+			<div><input type="text" size="30" name="email" value="<?php echo $issuedunit->getEmail(); ?>"/></div>
+			<div>Số điện thoại</div>
+			<div><input type="text" size="30" name="sodienthoai" value="<?php echo $issuedunit->getSoDienThoai(); ?>"/></div>
 			<div>Loại đơn vị</div>
 			<div><input type="radio" id="rad-benngoai" name="benngoai" value="1" <?php echo $issuedunit->getBenNgoai() ?'checked="checked"' : ''; ?> />
 				<label for="rad-benngoai">Bên ngoài</label>

@@ -23,6 +23,12 @@
 				if(!isset($_POST['tendonvi']) || !is_string($_POST['tendonvi']) || mb_strlen($_POST['tendonvi'], 'UTF-8')==0 || mb_strlen($_POST['tendonvi'], 'UTF-8')>100){
 					$data_error[] = 'Tên đơn vị không hợp lệ, tên đơn vị không được trống và không nhiều hơn 100 ký tự';
 				}
+				if(!isset($_POST['email']) || !is_string($_POST['email']) || strlen($_POST['email']) > 50 ||!preg_match('/^(\w+\.)*\w+@(\w+\.)+[a-z]{2,3}$/i', $_POST['email'])){
+					$data_error[] = 'Địa chỉ email không hợp lệ, địa chỉ email phải dưới 50 ký tự và phải theo định dạng email';
+				}
+				if(!isset($_POST['sodienthoai']) || !is_string($_POST['sodienthoai']) || !preg_match('/^0[0-9]{9,10}$/', $_POST['sodienthoai'])){
+					$data_error[] = 'Số điện thoại không hợp lệ';
+				}
 				if(!isset($_POST['benngoai']) || !is_numeric($_POST['benngoai'])){
 					$data_error[] = 'Loại đơn vị không hợp lệ';
 				}
@@ -32,7 +38,7 @@
 				if(count($data_error)){
 					throw new NotValidFormDataException($data_error);
 				}
-				$user->suaDonViBanHanh($_POST['madonvi'], new IssuedUnitInfo($_POST['newmadonvi'], $_POST['tendonvi'], $_POST['benngoai'] ? 1 : 0, $_POST['diachi'], null));
+				$user->suaDonViBanHanh($_POST['madonvi'], new IssuedUnitInfo($_POST['newmadonvi'], $_POST['tendonvi'], $_POST['email'], $_POST['sodienthoai'], $_POST['benngoai'] ? 1 : 0, $_POST['diachi'], null));
 				echo json_encode(new AJAXEditResult(1, ['Sửa thông tin đơn vị ban hành '.$_POST['madonvi'].' thành công!']), JSON_UNESCAPED_UNICODE);
 				exit();
 			}else{

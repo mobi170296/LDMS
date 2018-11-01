@@ -1,9 +1,11 @@
 <?php
 	class IssuedUnitInfo{
 		private $madonvi, $tendonvi, $benngoai, $diachi, $thoigianthem;
-		public function __construct($madonvi, $tendonvi, $benngoai, $diachi, $thoigianthem=null){
+		public function __construct($madonvi, $tendonvi, $email, $sodienthoai, $benngoai, $diachi, $thoigianthem=null){
 			$this->madonvi = $madonvi;
 			$this->tendonvi = $tendonvi;
+			$this->email = $email;
+			$this->sodienthoai = $sodienthoai;
 			$this->benngoai = $benngoai;
 			$this->diachi = $diachi;
 			$this->thoigianthem = $thoigianthem;
@@ -22,6 +24,12 @@
 		}
 		public function getThoiGianThem(){
 			return $this->thoigianthem;
+		}
+		public function getEmail(){
+			return $this->email;
+		}
+		public function getSoDienThoai(){
+			return $this->sodienthoai;
 		}
 	}
 ?>

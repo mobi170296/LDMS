@@ -31,6 +31,8 @@
 				echo '<tr>';
 				echo '<td>'.$issuedunit->getMaDonVi().'</td>';
 				echo '<td>'.$issuedunit->getTenDonVi().'</td>';
+				echo '<td>'.$issuedunit->getEmail().'</td>';
+				echo '<td>'.$issuedunit->getSoDienThoai().'</td>';
 				echo '<td>'.($issuedunit->getBenNgoai()?'x':'').'</td>';
 				echo '<td>'.$issuedunit->getDiaChi().'</td>';
 				echo '<td>'.MDateTime::parseDateTime($issuedunit->getThoiGianThem())->getDateTimeString().'</td>';

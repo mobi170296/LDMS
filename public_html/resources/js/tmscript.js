@@ -125,18 +125,20 @@ function ajaxSubmitEdit(form){
 			pc.$css('top', '0px');
 			if(this.status==200){
 				var result = JSON.parse(this.response);
+				var s;
 				if(result.success){
-					var s = '<div class="success-message-box">';
+					s = '<div class="success-message-box">';
 					for(var i=0; i<result.messages.length; i++){
-						s += result.messages[i];
+						s += '<div>'+(result.messages[i])+'</div>';
 					}
 					s += '</div>';
 					pc.innerHTML = s;
 					window.setTimeout(function(){document.location.reload();}, 1000);
 				}else{
-					var s = '<div class="error-message-box">';
+					window.result = result;
+					s = '<div class="error-message-box">';
 					for(var i=0; i<result.messages.length; i++){
-						s += result.messages[i];
+						s += '<div>'+(result.messages[i])+'</div>';
 					}
 					s += '</div>';
 					pc.innerHTML = s;
@@ -165,7 +167,7 @@ function ajaxSubmitDelete(form){
 				if(result.success){
 					var s = '<div class="success-message-box">';
 					for(var i=0; i<result.messages.length; i++){
-						s += result.messages[i];
+						s += '<div>'+(result.messages[i])+'</div>';
 					}
 					s += '</div>';
 					pc.innerHTML = s;
@@ -173,7 +175,7 @@ function ajaxSubmitDelete(form){
 				}else{
 					var s = '<div class="error-message-box">';
 					for(var i=0; i<result.messages.length; i++){
-						s += result.messages[i];
+						s += '<div>'+(result.messages[i])+'</div>';
 					}
 					s += '</div>';
 					pc.innerHTML = s;

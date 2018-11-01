@@ -16,16 +16,25 @@
 				if(!isset($_POST['tendonvi']) || !is_string($_POST['tendonvi']) || mb_strlen($_POST['tendonvi'], 'UTF-8')==0 || mb_strlen($_POST['tendonvi'], 'UTF-8')>100){
 					$data_error[] = 'Tên đơn vị không hợp lệ, tên đơn vị không được trống và không nhiều hơn 100 ký tự';
 				}
+				if(!isset($_POST['email']) || !is_string($_POST['email']) || strlen($_POST['email']) > 50 ||!preg_match('/^(\w+\.)*\w+@(\w+\.)+[a-z]{2,3}$/i', $_POST['email'])){
+					$data_error[] = 'Địa chỉ email không hợp lệ, địa chỉ email phải dưới 50 ký tự và phải theo định dạng email';
+				}
+				if(!isset($_POST['sodienthoai']) || !is_string($_POST['sodienthoai']) || !preg_match('/^0[0-9]{9,10}$/', $_POST['sodienthoai'])){
+					$data_error[] = 'Số điện thoại không hợp lệ';
+				}
 				if(!isset($_POST['benngoai']) || !is_numeric($_POST['benngoai'])){
 					$data_error[] = 'Loại đơn vị không hợp lệ';
 				}
 				if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen($_POST['diachi'], 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8')>100){
 					$data_error[] = 'Địa chỉ đơn vị không hợp lệ';
 				}
+				
+				
+				
 				if(count($data_error)){
 					throw new NotValidFormDataException($data_error);
 				}
-				$user->themDonViBanHanh(new IssuedUnitInfo($_POST['madonvi'], $_POST['tendonvi'], $_POST['benngoai'] ? 1 : 0, $_POST['diachi'], null));
+				$user->themDonViBanHanh(new IssuedUnitInfo($_POST['madonvi'], $_POST['tendonvi'], $_POST['email'], $_POST['sodienthoai'], $_POST['benngoai'] ? 1 : 0, $_POST['diachi'], null));
 				echo '<div class="success-message-box">Thêm đơn vị ban hành thành công</div>';
 			}
 		}catch(NotValidFormDataException $e){
@@ -44,7 +53,9 @@
 			<div>Mã đơn vị</div>
 			<div><input type="text" size="30" name="madonvi" placeholder="Mã đơn vị ban hành" value=""/></div>
 			<div>Tên đơn vị</div>
-			<div><input type="text" size="30" name="tendonvi" placeholder="Tên đơn vị ban hành" value=""/></div>
+			<div><input type="text" size="30" name="tendonvi" placeholder="Tên đơn vị ban hành" value=""/></div><div>Email đơn vị</div>
+			<div><input type="text" size="30" name="email" placeholder="Email đơn vị ban hành" value=""/></div><div>Số điện thoại</div>
+			<div><input type="text" size="30" name="sodienthoai" placeholder="Số điện thoại đơn vị ban hành" value=""/></div>
 			<div>Loại đơn vị</div>
 			<div><input type="radio" name="benngoai" id="rad-add-issuedunit-benngoai" value="1" checked="checked"/><label for="rad-add-issuedunit-benngoai">Bên ngoài</label><input type="radio" name="benngoai" id="rad-add-issuedunit-bentrong" value="0"/><label for="rad-add-issuedunit-bentrong">Bên trong</label></div>
 			<div>Địa chỉ</div>
