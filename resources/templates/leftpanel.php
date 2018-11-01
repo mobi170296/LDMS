@@ -16,6 +16,9 @@
 	}else{
 	?>
 	<div id="basic-info">
+		<div id="avatar-wrapper">
+			<img src="/resources/avatars/avatar.php?nc=<?php echo $user->getMaSo(); ?>" alt="Hình đại diện" width="100%"/>
+		</div>
 		<div>Xin chào <?php echo $user->getHo() . ' ' . $user->getTen(); ?></div>
 		<div style="text-align: center;"><a id="logout-btn" href="/user/logout.php">Thoát tài khoản</a></div>
 	</div>

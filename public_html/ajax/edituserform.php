@@ -81,6 +81,10 @@
 						?>
 					</select>
 				</div>
+				<div>Hình đại diện</div>
+				<div>
+					<input type="file" name="avatar" accept="image/png,image/jpeg,image/gif"/>
+				</div>
 				<div>Tình trạng tài khoản</div>
 				<div><input type="checkbox" id="ckb-add-user-tinhtrang" name="tinhtrang" value="1" <?php echo $userinfo->getTinhTrang() ? 'checked="checked"' : ''; ?>/><label for="ckb-add-user-tinhtrang">Kích hoạt</label></div>
 				<div><input type="hidden" name="edituser" value="edituser"/></div>

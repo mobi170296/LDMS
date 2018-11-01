@@ -41,10 +41,21 @@
 					if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen($_POST['diachi'], 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8') > 100){
 						$data_error[] = 'Địa chỉ không hợp lệ, độ dài địa chỉ từ 1 đến 100 ký tự';
 					}
+					if(isset($_FILES['avatar'])){
+						if($_FILES['avatar']['error']){
+							$data_error[] = 'Tải ảnh lên bị lỗi. Có thể do tập tin quá lớn. Vui lòng thử lại';
+						}else{
+							if(!UploadedFile::checkFileExtensions($_FILES['avatar']['tmp_name'], ['png','gif','jpeg'])){
+								$data_error[] = 'Chỉ hỗ trợ những định dạng ảnh .png, .gif, .jpeg';
+							}
+						}
+					}else{
+						$data_error[] = 'Phải có ảnh cho người dùng';
+					}
 					if(count($data_error)!=0){
 						throw new NotValidFormDataException($data_error);
 					}
-					$user->themNguoiDung(new UserInfo(null, $_POST['maso'], $_POST['matkhau'][0], $_POST['ho'], $_POST['ten'], $_POST['nam'] .'-'.$_POST['thang']. '-'.$_POST['ngay'], $_POST['email'], $_POST['sodienthoai'], $_POST['diachi'], $_POST['madonvi'], $_POST['manhom'], isset($_POST['tinhtrang']) ? 1 : 0));
+					$user->themNguoiDung(new UserInfo(null, $_POST['maso'], $_POST['matkhau'][0], $_POST['ho'], $_POST['ten'], $_POST['nam'] .'-'.$_POST['thang']. '-'.$_POST['ngay'], $_POST['email'], $_POST['sodienthoai'], $_POST['diachi'], $_POST['madonvi'], $_POST['manhom'], isset($_POST['tinhtrang']) ? 1 : 0), $_FILES['avatar']['tmp_name'], $CNF['PATHS']['AVATAR_DIR'].'/tentaptin.png');
 					echo '<div class="success-message-box">Thêm người dùng thành công</div>';
 				}
 			}catch(NotValidFormDataException $e){
@@ -64,7 +75,7 @@
 ?>
 	<div id="add-user-form-wrapper">
 		<div id="add-user-form">
-		<form action="" method="post" enctype="application/x-www-form-urlencoded" name="add-user">
+		<form action="" method="post" enctype="multipart/form-data" name="add-user">
 		<div>Mã số cán bộ</div>
 		<div><input type="text" name="maso" placeholder="Nhập mã số người dùng" value="<?php if(isset($_POST['maso'])) echo htmlspecialchars($_POST['maso']);?>"/></div>
 		<div>Mật khẩu</div>
@@ -124,6 +135,10 @@
 				}
 				?>
 			</select>
+		</div>
+		<div>Hình đại diện</div>
+		<div>
+			<input type="file" name="avatar" accept="image/png,image/jpeg,image/gif"/>
 		</div>
 		<div>Tình trạng tài khoản</div>
 		<div><input type="checkbox" id="ckb-add-user-tinhtrang" name="tinhtrang" value="1" <?php echo isset($_POST['tinhtrang']) ? 'checked="checked"' : ''; ?>/><label for="ckb-add-user-tinhtrang">Kích hoạt</label></div>

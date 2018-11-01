@@ -52,10 +52,21 @@
 		if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen($_POST['diachi'], 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8') > 100){
 			$data_error[] = 'Địa chỉ không hợp lệ, độ dài địa chỉ từ 1 đến 100 ký tự';
 		}
+		$b_avatar = false;
+		if(isset($_FILES['avatar']['name']) && $_FILES['avatar']['name']!=''){
+			if($_FILES['avatar']['error']){
+				$data_error[] = 'Tải ảnh lên bị lỗi. Có thể do tập tin quá lớn. Vui lòng thử lại';
+			}else{
+				if(!UploadedFile::checkFileExtensions($_FILES['avatar']['tmp_name'], ['png','gif','jpeg'])){
+					$data_error[] = 'Chỉ hỗ trợ những định dạng ảnh .png, .gif, .jpeg';
+				}
+			}
+			$b_avatar = true;
+		}
 		if(count($data_error)!=0){
 			throw new NotValidFormDataException($data_error);
 		}
-		$user->suaNguoiDung($_POST['id'], new UserInfo(null, $_POST['maso'], $b_matkhau?$_POST['matkhau'][0]:null, $_POST['ho'], $_POST['ten'], $_POST['nam'] .'-'.$_POST['thang']. '-'.$_POST['ngay'], $_POST['email'], $_POST['sodienthoai'], $_POST['diachi'], $_POST['madonvi'], $_POST['manhom'], isset($_POST['tinhtrang']) ? 1 : 0));
+		$user->suaNguoiDung($_POST['id'], new UserInfo(null, $_POST['maso'], $b_matkhau?$_POST['matkhau'][0]:null, $_POST['ho'], $_POST['ten'], $_POST['nam'] .'-'.$_POST['thang']. '-'.$_POST['ngay'], $_POST['email'], $_POST['sodienthoai'], $_POST['diachi'], $_POST['madonvi'], $_POST['manhom'], isset($_POST['tinhtrang']) ? 1 : 0), $b_avatar ? $_FILES['avatar']['tmp_name'] : NULL, $b_avatar ? $CNF['PATHS']['AVATAR_DIR'].'/tentaptin.png' : NULL);
 		echo json_encode(new AJAXEditResult(1, ['Bạn đã sửa thông tin người dùng thành công']), JSON_UNESCAPED_UNICODE);
 	}catch(NotValidFormDataException $e){
 		echo json_encode(new AJAXEditResult(0, $e->getErrors()), JSON_UNESCAPED_UNICODE);

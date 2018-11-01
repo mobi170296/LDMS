@@ -6,6 +6,7 @@
 					 'TEMPLATES' => __DIR__.'/../resources/templates',
 					 'VIEWS' => __DIR__. '/../resources/views',
 					 'LEGALDOCUMENT_DIR' => __DIR__.'/../legaldocuments',
+					 'AVATAR_DIR' => __DIR__.'/../avatars',
 					 'CLASSES' => __DIR__.'/../resources/classes',
 					 'ERROR_PAGE' => __DIR__.'/../resources/templates/error.php',
 					];

@@ -225,44 +225,49 @@
 		#
 		# Quản lý người dùng
 		#
-		public function themNguoiDung($userinfo){
+		public function themNguoiDung($userinfo, $srcfile=null, $destfile=null){
 			#data checked outside
-			if($this->quyen->contain(PRIVILEGES['THEM_NGUOI_DUNG'])){
-				try{
-					$this->dbcon->startTransactionRW();
+			if(!$this->quyen->contain(PRIVILEGES['THEM_NGUOI_DUNG'])){
+				throw new MissingPrivilegeException('Bạn không có quyền thêm người dùng mới');
+			}
+			try{
+				$this->dbcon->startTransactionRW();
 
-					$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($userinfo->getMaNhom()).'\'');
-					
-					if($result->num_rows==0){
-						throw new NotExistedGroupException('Nhóm '.$userinfo->getMaNhom().' không tồn tại không thể thêm người dùng');
-					}
+				$result = $this->dbcon->lockRow('SELECT * FROM nhom WHERE manhom=\''.$this->dbcon->realEscapeString($userinfo->getMaNhom()).'\'');
 
-					$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($userinfo->getMaDonVi()).'\'');
-					
-					if($result->num_rows==0){
-						throw new NotExistedDepartmentException('Đơn vị '.$userinfo->getMaDonVi().' không tồn tại không thể thêm người dùng');
-					}
-
-					$result = $this->dbcon->lockRow("SELECT * FROM nguoidung WHERE maso='{$this->dbcon->realEscapeString($userinfo->getMaSo())}'");
-					
-					if($result->num_rows>0){
-						$row = $result->fetch_assoc();
-						$fullname = $row['ho'] . ' ' . $row['ten'];
-						throw new ExistedUserException('Mã số người dùng này đã tồn tại với tên '. $fullname. '. Xin vui lòng kiểm tra lại!');
-					}else{
-						$this->dbcon->insert('nguoidung', ['maso', 'matkhau', 'ho', 'ten', 'ngaysinh', 'email', 'sodienthoai', 'diachi', 'madonvi', 'manhom', 'tinhtrang'], [$this->dbcon->realEscapeString($userinfo->getMaSo()), (new MDBPasswordData($this->dbcon->realEscapeString($userinfo->getMatKhau()))), $this->dbcon->realEscapeString($userinfo->getHo()), $this->dbcon->realEscapeString($userinfo->getTen()), $this->dbcon->realEscapeString($userinfo->getNgaySinh()), $this->dbcon->realEscapeString($userinfo->getEmail()), $this->dbcon->realEscapeString($userinfo->getSoDienThoai()), htmlspecialchars($this->dbcon->realEscapeString($userinfo->getDiaChi())), $this->dbcon->realEscapeString($userinfo->getMaDonVi()), $this->dbcon->realEscapeString($userinfo->getMaNhom()), $userinfo->getTinhTrang()]);
-						
-						$this->dbcon->commit();
-					}
-				}catch(Exception $e){
-					$this->dbcon->rollback();
-					throw $e;
+				if($result->num_rows==0){
+					throw new NotExistedGroupException('Nhóm '.$userinfo->getMaNhom().' không tồn tại không thể thêm người dùng');
 				}
-			}else{
-				throw new MissingPrivilegeException('Bạn không đủ quyền để thực hiện thao tác thêm người dùng!');
+
+				$result = $this->dbcon->lockRow('SELECT * FROM donvi WHERE madonvi=\''.$this->dbcon->realEscapeString($userinfo->getMaDonVi()).'\'');
+
+				if($result->num_rows==0){
+					throw new NotExistedDepartmentException('Đơn vị '.$userinfo->getMaDonVi().' không tồn tại không thể thêm người dùng');
+				}
+
+				$result = $this->dbcon->lockRow("SELECT * FROM nguoidung WHERE maso='{$this->dbcon->realEscapeString($userinfo->getMaSo())}'");
+
+				if($result->num_rows>0){
+					$row = $result->fetch_assoc();
+					$fullname = $row['ho'] . ' ' . $row['ten'];
+					throw new ExistedUserException('Mã số người dùng này đã tồn tại với tên '. $fullname. '. Xin vui lòng kiểm tra lại!');
+				}
+				$this->dbcon->insert('nguoidung', ['maso', 'matkhau', 'ho', 'ten', 'ngaysinh', 'email', 'sodienthoai', 'diachi', 'madonvi', 'manhom', 'tinhtrang'], [$this->dbcon->realEscapeString($userinfo->getMaSo()), (new MDBPasswordData($this->dbcon->realEscapeString($userinfo->getMatKhau()))), $this->dbcon->realEscapeString($userinfo->getHo()), $this->dbcon->realEscapeString($userinfo->getTen()), $this->dbcon->realEscapeString($userinfo->getNgaySinh()), $this->dbcon->realEscapeString($userinfo->getEmail()), $this->dbcon->realEscapeString($userinfo->getSoDienThoai()), htmlspecialchars($this->dbcon->realEscapeString($userinfo->getDiaChi())), $this->dbcon->realEscapeString($userinfo->getMaDonVi()), $this->dbcon->realEscapeString($userinfo->getMaNhom()), $userinfo->getTinhTrang()]);
+				
+				if($srcfile!==null){
+					$filename = dirname($destfile).'/'.$userinfo->getMaSo().'.png';
+					if(!UploadedFile::scaleImageToPng($srcfile, $filename, 200, 200)){
+						throw new Exception('Xử lý ảnh thất bại');
+					}
+				}
+				
+				$this->dbcon->commit();
+			}catch(Exception $e){
+				$this->dbcon->rollback();
+				throw $e;
 			}
 		}
-		public function suaNguoiDung($id, $newuserinfo){
+		public function suaNguoiDung($id, $newuserinfo, $srcfile=null, $destfile){
 			#data checked outside
 			if($this->quyen->contain(PRIVILEGES['SUA_NGUOI_DUNG'])){
 				try{
@@ -310,6 +315,27 @@
 					
 					$this->dbcon->query($sql);
 					
+					if($srcfile!==null){
+						if(file_exists(dirname($destfile).'/'.$userinfo->getMaSo().'.png')){
+							if(!unlink(dirname($destfile).'/'.$userinfo->getMaSo().'.png')){
+								throw new Exception('Lỗi xử lý tập tin');
+							}
+						}
+						$filename = dirname($destfile).'/'.$newuserinfo->getMaSo().'.png';
+						if(!UploadedFile::scaleImageToPng($srcfile, $filename, 200, 200)){
+							throw new Exception('Xử lý ảnh thất bại');
+						}
+					}else{
+						global $CNF;
+						if($userinfo->getMaSo()!=$newuserinfo->getMaSo()){
+							if(file_exists($CNF['PATHS']['AVATAR_DIR'].'/'.$userinfo->getMaSo().'.png')){
+								if(!rename($CNF['PATHS']['AVATAR_DIR'].'/'.$userinfo->getMaSo().'.png', $CNF['PATHS']['AVATAR_DIR'].'/'.$newuserinfo->getMaSo().'.png')){
+									throw new Exception('Lỗi xử lý tập tin');
+								}
+							}
+						}
+					}
+					
 					$this->dbcon->commit();
 				}catch(Exception $e){
 					$this->dbcon->rollback();
@@ -323,9 +349,12 @@
 			#data checked outside
 			if($this->quyen->contain(PRIVILEGES['XOA_NGUOI_DUNG'])){
 				try{
+					$this->dbcon->startTransactionRW();
 					$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$id);
-				
+					
 					if($result->num_rows){
+						$maso = $result->fetch_assoc()['maso'];
+						
 						$result = $this->dbcon->query('SELECT EXISTS(SELECT id FROM congvanden WHERE idnguoinhap='.$id.')');
 
 						$row = $result->fetch_row();
@@ -348,10 +377,19 @@
 							throw new ExistedLegalDocumentException('Đã tồn tại công văn do người này phê duyệt không thể xóa người dùng này được!');
 						}
 						$result = $this->dbcon->query('DELETE FROM nguoidung WHERE id='.$id);
+						
+						global $CNF;
+						if(file_exists($CNF['PATHS']['AVATAR_DIR'].'/'.$maso.'.png')){
+							if(!unlink($CNF['PATHS']['AVATAR_DIR'].'/'.$maso.'.png')){
+								throw new Exception('Lỗi xử lý tập tin');
+							}
+						}
 					}else{
 						throw new NotExistedUserException('Người dùng không tồn tại không thể thực hiện thao tác xóa!');
 					}
+					$this->dbcon->commit();
 				}catch(Exception $e){
+					$this->dbcon->rollback();
 					throw $e;
 				}
 				

@@ -12,7 +12,14 @@
 				return null;
 			}
 		}
-		
+		public static function checkFileExtensions($file, $array){
+			$mime = self::getMimeType($file);
+			$ext = self::getExtension($mime);
+			if($ext==null){
+				return false;
+			}
+			return DataChecker::valueInArray($ext, $array);
+		}
 		public static function scaleImageToPng($src, $dest, $dw, $dh){
 			$ratio = $dw / $dh;
 			$mimetype = self::getMimeType($src);
