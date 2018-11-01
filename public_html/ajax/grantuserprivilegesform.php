@@ -12,7 +12,8 @@
 		if(!$user->getQuyen()->contain(PRIVILEGES['CAP_QUYEN_NGUOI_DUNG'])){
 			throw new Exception('Bạn không có quyền cấp quyền cho người dùng khác!');
 		}
-		$userinfo = $user->getNguoiDung($_POST['id']);
+		#$userinfo = $user->getNguoiDung($_POST['id']);
+		$userinfo = $user->getNguoiDungVaQuyen($_POST['id']);
 ?>
 	<div id="page-title">Cấp quyền cho người dùng</div>
 	<div id="grant-privileges-form">

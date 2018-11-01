@@ -50,7 +50,7 @@
 						$_SESSION['maso'] = $maso;
 						$_SESSION['matkhau'] = $matkhau;
 					}else{
-						throw new LoginFailedException('Tên đăng nhập hoặc mật khẩu không đúng');
+						throw new LoginFailedException('Mã số hoặc mật khẩu không đúng');
 					}
 				}catch(DBException $e){
 					throw $e;
@@ -888,6 +888,26 @@
 					$userinfo->$k = $v;
 				}
 				$sql = "SELECT quyennguoidung.quyen FROM quyennguoidung INNER JOIN nguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$id} UNION SELECT quyennhomnguoidung.quyen FROM quyennhomnguoidung JOIN nguoidung ON nguoidung.manhom=quyennhomnguoidung.manhom WHERE nguoidung.id={$id}";
+				$quyen = new MSet();
+				$result = $this->dbcon->query($sql);
+				while($row = $result->fetch_assoc()){
+					$quyen->addElement($row['quyen']);
+				}
+				$userinfo->setQuyen($quyen);
+				return $userinfo;
+			}else{
+				throw new NotExistedUserException('Người dùng không tồn tại');
+			}
+		}
+		public function getNguoiDungVaQuyen($id){
+			$userinfo = new UserInfo(null, null, null, null, null, null, null, null, null, null, null, null);
+			$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$id);
+			if($result->num_rows){
+				$row = $result->fetch_assoc();
+				foreach($row as $k => $v){
+					$userinfo->$k = $v;
+				}
+				$sql = "SELECT quyen FROM quyennguoidung WHERE idnguoidung=$id";
 				$quyen = new MSet();
 				$result = $this->dbcon->query($sql);
 				while($row = $result->fetch_assoc()){
