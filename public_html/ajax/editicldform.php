@@ -132,23 +132,23 @@
 			</select>
 		</div>
 		<div>Thời hạn giải quyết <?php echo $dtthoihangiaiquyet==null?'<font color="#f70"><b>(Hiện chưa có thời hạn giải quyết)<b></font>':'';?></div>
-		<div><input type="checkbox" name="thoihangiaiquyet" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;"/></div>
+		<div><input type="checkbox" name="thoihangiaiquyet" <?php echo $dtthoihangiaiquyet==null?'':'checked="checked"'; ?> onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;"/></div>
 		<div>
-			<select name="ngaygiaiquyet" disabled="disabled">
+			<select name="ngaygiaiquyet" <?php echo $dtthoihangiaiquyet==null?'disabled="disabled"':''; ?>>
 				<?php 
 					for($i=1;$i<=MCalendar::getMaxDayOfMonth($currentdate['mon'], $currentdate['year']);$i++){
 						echo '<option value="'.$i.'" '.($dtthoihangiaiquyet!=null&&$dtthoihangiaiquyet->getDay()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="thanggiaiquyet" disabled="disabled" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this,this.form['namgiaiquyet']);">
+			<select name="thanggiaiquyet" <?php echo $dtthoihangiaiquyet==null?'disabled="disabled"':''; ?> onchange="updateDaySelect(this.form['ngaygiaiquyet'],this,this.form['namgiaiquyet']);">
 				<?php 
 					for($i=1;$i<=12;$i++){
 						echo '<option value="'.$i.'" '.($dtthoihangiaiquyet!=null&&$dtthoihangiaiquyet->getMonth()==$i?'selected="selected"':'').'>'.$i.'</option>';
 					}
 				?>
 			</select> /
-			<select name="namgiaiquyet" disabled="disabled" onchange="updateDaySelect(this.form['ngaygiaiquyet'],this.form['thanggiaiquyet'],this);">
+			<select name="namgiaiquyet" <?php echo $dtthoihangiaiquyet==null?'disabled="disabled"':''; ?> onchange="updateDaySelect(this.form['ngaygiaiquyet'],this.form['thanggiaiquyet'],this);">
 				<?php 
 					for($i=$currentdate['year'] - 5;$i<=$currentdate['year'] + 5;$i++){
 						echo '<option value="'.$i.'" '.($dtthoihangiaiquyet!=null&&$dtthoihangiaiquyet->getYear()==$i?'selected="selected"':'').'>'.$i.'</option>';

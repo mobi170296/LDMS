@@ -828,8 +828,8 @@
 										   ', trichyeu=\''.$this->dbcon->realEscapeString($newdocinfo->getTrichYeu()).'\''.
 										   ', nguoiky=\''.$this->dbcon->realEscapeString($newdocinfo->getNguoiKy()).'\''.
 										   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.
-											($newdocinfo->getThoiHanGiaiQuyet()!=null?
-										   ', thoihangiaiquyet='.MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()):'').
+											', thoihangiaiquyet='.
+											($newdocinfo->getThoiHanGiaiQuyet()!=null?MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()):'NULL').
 										   ', tentaptin=\''.$this->dbcon->realEscapeString($filename).'\''.
 										   ' WHERE id='.$id);
 					}
@@ -841,8 +841,10 @@
 										   ', madonvibanhanh=\''.$this->dbcon->realEscapeString($newdocinfo->getMaDonViBanHanh()).'\''.
 										   ', trichyeu=\''.$this->dbcon->realEscapeString($newdocinfo->getTrichYeu()).'\''.
 										   ', nguoiky=\''.$this->dbcon->realEscapeString($newdocinfo->getNguoiKy()).'\''.
-										   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.($newdocinfo->getThoiHanGiaiQuyet()!=null?
-										   ', thoihangiaiquyet='.MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()):'').
+										   ', maloaivanban=\''.$this->dbcon->realEscapeString($newdocinfo->getMaLoaiVanBan()).'\''.
+											', thoihangiaiquyet='.
+											($newdocinfo->getThoiHanGiaiQuyet()!=null?
+										   MDatabase::toDBValueString($newdocinfo->getThoiHanGiaiQuyet()):'NULL').
 										   ' WHERE id='.$id);
 				}
 				$this->dbcon->commit();
@@ -967,7 +969,7 @@
 					$result = $this->dbcon->query('SELECT * FROM donvibanhanh ORDER BY thoigianthem DESC');
 					$issuedunits = [];
 					while($row = $result->fetch_assoc()){
-						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['email'], $email['sodienthoai'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
+						$issuedunits[] = new IssuedUnitInfo($row['madonvi'], $row['tendonvi'], $row['email'], $row['sodienthoai'], $row['benngoai'], $row['diachi'], $row['thoigianthem']);
 					}
 				}else{
 					$result = $this->dbcon->query('SELECT * FROM donvibanhanh ORDER BY thoigianthem DESC LIMIT '.$start .', '.$length);

@@ -174,7 +174,7 @@ try{
 				<?php
 					$issuedunits = $user->getDanhSachDonViBanHanh();
 					foreach($issuedunits as $issuedunit){
-						echo '<option value="'.$issuedunit->getMaDonVi().'">'.$issuedunit->getTenDonVi() . ' ' . ($issuedunit->getBenNgoai()?' (Bên ngoài)':' (Bên trong)') .'</option>';
+						echo '<option value="'.$issuedunit->getMaDonVi().'">'.$issuedunit->getTenDonVi() . ' ' . ($issuedunit->getBenNgoai()?'(Bên ngoài)':'(Bên trong)') .'</option>';
 					}
 				?>
 			</select>
@@ -197,7 +197,7 @@ try{
 			</select>
 		</div>
 		<div>Thời hạn giải quyết</div>
-		<div><input type="checkbox" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;" checked="checked"/></div>
+		<div><input type="checkbox" name="choosehangiaiquyet" onChange="this.form['ngaygiaiquyet'].disabled = this.form['thanggiaiquyet'].disabled = this.form['namgiaiquyet'].disabled = !this.checked;" checked="checked"/></div>
 		<div>
 			<select name="ngaygiaiquyet">
 				<?php 
