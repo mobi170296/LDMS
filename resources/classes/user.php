@@ -402,9 +402,9 @@
 				throw new MissingPrivilegeException('Bạn không có quyền để thực hiện cấp quyền cho người dùng khác!');
 			}
 			
-			if($this->id==$id){
-				throw new Exception('Bạn không thể tự cấp quyền cho mình');
-			}
+//			if($this->id==$id){
+//				throw new Exception('Bạn không thể tự cấp quyền cho mình');
+//			}
 			
 			try{
 				$result = $this->dbcon->startTransactionRW();

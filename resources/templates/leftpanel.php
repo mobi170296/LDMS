@@ -74,7 +74,7 @@
 					if($user->getQuyen()->contain(PRIVILEGES['THEM_NGUOI_DUNG'])){
 						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/admin/adduser.php'?' selected-menu-item':'').'" href="/admin/adduser.php">Thêm người dùng</a>';
 					}
-					if($user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG']])){
+					if($user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG'],PRIVILEGES['CAP_QUYEN_NGUOI_DUNG']])){
 						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/admin/userlist.php'?' selected-menu-item':'').'" href="/admin/userlist.php">Danh sách người dùng</a>';
 					}
 					if($user->getQuyen()->contain(PRIVILEGES['THEM_DON_VI'])){
@@ -86,7 +86,7 @@
 					if($user->getQuyen()->contain(PRIVILEGES['THEM_NHOM'])){
 						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/admin/addgroup.php'?' selected-menu-item':'').'" href="/admin/addgroup.php">Thêm nhóm</a>';
 					}
-					if($user->getQuyen()->contains([PRIVILEGES['THEM_NHOM'],PRIVILEGES['SUA_NHOM'],PRIVILEGES['XOA_NHOM']])){
+					if($user->getQuyen()->contains([PRIVILEGES['THEM_NHOM'],PRIVILEGES['SUA_NHOM'],PRIVILEGES['XOA_NHOM'],PRIVILEGES['CAP_QUYEN_NHOM']])){
 						echo '<a class="menu-item '.($_SERVER['SCRIPT_NAME']=='/admin/grouplist.php'?' selected-menu-item':'').'" href="/admin/grouplist.php">Danh sách nhóm</a>';
 					}
 			echo '</div>';

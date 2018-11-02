@@ -41,7 +41,8 @@
 					if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen($_POST['diachi'], 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8') > 100){
 						$data_error[] = 'Địa chỉ không hợp lệ, độ dài địa chỉ từ 1 đến 100 ký tự';
 					}
-					if(isset($_FILES['avatar'])){
+					
+					if(isset($_FILES['avatar']['name'])&&$_FILES['avatar']['name']!=''){
 						if($_FILES['avatar']['error']){
 							$data_error[] = 'Tải ảnh lên bị lỗi. Có thể do tập tin quá lớn. Vui lòng thử lại';
 						}else{

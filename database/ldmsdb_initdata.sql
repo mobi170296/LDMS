@@ -81,7 +81,7 @@ CREATE TABLE `donvi` (
 
 LOCK TABLES `donvi` WRITE;
 /*!40000 ALTER TABLE `donvi` DISABLE KEYS */;
-INSERT INTO `donvi` VALUES ('DV_CNTT','CNTT','admin@domain.com','2018-11-02 09:38:02');
+INSERT INTO `donvi` VALUES ('DV_CNTT','C√¥ng ngh·ªá th√¥ng tin','admin@domain.com','2018-11-02 09:38:02');
 /*!40000 ALTER TABLE `donvi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +202,7 @@ CREATE TABLE `nguoidung` (
 
 LOCK TABLES `nguoidung` WRITE;
 /*!40000 ALTER TABLE `nguoidung` DISABLE KEYS */;
-INSERT INTO `nguoidung` VALUES (1,'20181101',_binary 'áò\„üÚ\œ\0\ÈAì˘Vô•','Tr·ªãnh VƒÉn','Linh','2018-11-02','admin@gmail.com','01215759696','ƒê·ªìng Th√°p','DV_CNTT','N_QTHT',1,'2018-11-02 09:41:43');
+INSERT INTO `nguoidung` VALUES (1,'20181101',_binary 'áò\„üÚ\œ\0\ÈAì˘Vô•','Tr·ªãnh VƒÉn','Linh','2010-11-02','admin@gmail.com','01215759696','ƒê·ªìng Th√°p','DV_CNTT','N_QTHT',1,'2018-11-02 09:41:43');
 /*!40000 ALTER TABLE `nguoidung` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +227,7 @@ CREATE TABLE `nhom` (
 
 LOCK TABLES `nhom` WRITE;
 /*!40000 ALTER TABLE `nhom` DISABLE KEYS */;
-INSERT INTO `nhom` VALUES ('N_QTHT','QTHT','2018-11-02 09:38:29');
+INSERT INTO `nhom` VALUES ('N_QTHT','Qu·∫£n tr·ªã h·ªá th·ªëng','2018-11-02 09:38:29');
 /*!40000 ALTER TABLE `nhom` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,6 +309,7 @@ CREATE TABLE `quyennhomnguoidung` (
 
 LOCK TABLES `quyennhomnguoidung` WRITE;
 /*!40000 ALTER TABLE `quyennhomnguoidung` DISABLE KEYS */;
+INSERT INTO `quyennhomnguoidung` VALUES ('N_QTHT',1,'2018-11-02 13:37:23'),('N_QTHT',2,'2018-11-02 13:37:23'),('N_QTHT',3,'2018-11-02 13:37:23'),('N_QTHT',4,'2018-11-02 13:37:23'),('N_QTHT',5,'2018-11-02 13:37:23'),('N_QTHT',6,'2018-11-02 13:37:23'),('N_QTHT',7,'2018-11-02 13:26:18'),('N_QTHT',8,'2018-11-02 13:37:23'),('N_QTHT',9,'2018-11-02 13:37:23'),('N_QTHT',10,'2018-11-02 13:37:23'),('N_QTHT',11,'2018-11-02 13:37:23');
 /*!40000 ALTER TABLE `quyennhomnguoidung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -321,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-02  9:42:12
+-- Dump completed on 2018-11-02 13:41:39

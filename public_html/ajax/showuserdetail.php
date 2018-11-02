@@ -10,7 +10,7 @@
 		require_once $CNF['PATHS']['TEMPLATES'].'/dbinitnoheader.php';
 		$user = new User($mcon);
 		$user->dangNhap();
-		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG']])){
+		if(!$user->getQuyen()->contains([PRIVILEGES['THEM_NGUOI_DUNG'],PRIVILEGES['SUA_NGUOI_DUNG'],PRIVILEGES['XOA_NGUOI_DUNG'],PRIVILEGES['CAP_QUYEN_NGUOI_DUNG']])){
 			throw new Exception('Bạn không có quyền xem thông tin người dùng');
 		}
 		$userinfo = $user->getNguoiDung($_POST['id']);

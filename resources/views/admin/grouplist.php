@@ -37,7 +37,7 @@
 				echo '<td>'.MDateTime::parseDateTime($group->getThoiGianThem())->getDateTimeString().'</td>';
 				echo '<td>';
 				if($user->getQuyen()->contain(PRIVILEGES['SUA_NHOM'])){
-					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']]);" title="Sửa thông tin nhóm"></a>';
+					echo '<a class="action-btn positive edit" onclick="showFormPopup(\'/ajax/editgroupform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']]);" title="Sửa thông tin nhóm"></a>';
 				}
 				if($user->getQuyen()->contain(PRIVILEGES['CAP_QUYEN_NHOM'])){
 					echo '<a class="action-btn positive grant-privilege" onclick="showFormPopup(\'/ajax/grantgroupprivilegesform.php\', [[\'manhom\', \''.$group->getMaNhom().'\']])" title="Cấp quyền nhóm"></a>';
