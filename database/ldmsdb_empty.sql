@@ -47,7 +47,7 @@ CREATE TABLE `congvanden` (
   CONSTRAINT `fk_congvanden_donvibanhanh` FOREIGN KEY (`madonvibanhanh`) REFERENCES `donvibanhanh` (`madonvi`) ON UPDATE CASCADE,
   CONSTRAINT `fk_congvanden_loaivanban` FOREIGN KEY (`maloaivanban`) REFERENCES `loaivanban` (`maloai`) ON UPDATE CASCADE,
   CONSTRAINT `fk_nguoinhapcongvan` FOREIGN KEY (`idnguoinhap`) REFERENCES `nguoidung` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,6 +76,8 @@ DROP TABLE IF EXISTS `donvibanhanh`;
 CREATE TABLE `donvibanhanh` (
   `madonvi` varchar(10) NOT NULL,
   `tendonvi` varchar(100) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `sodienthoai` varchar(12) NOT NULL,
   `benngoai` tinyint(4) NOT NULL,
   `diachi` varchar(100) NOT NULL,
   `thoigianthem` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -145,7 +147,7 @@ CREATE TABLE `nguoidung` (
   KEY `fk_nguoidung_nhom_idx` (`manhom`),
   CONSTRAINT `fk_nguoidung_donvi` FOREIGN KEY (`madonvi`) REFERENCES `donvi` (`madonvi`) ON UPDATE CASCADE,
   CONSTRAINT `fk_nguoidung_nhom` FOREIGN KEY (`manhom`) REFERENCES `nhom` (`manhom`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,4 +228,4 @@ CREATE TABLE `quyennhomnguoidung` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-28 21:05:06
+-- Dump completed on 2018-11-02  9:34:02
