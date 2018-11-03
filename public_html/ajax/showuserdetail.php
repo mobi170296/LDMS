@@ -17,7 +17,16 @@
 ?>
 		<div id="userdetail">
 			<div id="page-title">Thông tin người dùng</div>
+			<div id="user-avatar"><img width="100%" src="/resources/avatars/avatar.php?nc=<?php echo $userinfo->getMaSo(); ?>"/></div>
 			<style type="text/css">
+				div#user-avatar{
+					height: 100px;
+					width: 100px;
+					margin: 0px auto;
+					overflow: none;
+					border-radius: 50%;
+					border: 3px solid #099FB1;
+				}
 				table th{
 					padding-right: 2em;
 					vertical-align: text-top;
