@@ -1,5 +1,12 @@
+<form action="" method="post" enctype="application/x-www-form-urlencode">
+<textarea name="s"></textarea>
+<input type="submit">
+</form>
+
 <?php
-foreach($_SERVER as $k => $v){
-	echo $k . ' ' . $v . '<br/>';
-}
-?>
+	if(isset($_POST['s'])){
+		$l = strlen($_POST['s']);
+		for($i=0;$i<$l; $i++){
+			echo ord($_POST['s'][$i]) . ' ';
+		}
+	}
