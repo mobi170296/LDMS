@@ -20,10 +20,10 @@
 						$data_error[] = 'Mật khẩu không hợp lệ';
 					}
 					if(!isset($_POST['ho']) || !is_string($_POST['ho']) || ($_POST['ho']!='' && !preg_match('/^[\p{L}\s]{1,40}$/u', $_POST['ho']))){
-						$data_error[] = 'Họ và tên lót không hợp lệ độ dài họ phải dưới 40';
+						$data_error[] = 'Họ và tên lót không hợp lệ độ dài họ phải nhỏ hơn hoặc bằng 40 ký tự hoặc rỗng';
 					}
 					if(!isset($_POST['ten']) || !is_string($_POST['ten']) || !preg_match('/^[\p{L}\s]{1,20}$/u', $_POST['ten'])){
-						$data_error[] = 'Tên không hợp lệ độ dài họ phải dưới 20';
+						$data_error[] = 'Tên không hợp lệ độ dài họ phải nhỏ hơn hoặc bằng 20 ký tự';
 					}
 					if(isset($_POST['ngay']) && is_numeric($_POST['ngay']) && isset($_POST['thang']) && is_numeric($_POST['thang']) && isset($_POST['nam']) && is_numeric($_POST['nam'])){
 						if(!checkdate(intval($_POST['thang']), intval($_POST['ngay']), intval($_POST['nam']))){
@@ -38,7 +38,7 @@
 					if(!isset($_POST['sodienthoai']) || !is_string($_POST['sodienthoai']) || !preg_match('/^0[0-9]{9,10}$/', $_POST['sodienthoai'])){
 						$data_error[] = 'Số điện thoại không hợp lệ';
 					}
-					if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen($_POST['diachi'], 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8') > 100){
+					if(!isset($_POST['diachi']) || !is_string($_POST['diachi']) || mb_strlen(DataChecker::trim($_POST['diachi']), 'UTF-8')==0 || mb_strlen($_POST['diachi'], 'UTF-8') > 100){
 						$data_error[] = 'Địa chỉ không hợp lệ, độ dài địa chỉ từ 1 đến 100 ký tự';
 					}
 					

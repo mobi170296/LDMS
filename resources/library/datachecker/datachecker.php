@@ -81,5 +81,10 @@
 			}
 			return false;
 		}
+		public static function trim($s){
+			$s = trim($s);
+			$s = preg_replace('/(\s|\t|\r\n|\n)+/', ' ', $s);
+			return $s;
+		}
 	}
 ?>

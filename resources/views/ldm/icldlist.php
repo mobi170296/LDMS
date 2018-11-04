@@ -50,7 +50,6 @@
 	<?php
 		try{
 			$pp_pt = ceil($user->countRecordsInTable('congvanden', 'idnguoinhap='.$user->getID()) / 10);
-			$pp_cp = 1;
 			require $CNF['PATHS']['TEMPLATES'].'/pagepartition.php';
 		}catch(Exception $e){
 			echo '<div class="error-message-box">'.$e->getMessage().'</div>';

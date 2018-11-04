@@ -13,8 +13,8 @@
 				if(!isset($_POST['manhom']) || !is_string($_POST['manhom']) || !preg_match('/^\w{1,10}$/i', $_POST['manhom'])){
 					$data_error[] = 'Mã nhóm không hợp lệ, mã nhóm phải ít hơn hoặc bằng 10 ký tự, chỉ chứa chỉ chữ số, chữ cái và _';
 				}
-				if(!isset($_POST['tennhom']) || !is_string($_POST['tennhom']) || mb_strlen($_POST['tennhom'], 'UTF-8')==0 || mb_strlen($_POST['tennhom'], 'UTF-8')>100){
-				$data_error[] = 'Tên nhóm không hợp lệ, tên nhóm không được trống và không nhiều hơn 100 ký tự';
+				if(!isset($_POST['tennhom']) || !is_string($_POST['tennhom']) || mb_strlen(DataChecker::trim($_POST['tennhom']), 'UTF-8')==0 || mb_strlen($_POST['tennhom'], 'UTF-8')>100){
+					$data_error[] = 'Tên nhóm không hợp lệ, tên nhóm không được trống và không nhiều hơn 100 ký tự';
 				}
 				if(count($data_error)){
 					throw new NotValidFormDataException($data_error);

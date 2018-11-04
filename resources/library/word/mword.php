@@ -2,7 +2,7 @@
 class MWord{
 	public static function trim($str){
 		$str = trim($str);
-		return preg_replace('/\s+/', ' ', $str);
+		return preg_replace('/(\s|\t|\r\n|\n)+/', ' ', $str);
 	}
 	public static function count($str){
 		$str = self::trim($str);

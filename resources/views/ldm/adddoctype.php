@@ -13,7 +13,7 @@
 				if(!isset($_POST['maloai']) || !is_string($_POST['maloai']) || !preg_match('/^\w{1,10}$/i', $_POST['maloai'])){
 					$data_error[] = 'Mã loại văn bản không hợp lệ, mã loại có dộ dài tối đa là 10 không được rỗng, chỉ chứa chữ cái, chữ số và _';
 				}
-				if(!isset($_POST['tenloai']) || !is_string($_POST['tenloai']) || mb_strlen($_POST['tenloai'], 'UTF-8')==0 || mb_strlen($_POST['tenloai'], 'UTF-8') > 50){
+				if(!isset($_POST['tenloai']) || !is_string($_POST['tenloai']) || mb_strlen(DataChecker::trim($_POST['tenloai']), 'UTF-8')==0 || mb_strlen($_POST['tenloai'], 'UTF-8') > 50){
 					$data_error[] = 'Tên loại văn bản không hợp lệ, tên loại phải có đọ dài từ 1 đén 50 ký tự';
 				}
 				

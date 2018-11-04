@@ -23,7 +23,7 @@
 					height: 100px;
 					width: 100px;
 					margin: 0px auto;
-					overflow: none;
+					overflow: hidden;
 					border-radius: 50%;
 					border: 3px solid #099FB1;
 				}

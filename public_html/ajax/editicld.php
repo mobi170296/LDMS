@@ -31,7 +31,7 @@
 		}else{
 			$data_error[] = 'Số đến không hợp lệ, số đến phải là số';
 		}
-		if(!isset($_POST['kyhieu']) || !is_string($_POST['kyhieu']) || mb_strlen($_POST['kyhieu'], 'UTF-8')==0 || mb_strlen($_POST['kyhieu'], 'UTF-8')>20){
+		if(!isset($_POST['kyhieu']) || !is_string($_POST['kyhieu']) || mb_strlen(DataChecker::trim($_POST['kyhieu']), 'UTF-8')==0 || mb_strlen($_POST['kyhieu'], 'UTF-8')>20){
 			$data_error[] = 'Ký hiệu văn bản không hợp lệ';
 		}
 		if(!isset($_POST['trichyeu']) || !is_string($_POST['trichyeu']) || mb_strlen($_POST['trichyeu'], 'UTF-8')==0 || mb_strlen($_POST['trichyeu'], 'UTF-8')>200){
@@ -41,7 +41,7 @@
 				$data_error[] = 'Trích yếu phải có từ 3 từ trở lên!';
 			}
 		}
-		if(!isset($_POST['nguoiky']) || !is_string($_POST['nguoiky']) || mb_strlen($_POST['nguoiky'], 'UTF-8')==0 || mb_strlen($_POST['nguoiky'], 'UTF-8')>50){
+		if(!isset($_POST['nguoiky']) || !is_string($_POST['nguoiky']) || mb_strlen(DataChecker::trim($_POST['nguoiky']), 'UTF-8')==0 || mb_strlen($_POST['nguoiky'], 'UTF-8')>50){
 			$data_error[] = 'Tên người không hợp lệ, phải có từ 1 đến 50 ký tự';
 		}
 		if(!isset($_POST['ngayden']) || !isset($_POST['thangden']) || !isset($_POST['namden']) || !is_numeric($_POST['ngayden']) || !is_numeric($_POST['thangden']) || !is_numeric($_POST['namden']) || !checkdate($_POST['thangden'], $_POST['ngayden'], $_POST['namden']) || !isset($_POST['gioden']) || !isset($_POST['phutden']) || !isset($_POST['giayden']) || !is_numeric($_POST['gioden']) || !is_numeric($_POST['phutden']) || !is_numeric($_POST['giayden']) || !DataChecker::checkTime($_POST['gioden'], $_POST['phutden'], $_POST['giayden'])){
@@ -59,10 +59,10 @@
 			$b_thoihangiaiquyet = true;
 		}
 
-		if(!isset($_POST['madonvibanhanh']) || $_POST['madonvibanhanh'] == ''){
+		if(!isset($_POST['madonvibanhanh']) || DataChecker::trim($_POST['madonvibanhanh']) == ''){
 			$data_error[] = 'Mã đơn vị ban hành không được để trống';
 		}
-		if(!isset($_POST['maloaivanban']) || $_POST['maloaivanban'] == ''){
+		if(!isset($_POST['maloaivanban']) || DataChecker::trim($_POST['maloaivanban']) == ''){
 			$data_error[] = 'Mã loại văn bản không được để trống';
 		}
 		
