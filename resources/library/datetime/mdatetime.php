@@ -48,6 +48,18 @@
 		public function getSeconds(){
 			return $this->second;
 		}
+		public function compare($date){
+			if($this->year != $date->year){
+				return $this->year - $date->year > 0 ? 1 : -1;
+			}
+			if($this->month != $date->month){
+				return $this->month - $date->month > 0 ? 1 : -1;
+			}
+			if($this->day != $date->day){
+				return $this->day - $date->day > 0 ? 1 : -1;
+			}
+			return 0;
+		}
 		public function getDateString($delimiter='/'){
 			return sprintf('%02d' . $delimiter . '%02d' . $delimiter . '%04d', $this->day, $this->month, $this->year);
 		}

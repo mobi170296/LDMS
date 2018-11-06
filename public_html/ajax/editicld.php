@@ -26,7 +26,7 @@
 		$data_error = [];
 		if(isset($_POST['soden']) && is_numeric($_POST['soden'])){
 			if(intval($_POST['soden'])<=0 || intval($_POST['soden']) > 0xffffffff){
-				$data_error[] = 'Số đến này vượt ngưỡng cho phép, số đến từ 0 -> 0xFFFFFFFF';
+				$data_error[] = 'Số đến này vượt ngưỡng cho phép, số đến từ 1 đến 0xFFFFFFFF';
 			}
 		}else{
 			$data_error[] = 'Số đến không hợp lệ, số đến phải là số';
@@ -42,13 +42,22 @@
 			}
 		}
 		if(!isset($_POST['nguoiky']) || !is_string($_POST['nguoiky']) || mb_strlen(DataChecker::trim($_POST['nguoiky']), 'UTF-8')==0 || mb_strlen($_POST['nguoiky'], 'UTF-8')>50){
-			$data_error[] = 'Tên người không hợp lệ, phải có từ 1 đến 50 ký tự';
+			$data_error[] = 'Tên người ký không hợp lệ, phải có từ 1 đến 50 ký tự';
 		}
+		$b_ngayden = true;
 		if(!isset($_POST['ngayden']) || !isset($_POST['thangden']) || !isset($_POST['namden']) || !is_numeric($_POST['ngayden']) || !is_numeric($_POST['thangden']) || !is_numeric($_POST['namden']) || !checkdate($_POST['thangden'], $_POST['ngayden'], $_POST['namden']) || !isset($_POST['gioden']) || !isset($_POST['phutden']) || !isset($_POST['giayden']) || !is_numeric($_POST['gioden']) || !is_numeric($_POST['phutden']) || !is_numeric($_POST['giayden']) || !DataChecker::checkTime($_POST['gioden'], $_POST['phutden'], $_POST['giayden'])){
 			$data_error[] = 'Thời gian văn bản đến không hợp lệ';
+			$b_ngayden = false;
 		}
+		$b_ngayvanban = true;
 		if(!isset($_POST['ngayvanban']) || !isset($_POST['thangvanban']) || !isset($_POST['namvanban']) || !is_numeric($_POST['ngayvanban']) || !is_numeric($_POST['thangvanban']) || !is_numeric($_POST['namvanban'])){
 			$data_error[] = 'Ngày của văn bản không hợp lệ';
+			$b_ngayvanban = false;
+		}
+		if($b_ngayden && $b_ngayvanban){
+			if((new MDateTime(intval($_POST['ngayden']), intval($_POST['thangden']), intval($_POST['namden'])))->compare(new MDateTime(intval($_POST['ngayvanban']), intval($_POST['thangvanban']), intval($_POST['namvanban'])))==-1){
+				$data_error[] = 'Thời gian đến không thể sớm hơn ngày văn bản phát hành!';
+			}
 		}
 
 		$b_thoihangiaiquyet = false;

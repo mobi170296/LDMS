@@ -199,6 +199,7 @@ div#menu a.menu-item:hover{
 	color: #1A699B;
 }
 div.success-message-box{
+	margin: 10px auto;
 	background: #017A29;
 	color: #fff;
 	padding: 5px 20px;
@@ -208,7 +209,7 @@ div.success-message-box{
 	max-width: 400px;
 }
 div.error-message-box{
-	margin: 0px auto;
+	margin: 10px auto;
 	background: #ff4743;
 	color: #fff;
 	padding: 5px 20px;
