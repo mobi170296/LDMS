@@ -25,7 +25,7 @@
 
 <div id="doctype-list">
 	<table class="list-table">
-		<tr><th>Mã đơn vị</th><th>Tên đơn vị</th><th>Bên ngoài</th><th>Địa chỉ</th><th>Thời gian thêm</th><th>Thao tác</th></tr>
+		<tr><th>Mã đơn vị</th><th>Tên đơn vị</th><th>Email</th><th>Số điện thoại</th><th>Bên ngoài</th><th>Địa chỉ</th><th>Thời gian thêm</th><th>Thao tác</th></tr>
 		<?php
 			foreach($issuedunits as $issuedunit){
 				echo '<tr>';
