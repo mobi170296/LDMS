@@ -7,8 +7,10 @@
 	?>
 	<div id="quick-login">
 		<form action="/user/login.php" method="post" enctype="application/x-www-form-urlencoded">
-			<div><input type="text" name="maso" placeholder="Mã số"/></div>
-			<div><input type="password" name="matkhau" placeholder="Mật khẩu"/></div>
+			<div><input type="text" name="maso" size="15" placeholder="Mã số" autocomplete="off" autofocus="autofocus"/></div>
+			<div><input type="password" name="matkhau" size="15" placeholder="Mật khẩu" autocomplete="off"/></div>
+			<div><input style="font-family: arial; text-align: center" type="text" name="captcha" placeholder="Chuỗi xác thực" autocomplete="off"/></div>
+			<div><img src="/resources/captcha/captcha.php?t=<?php echo time();?>"/></div>
 			<div><button type="submit" name="login" value="login"><span>Đăng nhập</span></button></div>
 		</form>
 	</div>

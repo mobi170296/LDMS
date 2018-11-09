@@ -9,6 +9,9 @@
 body{
 	margin: 0px;
 }
+input:focus, button:active, button:focus{
+	outline: none;
+}
 div#login-form-wrapper{
 	box-sizing: border-box;
 	width: 100vw;
@@ -84,6 +87,11 @@ div#logo{
 	text-align: center;
 	height: 50px;
 	color: #fff;
+	background-image: url("/resources/images/icons/icon.png");
+	background-position: 20px center;
+	background-size: 40px 40px;
+	background-repeat: no-repeat;
+	padding: 10px 0px 0px 60px;
 }
 a#logout-btn{
 	display: inline-block;
@@ -106,7 +114,7 @@ a#logo-link{
 	vertical-align: middle;
 	color: #fff;
 	font-family: 'banhmi';
-	font-size: 16pt;
+	font-size: 20pt;
 	text-shadow: 1px 1px 5px #000;
 	user-select: none;
 	-moz-user-select: none;
@@ -127,7 +135,12 @@ div#avatar-wrapper{
 	overflow: hidden;
 }
 div#quick-login{
+	padding: 20px 0px;
 	text-align: center;
+	background-color: rgba(255,255,255,0.4);
+}
+div#quick-login div{
+	padding: 0px 0px;
 }
 div#menu{
 	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
@@ -298,12 +311,6 @@ select{
 label{
 	user-select: none;
 	-moz-user-select: none;
-}
-div#quick-login{
-	background-color: #909090;
-}
-div#quick-login div{
-	padding: 0px 0px;
 }
 table.list-table{
 	margin: 0px auto;

@@ -10,8 +10,10 @@
 	?>
 	<div id="login-form">
 	<form action="" method="post" enctype="application/x-www-form-urlencoded">
-		<div><input type="text" name="maso" placeholder="Mã số người dùng"/></div>
-		<div><input type="password" name="matkhau" placeholder="Mật khẩu"/></div>
+		<div><input type="text" name="maso" placeholder="Mã số người dùng" autocomplete="off" autofocus="autofocus"/></div>
+		<div><input type="password" name="matkhau" placeholder="Mật khẩu" autocomplete="off"/></div>
+		<div><input style="text-align: center; font-family: arial" type="text" name="captcha" placeholder="Chuỗi xác thực" autocomplete="off"/></div>
+		<div><img src="/resources/captcha/captcha.php?t=<?php echo time();?>"/></div>
 		<div style="text-align: center"><button type="submit" name="login" value="login">Đăng nhập</button></div>
 	</form>
 	</div>

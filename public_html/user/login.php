@@ -21,6 +21,13 @@
 		}
 		
 		if(isset($_POST['login'])){
+			if(!isset($_POST['captcha']) || strlen($_POST['captcha'])!=6){
+				throw new Exception('Mã xác thực phiên không hợp lệ!');
+			}else{
+				if($_SESSION['captcha']!=$_POST['captcha']){
+					throw new Exception('Mã xác thực phiên không đúng');
+				}
+			}
 			if(!isset($_POST['maso'])||!is_string($_POST['maso'])||!preg_match('/^[a-cA-C]?[0-9]{1,8}$/', $_POST['maso'])||!isset($_POST['matkhau'])||!is_string($_POST['matkhau'])||strlen($_POST['matkhau'])<6){
 				throw new Exception('Mã số hoặc mật khẩu không hợp lệ!');
 			}
