@@ -1,14 +1,19 @@
 <?php
 	#namespace m\resources\classes;
 	## Thuộc tính đặt tên theo lược đồ cơ sở dữ liệu
-	$CNF['RUNNING'] = '';
 	require_once(__DIR__.'/../../config/config.php');
 	require_once $CNF['PATHS']['LIBRARY'] . '/database/mdatabase.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/datetime/mdatetime.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/collection/mset.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/datachecker/datachecker.php';
 	require_once $CNF['PATHS']['LIBRARY'] . '/word/mword.php';
-
+	
+	require_once $CNF['PATHS']['LIBRARY'] . '/PHPMailer/Exception.php';
+	require_once $CNF['PATHS']['LIBRARY'] . '/PHPMailer/SMTP.php';
+	require_once $CNF['PATHS']['LIBRARY'] . '/PHPMailer/PHPMailer.php';
+	
+	use PHPMailer\PHPMailer\PHPMailer;
+		
 	require_once __DIR__ . '/legaldocument.php';
 	require_once __DIR__ . '/userinfo.php';
 	require_once __DIR__ . '/exceptions.php';
@@ -1458,7 +1463,45 @@
 				if(!$result->num_rows){
 					throw new Exception('Không thể chuyển cho người dùng này kiểm duyệt công văn!');
 				}
+				
+				try{
+					$userinfo = $this->getNguoiDung($idnguoikiemduyet);
+				}catch(Exception $e){
+					throw new Exception('Không lấy được thông tin người kiểm duyệt');
+				}
+				
+				try{
+					$legaldocument = $this->getCongVanDen($idcongvan);
+				}catch(Exception $e){
+					throw new Exception('Không lấy được thông tin công văn');
+				}
+				
+				
+				$mail = new PHPMailer(true);
 
+				try{
+					$mail->SMTPDebug = 0;
+					$mail->isSMTP();
+					$mail->Host = MAILER['SERVER'];
+					$mail->SMTPAuth = true;
+					$mail->Username = MAILER['EMAIL'];
+					$mail->Password = MAILER['PASSWORD'];
+					$mail->SMTPSecure = 'tls';
+					$mail->Port = 587;
+					$mail->setFrom(MAILER['EMAIL'], MAILER['FROMNAME']);
+					$mail->addAddress($userinfo->getEmail());
+					$mail->CharSet = 'UTF-8';
+					$mail->isHTML(true);
+					$mail->Subject = '[' . MAILER['FROMNAME'] . ']' . ' Công văn có số đến #' . $legaldocument->getSoDen() . ' đang chờ kiểm duyệt';
+					$mail->Body = <<<BODY
+					Xin chào <b>{$userinfo->getHo()} {$userinfo->getTen()}</b><br/>
+					Công văn có số đến <b>{$legaldocument->getSoDen()}</b>, ký hiệu <b>{$legaldocument->getKyHieu()}</b> của đơn vị <b>{$legaldocument->getMaDonVi()}</b> được cán bộ <b>({$this->getMaSo()}) {$this->getHo()} {$this->getTen()}</b> giao cho bạn kiểm duyệt. Bạn vui lòng đăng nhập vào hệ thống thực hiện nhiệm vụ của mình!</b>
+BODY;
+					$mail->send();
+				}catch(Exception $e){
+					throw new Exception('Không thể gửi Email báo cho người kiểm duyệt không thể chuyển công văn!');
+				}
+				
 				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET'] .' WHERE id='.$idcongvan);
 				$this->dbcon->insert('kiemduyet', ['idcongvan', 'idnguoikiemduyet'], [intval($idcongvan), intval($idnguoikiemduyet)]);
 				$this->dbcon->commit();
@@ -1482,9 +1525,48 @@
 				$result = $this->dbcon->query("SELECT nguoidung.id FROM nguoidung JOIN quyennguoidung ON nguoidung.id=quyennguoidung.idnguoidung WHERE nguoidung.id={$idnguoipheduyet} AND quyennguoidung.quyen=".PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']." UNION SELECT nguoidung.id FROM nguoidung JOIN nhom ON nguoidung.manhom=nhom.manhom JOIN quyennhomnguoidung WHERE nguoidung.id={$idnguoipheduyet} AND quyennhomnguoidung.quyen=".PRIVILEGES['PHE_DUYET_CONG_VAN_DEN']);
 				
 				if(!$result->num_rows){
-					throw new Exception('Người chuyển cho phê duyệt công văn không tồn tại!');
+					throw new Exception('Không thể chuyển cho người này phê duyệt công văn!');
 				}
 
+				
+				try{
+					$userinfo = $this->getNguoiDung($idnguoipheduyet);
+				}catch(Exception $e){
+					throw new Exception('Không lấy được thông tin người kiểm duyệt');
+				}
+				
+				try{
+					$legaldocument = $this->getCongVanDen($idcongvan);
+				}catch(Exception $e){
+					throw new Exception('Không lấy được thông tin công văn');
+				}
+				
+				
+				$mail = new PHPMailer(true);
+
+				try{
+					$mail->SMTPDebug = 0;
+					$mail->isSMTP();
+					$mail->Host = MAILER['SERVER'];
+					$mail->SMTPAuth = true;
+					$mail->Username = MAILER['EMAIL'];
+					$mail->Password = MAILER['PASSWORD'];
+					$mail->SMTPSecure = 'tls';
+					$mail->Port = 587;
+					$mail->setFrom(MAILER['EMAIL'], MAILER['FROMNAME']);
+					$mail->addAddress($userinfo->getEmail());
+					$mail->CharSet = 'UTF-8';
+					$mail->isHTML(true);
+					$mail->Subject = '[' . MAILER['FROMNAME'] . ']' . ' Công văn có số đến #' . $legaldocument->getSoDen() . ' đang chờ phê duyệt';
+					$mail->Body = <<<BODY
+					Xin chào <b>{$userinfo->getHo()} {$userinfo->getTen()}</b><br/>
+					Công văn có số đến <b>{$legaldocument->getSoDen()}</b>, ký hiệu <b>{$legaldocument->getKyHieu()}</b> của đơn vị <b>{$legaldocument->getMaDonVi()}</b> được cán bộ <b>({$this->getMaSo()}) {$this->getHo()} {$this->getTen()}</b> giao cho bạn phê duyệt. Bạn vui lòng đăng nhập vào hệ thống thực hiện nhiệm vụ của mình!</b>
+BODY;
+					$mail->send();
+				}catch(Exception $e){
+					throw new Exception('Không thể gửi Email báo cho người phê duyệt không thể chuyển công văn!');
+				}
+				
 				$this->dbcon->query('UPDATE congvanden SET trangthai='.LEGALDOCUMENT_STATUS['DOI_PHE_DUYET'] . ' WHERE id='.$idcongvan);
 				$this->dbcon->insert('pheduyet', ['idcongvan', 'idnguoipheduyet'], [intval($idcongvan), intval($idnguoipheduyet)]);
 				$this->dbcon->commit();

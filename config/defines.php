@@ -9,6 +9,14 @@ define('DATABASE',
 	   ]
 );
 
+define('MAILER', [
+	'SERVER' => 'smtp.gmail.com',
+	'PORT' => 587,
+	'EMAIL' => 'mobi170296@gmail.com',
+	'PASSWORD' => 'MOBIglus01669334569@',
+	'FROMNAME' => 'Hệ thống quản lý công văn'
+]);
+
 define('PRIVILEGES',
 	   ['THEM_NGUOI_DUNG' => 1,
 		'SUA_NGUOI_DUNG' => 2,
