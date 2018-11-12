@@ -50,7 +50,6 @@
 					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteicldform.php\', [[\'maloai\', '.$legaldocument->getID().']]);" title="Xóa công văn"></a>';
 				}
 				echo '</td>';
-CONTROLBTN;
 				echo '</tr>';
 			}
 		?>
