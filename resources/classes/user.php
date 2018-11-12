@@ -1115,7 +1115,7 @@
 		public function getDanhSachCongVanDen($start=null, $length=null){
 			$legaldocuments = [];
 			if($start===null){
-				$result = $this->dbcon->query("SELECT * FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND kiemduyet.idnguoikiemduyet={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND pheduyet.idnguoipheduyet={$this->id}");
+				$result = $this->dbcon->query("(SELECT * FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND kiemduyet.idnguoikiemduyet={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND pheduyet.idnguoipheduyet={$this->id}) ORDER BY thoigianthem DESC");
 				while($row=$result->fetch_assoc()){
 					$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
 					$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
@@ -1142,7 +1142,7 @@
 					$legaldocuments[] = $legaldocument;
 				}
 			}else{
-				$result = $this->dbcon->query("SELECT * FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND kiemduyet.idnguoikiemduyet={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND pheduyet.idnguoipheduyet={$this->id} LIMIT $start,$length");
+				$result = $this->dbcon->query("(SELECT * FROM congvanden WHERE idnguoinhap={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND kiemduyet.idnguoikiemduyet={$this->id} UNION SELECT congvanden.* FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.idnguoinhap!={$this->id} AND pheduyet.idnguoipheduyet={$this->id}) ORDER BY thoigianthem DESC LIMIT $start,$length");
 				while($row=$result->fetch_assoc()){
 					$legaldocument = new LegalDocumentInfo($row['id'], $row['soden'], $row['kyhieu'], $row['thoigianden'], $row['ngayvanban'], $row['madonvibanhanh'], $row['trichyeu'], $row['nguoiky'], $row['maloaivanban'], $row['thoihangiaiquyet'], $row['tentaptin'], $row['trangthai'], $row['idnguoinhap'], $row['madonvi'], $row['thoigianthem']);
 					$subresult = $this->dbcon->query('SELECT * FROM donvi WHERE madonvi=\''.$row['madonvi'].'\'');
@@ -1256,14 +1256,14 @@
 				throw new MissingPrivilegeException('Bạn không có quyền xem danh sách công văn chờ kiểm duyệt');
 			}
 			if($start===null){
-				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id)");
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id) ORDER BY kiemduyet.thoigianthem DESC");
 
 
 				while($row = $result->fetch_assoc()){
 					$legaldocuments[] = $this->getCongVanDen($row['id']);
 				}
 			}else{
-				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id) LIMIT $start, $length");
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN kiemduyet ON congvanden.id=kiemduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']." AND (congvanden.idnguoinhap=$this->id OR kiemduyet.idnguoikiemduyet=$this->id) ORDER BY kiemduyet.thoigianthem DESC LIMIT $start, $length");
 
 				$legaldocuments = [];
 
@@ -1279,13 +1279,13 @@
 			}
 			$legaldocuments = [];
 			if($start===null){
-				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id)");
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id) ORDER BY pheduyet.thoigianthem DESC");
 
 				while($row = $result->fetch_assoc()){
 					$legaldocuments[] = $this->getCongVanDen($row['id']);
 				}
 			}else{
-				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id) LIMIT $start, $length");
+				$result = $this->dbcon->query("SELECT congvanden.id FROM congvanden INNER JOIN pheduyet ON congvanden.id=pheduyet.idcongvan WHERE congvanden.trangthai=".LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']." AND (congvanden.idnguoinhap=$this->id OR pheduyet.idnguoipheduyet=$this->id) ORDER BY pheduyet.thoigianthem DESC LIMIT $start, $length");
 
 				while($row = $result->fetch_assoc()){
 					$legaldocuments[] = $this->getCongVanDen($row['id']);
