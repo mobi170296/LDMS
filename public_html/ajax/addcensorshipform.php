@@ -19,9 +19,10 @@
 			throw new Exception('Công văn này không thể kiểm duyệt');
 		}
 ?>
+<div id="page-title">Thêm ý kiến kiểm duyệt</div>
 	<div id="add-censorship-form">
 		<form action="/ajax/addcensorship.php" method="post" onSubmit="ajaxSubmitEdit(this);return false;">
-			<div id="page-title">Kiểm duyệt cho công văn "<?php echo $legaldocument->getKyHieu(); ?>" của đơn vị "<?php echo $legaldocument->getDonVi()->getTenDonVi(); ?>"</div>
+			<div style="padding: 10px 0px;">Kiểm duyệt cho công văn "<?php echo $legaldocument->getKyHieu(); ?>" của đơn vị "<?php echo $legaldocument->getDonVi()->getTenDonVi(); ?>"</div>
 			<div>Ý kiến kiểm duyệt</div>
 			<div><textarea rows="5" cols="30" name="ykienkiemduyet" spellcheck="false" placeholder="Cho ý kiển tại đây"><?php echo $legaldocument->getKiemDuyet()->getYKienKiemDuyet(); ?></textarea></div>
 			<div><input type="hidden" name="id" value="<?php echo $legaldocument->getID(); ?>"/></div>

@@ -16,11 +16,12 @@
 			throw new Exception('Yêu cầu không hợp lệ');
 		}
 		$legaldocument = $user->getCongVanDen($_POST['id']);
+		echo '<div id="page-title">Xóa công văn đến</div>';
 		echo <<<FORM
 		Bạn có thật sự muốn xóa công văn đến số "{$legaldocument->getSoDen()}", ký hiệu "{$legaldocument->getKyHieu()}"?
 		<form action="/ajax/deleteicld.php" method="post" onsubmit="ajaxSubmitEdit(this);return false;">
 			<input type="hidden" name="id" value="{$legaldocument->getID()}"/>
-			<button type="submit" name="" value="">Xóa luôn đê</button>
+			<button type="submit" name="" value="">Xóa công văn</button>
 		</form>
 FORM;
 ?>

@@ -13,6 +13,7 @@
 		if(isset($_POST['manhom'])){
 			$group = $user->getNhom($_POST['manhom']);
 ?>
+		<div id="page-title">Sửa thông tin nhóm người dùng</div>
 			<form action="/ajax/editgroup.php" method="post" onsubmit="ajaxSubmitEdit(this); return false;">
 			<div>Mã loại</div>
 			<div><input type="text" size="30" name="newmanhom" value="<?php echo $group->getMaNhom(); ?>"/></div>

@@ -14,7 +14,7 @@
 		if(isset($_POST['madonvi'])){
 			$issuedunit = $user->getDonViBanHanh($_POST['madonvi']);
 ?>
-
+		<div id="page-title">Sửa thông tin đơn vị ban hành</div>
 			<form action="/ajax/editissuedunit.php" onsubmit="ajaxSubmitEdit(this);return false;">
 			<div>Mã đơn vị</div>
 			<div><input type="text" size="30" name="madonvi" value="<?php echo $issuedunit->getMaDonVi(); ?>"/></div>

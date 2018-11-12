@@ -14,6 +14,7 @@
 		if(isset($_POST['madonvi'])){
 			$department = $user->getDonVi($_POST['madonvi']);
 ?>
+<div id="page-title">Xóa Khoa - Đơn vị</div>
 			<form action="/ajax/deletedepartment.php" onsubmit="ajaxSubmitDelete(this); return false;">
 			<div>Bạn có muốn xóa đơn vị <?php echo $department->getTenDonVi(); ?> (<?php echo $department->getMaDonVi(); ?>)?</div>
 			<div><input type="hidden" name="madonvi" value="<?php echo $department->getMaDonVi(); ?>"/></div>

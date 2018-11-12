@@ -14,6 +14,7 @@
 		}
 		$legaldocument = $user->getCongVanDen($_POST['id']);
 ?>
+	<div id="page-title">Xác nhận ý kiến kiểm duyệt</div>
 		<div id="verify-censorship-form">
 			<div>Bạn có muốn xác nhận ý kiến phê duyệt <font color="blue"><?php echo $legaldocument->getKiemDuyet()->getYKienKiemDuyet();?></font> cho công văn có ký hiệu <font color="blue"><?php echo $legaldocument->getKyHieu();?></font>?</div>
 			<form action="/ajax/verifycensorship.php" method="post" onSubmit="ajaxSubmitEdit(this);return false;">

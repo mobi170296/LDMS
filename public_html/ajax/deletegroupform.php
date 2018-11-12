@@ -13,7 +13,7 @@
 		if(isset($_POST['manhom'])){
 			$group = $user->getNhom($_POST['manhom']);
 ?>
-
+		<div id="page-title">Xóa nhóm người dùng</div>
 			<form action="/ajax/deletegroup.php" method="post" onsubmit="ajaxSubmitDelete(this);return false;">
 			<div>Bạn có muốn xóa nhóm <?php echo $group->getTenNhom(); ?> (<?php echo $group->getMaNhom(); ?>)?</div>
 			<div><input type="hidden" name="manhom" value="<?php echo $group->getMaNhom(); ?>"/></div>

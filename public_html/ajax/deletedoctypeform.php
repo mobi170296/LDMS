@@ -13,6 +13,7 @@
 		if(isset($_POST['maloai'])){
 			$doctypeinfo = $user->getLoaiVanBan($_POST['maloai']);
 ?>
+		<div id="page-title">Xóa loại văn bản</div>
 			<form action="/ajax/deletedoctype.php" onSubmit="ajaxSubmitDelete(this);return false;">
 			<div>Bạn có muốn xóa loại văn bản <?php echo $doctypeinfo->getTenLoai(); ?> (<?php echo $doctypeinfo->getMaLoai(); ?>)?</div>
 			<div><input type="hidden" name="maloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>

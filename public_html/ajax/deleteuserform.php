@@ -14,6 +14,7 @@
 		}
 		$userinfo = $user->getNguoiDung($_POST['id']);
 ?>
+	<div id="page-title">Xóa người dùng</div>
 	<div>Bạn có muốn xóa người dùng <font color="red">"<?php echo $userinfo->getFullName(); ?>"</font> có mã số <font color="red">"<?php echo $userinfo->getMaSo();?>"</font>?</div>
 	<form action="/ajax/deleteuser.php" method="post" onsubmit="ajaxSubmitEdit(this);return false;">
 	<div><input type="hidden" name="id" value="<?php echo $userinfo->getID(); ?>"/></div>

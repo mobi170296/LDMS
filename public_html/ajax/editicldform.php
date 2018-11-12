@@ -26,7 +26,7 @@
 		}
 		*/
 ?>
-
+<div id="page-title">Sửa thông tin công văn đến</div>
 <div id="add-icld-form-wrapper">
 	<div id="add-icld-form">
 		<form action="/ajax/editicld.php" method="post" enctype="multipart/form-data" name="add-icld" onsubmit="ajaxSubmitEdit(this);">

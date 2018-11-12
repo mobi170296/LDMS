@@ -13,6 +13,7 @@
 		if(isset($_POST['maloai'])){
 			$doctypeinfo = $user->getLoaiVanBan($_POST['maloai']);
 ?>
+			<div id="page-title">Sửa thông tin loại văn bản</div>
 			<form action="/ajax/editdoctype.php" onsubmit="ajaxSubmitEdit(this);return false;">
 			<div>Mã loại</div>
 			<div><input type="text" size="30" name="newmaloai" value="<?php echo $doctypeinfo->getMaLoai(); ?>"/></div>

@@ -46,7 +46,7 @@
 				if($user->getQuyen()->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
 					echo '<a class="action-btn positive verify-censorship" onclick="showFormPopup(\'/ajax/verifyapprovalform.php\', [[\'id\', '.$legaldocument->getID().']])" title="Thực hiện xác nhận ý kiến phê duyệt"></a>';
 				}
-				if($user->getQuyen()->contain(PRIVILEGES['PHE_DUYET_CONG_VAN_DEN'])){
+				if($user->getQuyen()->contain(PRIVILEGES['XOA_CONG_VAN_DEN'])){
 					echo '<a class="action-btn negative delete" onclick="showFormPopup(\'/ajax/deleteicldform.php\', [[\'maloai\', '.$legaldocument->getID().']]);" title="Xóa công văn"></a>';
 				}
 				echo '</td>';

@@ -14,6 +14,7 @@
 		if(isset($_POST['madonvi'])){
 			$issuedunit = $user->getDonViBanHanh($_POST['madonvi']);
 ?>
+		<div id="page-title">Xóa đơn vị ban hành</div>
 			<form action="/ajax/deleteissuedunit.php" onsubmit="ajaxSubmitDelete(this);return false;">
 			<div>Bạn có muốn xóa đơn vị <?php echo $issuedunit->getTenDonVi(); ?> (<?php echo $issuedunit->getMaDonVi(); ?>)?</div>
 			<div><input type="hidden" name="madonvi" value="<?php echo $issuedunit->getMaDonVi(); ?>"/></div>

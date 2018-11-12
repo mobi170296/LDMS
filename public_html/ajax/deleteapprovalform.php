@@ -16,9 +16,10 @@
 		
 		$legaldocument = $user->getCongVanDen($_POST['id']);
 ?>
+<div id="page-title">Xóa ý kiến phê duyệt</div>
 	<div id="add-censorship-form">
 		<form action="/ajax/deleteapproval.php" method="post" onSubmit="ajaxSubmitEdit(this);return false;">
-			<div id="page-title">Xóa phê duyệt công văn "<?php echo $legaldocument->getKyHieu(); ?>" của đơn vị "<?php echo $legaldocument->getDonVi()->getTenDonVi(); ?>"</div>
+			<div style="padding: 10px 0px;">Xóa ý kiến phê duyệt công văn "<?php echo $legaldocument->getKyHieu(); ?>" của đơn vị "<?php echo $legaldocument->getDonVi()->getTenDonVi(); ?>"</div>
 			
 			<div><input type="hidden" name="id" value="<?php echo $legaldocument->getID(); ?>"/></div>
 			<div><input type="hidden" name="deleteapproval" value="deleteapproval"/></div>

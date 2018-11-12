@@ -14,6 +14,7 @@
 		if(isset($_POST['madonvi'])){
 			$department = $user->getDonVi($_POST['madonvi']);
 ?>
+		<div id="page-title">Sửa thông tin Khoa - Đơn vị</div>
 			<form action="/ajax/editdepartment.php" method="post" onsubmit="ajaxSubmitEdit(this); return false;">
 			<div>Mã đơn vị</div>
 			<div><input type="text" size="30" name="newmadonvi" value="<?php echo $department->getMaDonVi(); ?>"/></div>
