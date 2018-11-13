@@ -354,6 +354,9 @@
 			#data checked outside
 			if($this->quyen->contain(PRIVILEGES['XOA_NGUOI_DUNG'])){
 				try{
+					if($this->id == $id){
+						throw new Exception('Bạn không thể xóa chính mình???');
+					}
 					$this->dbcon->startTransactionRW();
 					$result = $this->dbcon->query('SELECT * FROM nguoidung WHERE id='.$id);
 					

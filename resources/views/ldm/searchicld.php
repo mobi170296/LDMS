@@ -46,7 +46,7 @@
 					<option value="<?php echo LEGALDOCUMENT_STATUS['DOI_KIEM_DUYET']; ?>">Đợi kiểm duyệt</option>
 					<option value="<?php echo LEGALDOCUMENT_STATUS['DA_KIEM_DUYET']; ?>">Đã kiểm duyệt</option>
 					<option value="<?php echo LEGALDOCUMENT_STATUS['DOI_PHE_DUYET']; ?>">Đợi phê duyệt</option>
-					<option value="<?php echo LEGALDOCUMENT_STATUS['DA_PHE_DUYET']; ?>">Đã kiểm duyệt</option>
+					<option value="<?php echo LEGALDOCUMENT_STATUS['DA_PHE_DUYET']; ?>">Đã phê duyệt</option>
 				</select>
 			</td>
 		</tr>
